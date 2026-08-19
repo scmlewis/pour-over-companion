@@ -194,7 +194,7 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] bg-[#0a0a08] text-[#f0eeeb] flex flex-col items-center font-sans">
-      <main className="w-full max-w-md mx-auto px-4 pt-4 pb-28 flex-1 flex flex-col">
+      <main className="w-full max-w-md mx-auto px-4 pb-28 flex-1 flex flex-col" style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}>
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
             <motion.div
@@ -400,7 +400,7 @@ export default function App() {
 
       {/* Floating Pill Navigation */}
       {showNav && (
-        <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+        <nav className="fixed left-1/2 -translate-x-1/2 z-40" style={{ bottom: 'max(1.5rem, calc(env(safe-area-inset-bottom) + 1.5rem))' }}>
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
