@@ -131,7 +131,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
   const [isRunning, setIsRunning] = useState<boolean>(true);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [showFlowChart, setShowFlowChart] = useState<boolean>(true);
-  const [showTechnique, setShowTechnique] = useState<boolean>(true);
+
 
   const timerRef = useRef<number | null>(null);
 
@@ -417,39 +417,6 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           </div>
         </motion.div>
 
-        {/* Technique — Expandable Description */}
-        <motion.div variants={telemetryVariants}>
-          <button
-            onClick={() => setShowTechnique(s => !s)}
-            className="w-full py-2 px-3 rounded-xl bg-[#0f0e0c] hover:bg-[#141311] border border-white/[0.04] flex items-center justify-between text-[11px] text-[#f0eeeb]/40 font-medium active:scale-[0.98] transition-all duration-500 mb-1.5"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <div className="flex items-center gap-1.5 min-w-0">
-              <Activity className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span className="shrink-0">{t('brew.technique')}</span>
-              <span className="text-[#f0eeeb]/60 truncate">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
-            </div>
-            <ChevronRight className={`w-3.5 h-3.5 text-[#f0eeeb]/30 transition-transform duration-500 shrink-0 ${showTechnique ? 'rotate-90' : ''}`} />
-          </button>
-          <AnimatePresence>
-            {showTechnique && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="overflow-hidden"
-              >
-                <div className="p-3 rounded-xl bg-[#0f0e0c] border border-white/[0.04] mb-1.5">
-                  <p className="text-xs text-[#f0eeeb]/70 leading-relaxed">
-                    {language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水，確保粉床均勻萃取。') : (currentStep.pourStyleEn || 'Gentle concentric pour ensuring even extraction across the coffee bed.')}
-                  </p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-
         {/* Flow Rate Telemetry — Toggle */}
         <motion.div variants={telemetryVariants}>
           <button
@@ -488,6 +455,15 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               </motion.div>
             )}
           </AnimatePresence>
+        </motion.div>
+
+        {/* Technique — Static Display */}
+        <motion.div variants={telemetryVariants}>
+          <div className="py-2 px-3 rounded-xl bg-[#0f0e0c] border border-white/[0.04] flex items-center gap-1.5 text-[11px] text-[#f0eeeb]/40 font-medium mb-1.5">
+            <Activity className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span className="shrink-0">{t('brew.technique')}</span>
+            <span className="text-[#f0eeeb]/60 truncate">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
+          </div>
         </motion.div>
 
       </div>
