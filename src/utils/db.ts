@@ -293,22 +293,6 @@ export async function deleteCustomBean(id: string): Promise<void> {
 }
 
 /**
- * Export logs as JSON file download
- */
-export function exportToJSON(logs: BrewLogEntry[]) {
-  const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(logs, null, 2));
-  const downloadAnchor = document.createElement('a');
-  downloadAnchor.setAttribute('href', dataStr);
-  const dateStr = new Date().toISOString().split('T')[0];
-  downloadAnchor.setAttribute('download', `coffee-brew-log-${dateStr}.json`);
-  document.body.appendChild(downloadAnchor);
-  downloadAnchor.click();
-  downloadAnchor.remove();
-}
-
-export const exportLogsAsJSON = exportToJSON;
-
-/**
  * Export logs as CSV file download
  */
 export function exportToCSV(logs: BrewLogEntry[]) {

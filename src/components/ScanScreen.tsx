@@ -430,6 +430,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({
                 src={ASSETS.coffeeFlavor}
                 alt="SCA Coffee Flavor Wheel"
                 referrerPolicy="no-referrer"
+                loading="lazy"
                 className="w-full h-full object-cover"
               />
             </div>

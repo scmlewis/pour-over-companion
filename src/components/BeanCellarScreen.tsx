@@ -706,6 +706,7 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
                 src={ASSETS.coffeeFlavor}
                 alt="SCA Coffee Flavor Wheel"
                 referrerPolicy="no-referrer"
+                loading="lazy"
                 className="w-full h-full object-cover"
               />
             </div>

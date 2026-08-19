@@ -24,11 +24,3 @@ export function triggerHaptic(type: 'light' | 'medium' | 'heavy' | 'finish' = 'm
     // Graceful no-op
   }
 }
-
-export function triggerStepVibration() {
-  triggerHaptic('medium');
-}
-
-export function triggerFinishVibration() {
-  triggerHaptic('finish');
-}

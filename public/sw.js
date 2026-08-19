@@ -1,4 +1,5 @@
 const CACHE_NAME = 'hand-drip-v1';
+const IMAGE_CACHE_NAME = 'hand-drip-images-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -21,7 +22,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
+          if (key !== CACHE_NAME && key !== IMAGE_CACHE_NAME) {
             return caches.delete(key);
           }
         })
@@ -33,6 +34,10 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  
+  const url = new URL(event.request.url);
+  const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url.pathname);
+  
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -40,7 +45,8 @@ self.addEventListener('fetch', (event) => {
         fetch(event.request)
           .then((networkResponse) => {
             if (networkResponse && networkResponse.status === 200) {
-              caches.open(CACHE_NAME).then((cache) => {
+              const cacheName = isImage ? IMAGE_CACHE_NAME : CACHE_NAME;
+              caches.open(cacheName).then((cache) => {
                 cache.put(event.request, networkResponse);
               });
             }
@@ -53,7 +59,8 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         }
         const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
+        const cacheName = isImage ? IMAGE_CACHE_NAME : CACHE_NAME;
+        caches.open(cacheName).then((cache) => {
           cache.put(event.request, responseToCache);
         });
         return networkResponse;

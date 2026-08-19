@@ -263,6 +263,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                     src={bgImg}
                     alt={rName}
                     referrerPolicy="no-referrer"
+                    loading="lazy"
                     className="w-full h-full object-cover object-center brightness-75 transform group-hover/card:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#14110f] via-[#14110f]/75 to-transparent" />

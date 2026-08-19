@@ -131,6 +131,7 @@ export const ArtOfPouringCard: React.FC = () => {
           src={current.image}
           alt={language === 'zh' ? current.nameZh : current.nameEn}
           referrerPolicy="no-referrer"
+          loading="lazy"
           className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-105"
         />
 

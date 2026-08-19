@@ -248,9 +248,9 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="w-full flex-1 flex flex-col justify-between pb-6 pt-0 select-none space-y-3 font-sans text-slate-100 relative"
+      className="w-full h-full flex flex-col pb-4 pt-0 select-none font-sans text-slate-100 relative overflow-hidden"
     >
-      <div>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pb-4 space-y-3">
         {/* Prominent High-Visibility Paused Banner when !isRunning */}
         <AnimatePresence>
           {!isRunning && (
@@ -610,8 +610,8 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
         </motion.div>
       </div>
 
-      {/* Viewport Anchored Bottom Controls */}
-      <motion.div variants={bottomControlsVariants} className="space-y-2.5 pt-2">
+      {/* Viewport Anchored Bottom Controls - Fixed at bottom */}
+      <motion.div variants={bottomControlsVariants} className="space-y-2.5 pt-2 shrink-0">
         {/* Large Primary Action Capsule Button with Distinct Paused Transformation */}
         <button
           onClick={() => {
