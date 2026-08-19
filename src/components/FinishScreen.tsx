@@ -75,7 +75,7 @@ export const FinishScreen: React.FC<FinishScreenProps> = ({
           </p>
         </div>
 
-        {/* Summary — Double-Bezel */}
+        {/* Summary + Rating — Combined */}
         <div className="bezel-card mb-4">
           <div className="p-4 space-y-3">
             <div className="text-xs text-amber-400 font-mono font-bold">{t('finish.summaryTitle')}</div>
@@ -93,31 +93,27 @@ export const FinishScreen: React.FC<FinishScreenProps> = ({
                 <div className="text-base font-extrabold text-white">{recipe.temp}°C</div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Rating — Double-Bezel */}
-        <div className="bezel-card mb-4">
-          <div className="p-4 space-y-3">
-            <div className="text-xs text-[#f0eeeb]/60 font-bold">{t('finish.cuppingScore')}</div>
-            <div className="flex items-center justify-center gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => setRating(star)}
-                  className="p-2 rounded-2xl active:scale-90 transition-all duration-500"
-                  style={{ transitionTimingFunction: 'var(--ease-spring-bounce)' }}
-                >
-                  <Star
-                    className={`w-7 h-7 transition-colors duration-300 ${
-                      star <= rating
-                        ? 'fill-amber-400 text-amber-400'
-                        : 'text-[#f0eeeb]/15 hover:text-[#f0eeeb]/30'
-                    }`}
-                  />
-                </button>
-              ))}
+            <div className="pt-2 border-t border-white/[0.05]">
+              <div className="text-xs text-[#f0eeeb]/60 font-bold mb-2">{t('finish.cuppingScore')}</div>
+              <div className="flex items-center justify-center gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating(star)}
+                    className="p-2 rounded-2xl active:scale-90 transition-all duration-500"
+                    style={{ transitionTimingFunction: 'var(--ease-spring-bounce)' }}
+                  >
+                    <Star
+                      className={`w-7 h-7 transition-colors duration-300 ${
+                        star <= rating
+                          ? 'fill-amber-400 text-amber-400'
+                          : 'text-[#f0eeeb]/15 hover:text-[#f0eeeb]/30'
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
