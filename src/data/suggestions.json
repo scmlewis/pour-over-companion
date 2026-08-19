@@ -1,0 +1,50 @@
+[
+  {
+    "descriptors": ["sour", "under-extracted"],
+    "adjust": { "grind": "finer", "bloomSec": "+10" },
+    "text": "Grind 1 notch finer; extend bloom by +10s",
+    "rationale": "Sharp sourness and fast drawdown indicate under-extraction. A finer grind increases contact surface area and longer bloom guarantees complete bean degassing."
+  },
+  {
+    "descriptors": ["bitter", "harsh"],
+    "adjust": { "grind": "coarser", "ratio": "1:15" },
+    "text": "Grind 1 notch coarser; slightly reduce total water",
+    "rationale": "Dry, heavy bitterness means late-stage over-extraction of bitter tannins. Coarsening grind and ending water pour earlier maintains sweet clarity."
+  },
+  {
+    "descriptors": ["weak", "thin", "watery"],
+    "adjust": { "dose": "+1", "grind": "finer" },
+    "text": "Increase coffee dose by +1g; grind 1 notch finer",
+    "rationale": "Watery mouthfeel implies low TDS (Total Dissolved Solids). A slightly tighter ratio and finer grounds build richer body and aroma."
+  },
+  {
+    "descriptors": ["astringent", "dry"],
+    "adjust": { "grind": "coarser", "agitation": "less" },
+    "text": "Grind slightly coarser; reduce agitation & swirls",
+    "rationale": "A sandpaper dry finish on the tongue is caused by fines clogging and channelling. Pour gently with fewer aggressive swirls."
+  },
+  {
+    "descriptors": ["hollow", "lacking-sweetness"],
+    "adjust": { "water": "+15", "bloomSec": "+10" },
+    "text": "Extend bloom +10s; increase water +15g for sweetness",
+    "rationale": "A hollow middle note usually means coffee grounds weren't fully saturated during bloom or the ratio was too tight to extract soluble sugars."
+  },
+  {
+    "descriptors": ["sour", "astringent"],
+    "adjust": { "grind": "finer", "agitation": "less" },
+    "text": "Grind slightly finer & pour in calm steady center circles",
+    "rationale": "Simultaneous sourness and dryness is a hallmark of channelling (water rushing through cracks). Pour smoothly and maintain a flat bed."
+  },
+  {
+    "descriptors": ["heavy", "muddy"],
+    "adjust": { "grind": "coarser", "ratio": "1:16.5" },
+    "text": "Grind 1 notch coarser; increase water ratio for clarity",
+    "rationale": "Muddy flavors obscure origin notes. Opening up the grind and using slightly more water brings back delicate floral and fruity notes."
+  },
+  {
+    "descriptors": ["balanced", "sweet", "clean"],
+    "adjust": {},
+    "text": "Spot on! Lock in this recipe & grind setting",
+    "rationale": "High sweetness, pleasant acidity, and clean lingering finish indicate optimal extraction yield (~20%)."
+  }
+]

@@ -1,0 +1,323 @@
+import React, { useState } from 'react';
+import { BrewLogEntry } from '../types';
+import { ChevronLeft, Download, Trash2, Star, Coffee, Compass, Edit3, X, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { deleteBrewLog, exportLogsAsCSV } from '../utils/db';
+import { useLanguage } from '../utils/i18n';
+
+interface HistoryScreenProps {
+  logs: BrewLogEntry[];
+  onBack: () => void;
+  onSelectLogForEval: (log: BrewLogEntry) => void;
+  onRefreshLogs: () => void;
+  onDeleteLog?: (id: string) => void;
+}
+
+const listContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const listItemVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3 },
+  },
+};
+
+export const HistoryScreen: React.FC<HistoryScreenProps> = ({
+  logs,
+  onBack,
+  onSelectLogForEval,
+  onRefreshLogs,
+  onDeleteLog,
+}) => {
+  const { t, language } = useLanguage();
+  const [filterRating, setFilterRating] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const confirmDelete = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDeletingId(id);
+  };
+
+  const handleExecuteDelete = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    await deleteBrewLog(id);
+    if (onDeleteLog) {
+      onDeleteLog(id);
+    }
+    setDeletingId(null);
+    onRefreshLogs();
+  };
+
+  const handleCancelDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDeletingId(null);
+  };
+
+  const filteredLogs = filterRating
+    ? logs.filter(l => l.rating === filterRating)
+    : logs;
+
+  const formatDate = (isoStr: string) => {
+    try {
+      const date = new Date(isoStr);
+      if (language === 'zh') {
+        const m = date.getMonth() + 1;
+        const d = date.getDate();
+        const h = date.getHours().toString().padStart(2, '0');
+        const min = date.getMinutes().toString().padStart(2, '0');
+        return `${m}月${d}日 ${h}:${min}`;
+      } else {
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      }
+    } catch {
+      return isoStr;
+    }
+  };
+
+  const formatTime = (totalSec?: number) => {
+    if (!totalSec) return '--';
+    const mins = Math.floor(totalSec / 60);
+    const secs = totalSec % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-0 select-none space-y-4 font-sans text-slate-100">
+      <div>
+        {/* Floating / Sticky Header Bar */}
+        <div className="sticky top-0 z-30 bg-[#0d0b09]/95 backdrop-blur-md py-2.5 mb-2 -mx-4 px-4 border-b border-white/[0.06] flex items-center justify-between shadow-md">
+          <button
+            onClick={onBack}
+            className="w-10 h-10 -ml-1.5 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 active:scale-95 transition-all"
+          >
+            <ChevronLeft className="w-6 h-6 stroke-[2]" />
+          </button>
+          <div className="text-center">
+            <h2 className="text-base font-black text-slate-200 tracking-tight">
+              {t('history.title')}
+            </h2>
+          </div>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => exportLogsAsCSV(logs)}
+              title="CSV"
+              className="p-2 rounded-full bg-[#161311] border border-white/[0.08] text-slate-400 hover:text-amber-400 active:scale-95 transition-all shadow-sm"
+            >
+              <Download className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Stats Strip */}
+        <div className="p-4 rounded-3xl bg-[#14110f] border border-white/[0.08] mb-3 shadow-lg flex items-center justify-between">
+          <div>
+            <div className="text-xs text-slate-400 font-medium">{t('history.totalBrews')}</div>
+            <div className="text-2xl font-black font-mono text-slate-100 mt-0.5">
+              {logs.length} <span className="text-xs font-normal text-slate-400">{language === 'zh' ? '杯' : 'brews'}</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-xs text-slate-400 font-medium">{t('history.avgRating')}</div>
+            <div className="text-2xl font-black font-mono text-amber-400 mt-0.5">
+              {logs.length > 0
+                ? (logs.reduce((acc, l) => acc + l.rating, 0) / logs.length).toFixed(1)
+                : '5.0'} <span className="text-xs font-normal text-slate-400">/ 5.0</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Star Rating Filter */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mb-3 scrollbar-none">
+          <button
+            onClick={() => setFilterRating(null)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono transition-all ${
+              filterRating === null
+                ? 'bg-amber-500 text-slate-950 shadow-md'
+                : 'bg-[#14110f] text-slate-400 border border-white/[0.06]'
+            }`}
+          >
+            {t('history.all')}
+          </button>
+          {[5, 4, 3, 2, 1].map((st) => (
+            <button
+              key={st}
+              onClick={() => setFilterRating(st)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono flex items-center gap-1 transition-all ${
+                filterRating === st
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'bg-[#14110f] text-slate-400 border border-white/[0.06]'
+              }`}
+            >
+              <span>{st}</span>
+              <Star className="w-3 h-3 fill-current" />
+            </button>
+          ))}
+        </div>
+
+        {/* Logs List with Fluid Entrance */}
+        {filteredLogs.length === 0 ? (
+          <div className="text-center py-12 px-4 rounded-3xl bg-[#14110f] border border-white/[0.06]">
+            <Coffee className="w-12 h-12 text-slate-600 mx-auto mb-2 stroke-[1.5]" />
+            <p className="text-sm font-bold text-slate-300">{t('history.empty')}</p>
+            <p className="text-xs text-slate-500 mt-1">{t('history.emptySub')}</p>
+          </div>
+        ) : (
+          <motion.div
+            variants={listContainerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-2.5"
+          >
+            {filteredLogs.map((log) => {
+              const isConfirmingDelete = deletingId === log.id;
+
+              return (
+                <motion.div
+                  key={log.id}
+                  variants={listItemVariants}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={() => onSelectLogForEval(log)}
+                  className="p-4 rounded-3xl bg-[#14110f] hover:bg-[#1a1614] border border-white/[0.07] hover:border-amber-500/40 cursor-pointer transition-all shadow-md space-y-2 group relative overflow-hidden"
+                >
+                  {/* Inline Delete Confirmation Overlay */}
+                  {isConfirmingDelete && (
+                    <div
+                      onClick={(e) => e.stopPropagation()}
+                      className="absolute inset-0 bg-black/95 z-20 flex items-center justify-between px-4 py-3 animate-in fade-in"
+                    >
+                      <span className="text-xs font-bold text-rose-300">
+                        {language === 'zh' ? '確認刪除此紀錄？' : 'Delete this record?'}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={handleCancelDelete}
+                          className="px-3 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.12] text-xs font-bold text-slate-300 transition-colors"
+                        >
+                          {language === 'zh' ? '取消' : 'Cancel'}
+                        </button>
+                        <button
+                          onClick={(e) => handleExecuteDelete(log.id, e)}
+                          className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white transition-colors shadow-md flex items-center gap-1"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                          <span>{language === 'zh' ? '刪除' : 'Delete'}</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-black text-slate-100 font-sans group-hover:text-amber-300 transition-colors">
+                          {log.recipeName}
+                        </span>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-amber-400 font-bold">
+                          {log.method}
+                        </span>
+                      </div>
+                      {log.beanName && (
+                        <div className="text-xs text-slate-300 font-medium mt-0.5">
+                          {log.beanName}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center text-amber-400">
+                        {[...Array(log.rating || 5)].map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                        ))}
+                      </div>
+
+                      {/* Delete Trigger Button */}
+                      <button
+                        type="button"
+                        onClick={(e) => confirmDelete(log.id, e)}
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 active:scale-95 transition-all"
+                        title={language === 'zh' ? '刪除此筆' : 'Delete'}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Extraction Parameters */}
+                  <div className="grid grid-cols-4 gap-1 p-2 rounded-2xl bg-black/40 border border-white/[0.05] text-center font-mono text-[11px]">
+                    <div>
+                      <span className="text-slate-400 block text-[9px]">{t('prep.coffeeGround')}</span>
+                      <span className="text-slate-200 font-bold">{log.dose}g</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[9px]">{t('prep.totalWater')}</span>
+                      <span className="text-amber-400 font-bold">{log.water}g</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[9px]">{t('prep.ratio')}</span>
+                      <span className="text-slate-200 font-bold">{log.ratio}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[9px]">{t('recipe.targetTime')}</span>
+                      <span className="text-slate-200 font-bold">{formatTime(log.durationSec)}</span>
+                    </div>
+                  </div>
+
+                  {/* Notes snippet if present */}
+                  {log.notes && (
+                    <p className="text-xs text-slate-300 italic line-clamp-1 px-1">
+                      "{log.notes}"
+                    </p>
+                  )}
+
+                  {/* Descriptors */}
+                  {log.descriptors && log.descriptors.length > 0 && (
+                    <div className="flex flex-wrap gap-1 pt-0.5">
+                      {log.descriptors.map((desc, dIdx) => (
+                        <span
+                          key={dIdx}
+                          className="text-[10px] px-2 py-0.5 rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/20 font-bold"
+                        >
+                          {desc}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Date stamp & Action prompt */}
+                  <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-white/[0.04]">
+                    <span>{formatDate(log.timestamp)}</span>
+                    <span className="text-amber-400/90 font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                      <Edit3 className="w-3 h-3" />
+                      <span>{language === 'zh' ? '點擊編輯 · 診斷' : 'Edit & Cupping'}</span>
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        )}
+      </div>
+
+      {/* Bottom Button */}
+      <div className="pt-2">
+        <button
+          onClick={onBack}
+          className="w-full py-4 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-base tracking-wide shadow-xl active:scale-[0.99] transition-all flex items-center justify-center gap-2 min-h-[54px]"
+        >
+          <span>{t('history.backHome')}</span>
+        </button>
+      </div>
+    </div>
+  );
+};
