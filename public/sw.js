@@ -1,5 +1,5 @@
-const CACHE_NAME = 'hand-drip-v1';
-const IMAGE_CACHE_NAME = 'hand-drip-images-v1';
+const CACHE_NAME = 'hand-drip-v2';
+const IMAGE_CACHE_NAME = 'hand-drip-images-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

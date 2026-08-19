@@ -718,9 +718,9 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                 <span>{language === 'zh' ? '本段手法解析' : 'Technique Breakdown'}</span>
               </div>
               <p>
-                {currentStep.description || (language === 'zh'
-                  ? '維持中心垂直穩定水柱，以約每秒 4–5g 水速平緩由內向外畫同心圓，充分浸潤所有咖啡粉床，釋放極致香氣。'
-                  : 'Maintain a gentle vertical stream at ~4–5g/sec in smooth concentric circles outwards, evenly saturating the coffee bed.')}
+                {language === 'zh'
+                  ? (currentStep.technique || '維持中心垂直穩定水柱，以約每秒 4–5g 水速平緩由內向外畫同心圓，充分浸潤所有咖啡粉床，釋放極致香氣。')
+                  : (currentStep.techniqueEn || 'Maintain a gentle vertical stream at ~4–5g/sec in smooth concentric circles outwards, evenly saturating the coffee bed.')}
               </p>
             </div>
 
