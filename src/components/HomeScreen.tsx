@@ -91,8 +91,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const cupsCount = logs.length.toString().padStart(2, '0');
-
   const allBeans: BeanInfo[] = [...customBeans, ...(sampleBeans as BeanInfo[])];
 
   const scrollToRecipe = (index: number) => {
@@ -181,14 +179,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </button>
           </div>
 
-          <button
-            onClick={onViewHistory}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#141311] hover:bg-[#1a1816] border border-white/[0.06] active:scale-95 transition-all duration-500 text-xs text-[#f0eeeb]/60 group"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <Compass className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-45 transition-transform duration-700" style={{ transitionTimingFunction: 'var(--ease-spring)' }} />
-            <span className="font-mono font-bold text-amber-300">{cupsCount}</span>
-          </button>
         </div>
       </motion.div>
 
@@ -396,9 +386,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <Compass className="w-5 h-5 stroke-[1.8]" />
             </div>
             <div>
-              <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider flex items-center justify-between">
+              <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">
                 <span>JOURNAL</span>
-                <span className="text-[9px] text-amber-300/70 font-mono">({logs.length})</span>
               </div>
               <div className="text-xs font-bold text-[#f0eeeb] truncate group-hover:text-amber-300 transition-colors duration-500">
                 {t('history.title')}
