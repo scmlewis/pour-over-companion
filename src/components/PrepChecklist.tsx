@@ -27,6 +27,8 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
   const { t, language } = useLanguage();
   const [advanceMode, setAdvanceMode] = useState<'manual' | 'auto'>('manual');
   
+  const displayGrind = language === 'zh' ? grind : (recipe.grindEn || grind);
+  
   const checklistItems = language === 'zh' ? [
     `將手沖水加熱至指定水溫 (${recipe.temp}°C)`,
     `量取精品咖啡豆並研磨 (${dose}g · ${grind})`,
@@ -37,7 +39,7 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
     '放上電子磅並將重量與計時器歸零 (Tare)',
   ] : [
     `Heat brew water to specified temp (${recipe.temp}°C)`,
-    `Weigh and grind specialty beans (${dose}g · ${grind})`,
+    `Weigh and grind specialty beans (${dose}g · ${displayGrind})`,
     'Rinse paper filter thoroughly with hot water',
     'Pre-heat dripper and glass decanter for thermal stability',
     'Discard rinse water from decanter',

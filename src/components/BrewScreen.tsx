@@ -599,7 +599,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           >
             <div className="flex items-center gap-2">
               <span className="text-amber-400 font-semibold">{t('brew.technique')}</span>
-              <span className="text-slate-200 truncate">{currentStep.pourStyle || (language === 'zh' ? '輕柔同心圓注水' : 'Gentle concentric pour')}</span>
+              <span className="text-slate-200 truncate">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
             </div>
 
             <div className="flex items-center gap-1 text-slate-400 hover:text-amber-300 font-mono text-[11px]">
@@ -702,7 +702,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
             <div className="flex items-start justify-between">
               <div>
                 <div className="text-[10px] font-mono font-bold text-amber-400 uppercase">POUR TECHNIQUE</div>
-                <h3 className="text-lg font-black text-slate-100">{currentStep.pourStyle || (language === 'zh' ? '同心向外螺旋注水' : 'Concentric spiral pour')}</h3>
+                <h3 className="text-lg font-black text-slate-100">{language === 'zh' ? (currentStep.pourStyle || '同心向外螺旋注水') : (currentStep.pourStyleEn || 'Concentric spiral pour')}</h3>
               </div>
               <button
                 onClick={() => setShowTechniqueModal(false)}
