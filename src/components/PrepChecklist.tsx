@@ -84,7 +84,7 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
         <div className="p-4 rounded-3xl bg-[#12141a] border border-white/[0.08] mb-3 shadow-xl space-y-3">
           <div className="text-xs text-slate-400 font-medium flex items-center justify-between">
             <span className="text-amber-400 font-mono font-bold">{t('prep.specs')}</span>
-            <span className="text-slate-300">{recipe.name}</span>
+            <span className="text-slate-300">{language === 'zh' ? recipe.name : (recipe.nameEn || recipe.name)}</span>
           </div>
 
           <div className="grid grid-cols-4 gap-1.5 text-center font-mono">
@@ -196,7 +196,7 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
             <Droplet className="w-3.5 h-3.5 text-amber-400" />
             <span>{t('prep.waterQuality')}</span>
           </div>
-          <p>{t('prep.requiredEquipment')}：{recipe.equipment?.join(' · ') || 'V60 濾杯 · 濾紙 · 分享壺 · 手沖壺 · 電子秤'}</p>
+          <p>{t('prep.requiredEquipment')}：{language === 'zh' ? (recipe.equipment?.join(' · ') || 'V60 濾杯 · 濾紙 · 分享壺 · 手沖壺 · 電子秤') : (recipe.equipmentEn?.join(' · ') || 'V60 Dripper · Filter Paper · Carafe · Gooseneck Kettle · Scale')}</p>
         </div>
       </div>
 

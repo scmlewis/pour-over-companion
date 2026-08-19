@@ -41,9 +41,12 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
   const calculatedWater = Math.round(dose * activeRatioConfig.multiplier);
 
   const handleShareWhatsApp = () => {
+    const recipeName = language === 'zh' ? recipe.name : (recipe.nameEn || recipe.name);
+    const recipeGrind = language === 'zh' ? recipe.grind : (recipe.grindEn || recipe.grind);
+    const recipeReason = language === 'zh' ? recipe.reason : (recipe.reasonEn || recipe.reason);
     const text = language === 'zh'
-      ? `☕️ 【精品手沖咖啡食譜】\n沖煮方法：${recipe.name}\n${beanInfo ? `咖啡豆：${beanInfo.name} (${beanInfo.roastLevel})\n風味：${beanInfo.flavorNotes.join(' · ')}\n` : ''}萃取參數：粉量 ${dose}g | 總注水 ${calculatedWater}g (比例 ${selectedRatio})\n萃取水溫：${recipe.temp}°C | 研磨度：${recipe.grind}\n段數：${recipe.stagesCount} 段 | 目標時間：${recipe.targetTimeRange}\n萃取心法：${recipe.reason}`
-      : `☕️ [Specialty Pour-Over Recipe]\nMethod: ${recipe.name}\n${beanInfo ? `Bean: ${beanInfo.name} (${beanInfo.roastLevel})\nNotes: ${beanInfo.flavorNotes.join(' · ')}\n` : ''}Parameters: Dose ${dose}g | Water ${calculatedWater}g (Ratio ${selectedRatio})\nWater Temp: ${recipe.temp}°C | Grind: ${recipe.grind}\nStages: ${recipe.stagesCount} | Target Time: ${recipe.targetTimeRange}\nExtraction Insight: ${recipe.reason}`;
+      ? `☕️ 【精品手沖咖啡食譜】\n沖煮方法：${recipeName}\n${beanInfo ? `咖啡豆：${beanInfo.name} (${beanInfo.roastLevel})\n風味：${beanInfo.flavorNotes.join(' · ')}\n` : ''}萃取參數：粉量 ${dose}g | 總注水 ${calculatedWater}g (比例 ${selectedRatio})\n萃取水溫：${recipe.temp}°C | 研磨度：${recipeGrind}\n段數：${recipe.stagesCount} 段 | 目標時間：${recipe.targetTimeRange}\n萃取心法：${recipeReason}`
+      : `☕️ [Specialty Pour-Over Recipe]\nMethod: ${recipeName}\n${beanInfo ? `Bean: ${beanInfo.name} (${beanInfo.roastLevel})\nNotes: ${beanInfo.flavorNotes.join(' · ')}\n` : ''}Parameters: Dose ${dose}g | Water ${calculatedWater}g (Ratio ${selectedRatio})\nWater Temp: ${recipe.temp}°C | Grind: ${recipeGrind}\nStages: ${recipe.stagesCount} | Target Time: ${recipe.targetTimeRange}\nExtraction Insight: ${recipeReason}`;
     const encoded = encodeURIComponent(text);
     window.open(`https://wa.me/?text=${encoded}`, '_blank');
   };
@@ -70,10 +73,10 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
         {/* Selected Method Label & Title */}
         <div className="mb-3 px-1">
           <div className="text-xs text-amber-400 font-mono font-medium mb-0.5">
-            {recipe.source} · {recipe.method}
+            {language === 'zh' ? recipe.source : (recipe.sourceEn || recipe.source)} · {recipe.method}
           </div>
           <h1 className="text-3xl font-extrabold text-white tracking-tight">
-            {recipe.name}
+            {language === 'zh' ? recipe.name : (recipe.nameEn || recipe.name)}
           </h1>
           {beanInfo && (
             <div className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-amber-300 bg-white/[0.04] px-3 py-1 rounded-full border border-white/[0.08] font-medium">
@@ -164,7 +167,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
             </div>
             <div className="flex items-center justify-between">
               <div className="text-base font-extrabold text-white font-sans truncate">
-                {recipe.grind}
+                {language === 'zh' ? recipe.grind : (recipe.grindEn || recipe.grind)}
               </div>
               <div className="w-10 h-10 relative flex items-center justify-center">
                 <svg viewBox="0 0 40 40" className="w-full h-full">
@@ -233,7 +236,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
             <span>{language === 'zh' ? '風味萃取心法與流速建議' : 'Extraction Insight & Flow Guidance'}</span>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed font-medium">
-            {recipe.reason}
+            {language === 'zh' ? recipe.reason : (recipe.reasonEn || recipe.reason)}
           </p>
           <div className="text-[11px] text-slate-400 pt-1 border-t border-white/[0.06] flex items-center gap-2">
             <Droplets className="w-3 h-3 text-amber-400" />
