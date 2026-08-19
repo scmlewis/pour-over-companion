@@ -217,6 +217,7 @@ export default function App() {
                 onViewHistory={() => setCurrentView('history')}
                 onOpenLab={() => setCurrentView('lab')}
                 onStartBrew={handleDirectStartBrew}
+                onCreateRecipe={() => setShowCustomModal(true)}
                 onSelectBeanDirectly={handleBeanIdentified}
                 onRefreshBeans={loadData}
               />

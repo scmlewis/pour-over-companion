@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, List, ChevronRight, ChevronLeft, Sparkles, Coffee, Flame, Compass, Play, Droplets, BookOpen, Globe, Plus, Edit2, Star, Zap, Sliders } from 'lucide-react';
+import { Camera, ChevronRight, ChevronLeft, Sparkles, Coffee, Flame, Play, Droplets, BookOpen, Globe, Plus, Edit2, Star, Zap, Sliders } from 'lucide-react';
 import { motion, AnimatePresence, Variants } from 'motion/react';
 import { Recipe, BrewLogEntry, BeanInfo } from '../types';
 import sampleBeans from '../data/sampleBeans.json';
@@ -19,6 +19,7 @@ interface HomeScreenProps {
   onViewHistory: () => void;
   onOpenLab?: () => void;
   onStartBrew: () => void;
+  onCreateRecipe?: () => void;
   onSelectBeanDirectly?: (bean: BeanInfo) => void;
   onRefreshBeans?: () => void;
 }
@@ -71,6 +72,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   onViewHistory,
   onOpenLab,
   onStartBrew,
+  onCreateRecipe,
   onSelectBeanDirectly,
   onRefreshBeans,
 }) => {
@@ -350,47 +352,45 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </div>
         </motion.button>
 
-        {/* Browse Recipes */}
+        {/* Quick Brew */}
         <motion.button
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.97 }}
-          onClick={onBrowseMethods}
+          onClick={onStartBrew}
           className="bezel-card text-left group"
           style={{ transitionTimingFunction: 'var(--ease-spring)' }}
         >
           <div className="p-4 space-y-2">
-            <div className="w-10 h-10 rounded-2xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform duration-500"
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform duration-500"
               style={{ transitionTimingFunction: 'var(--ease-spring)' }}>
-              <List className="w-5 h-5 stroke-[1.8]" />
+              <Play className="w-5 h-5 stroke-[1.8]" />
             </div>
             <div>
-              <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">RECIPES</div>
+              <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">QUICK BREW</div>
               <div className="text-xs font-bold text-[#f0eeeb] truncate group-hover:text-amber-300 transition-colors duration-500">
-                {t('home.chooseMethod')}
+                {language === 'zh' ? '即刻開始沖煮' : 'Start Brewing'}
               </div>
             </div>
           </div>
         </motion.button>
 
-        {/* Brew Log Journal */}
+        {/* Create Recipe */}
         <motion.button
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.97 }}
-          onClick={onViewHistory}
+          onClick={onCreateRecipe}
           className="bezel-card text-left group"
           style={{ transitionTimingFunction: 'var(--ease-spring)' }}
         >
           <div className="p-4 space-y-2">
             <div className="w-10 h-10 rounded-2xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform duration-500"
               style={{ transitionTimingFunction: 'var(--ease-spring)' }}>
-              <Compass className="w-5 h-5 stroke-[1.8]" />
+              <Plus className="w-5 h-5 stroke-[1.8]" />
             </div>
             <div>
-              <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">
-                <span>JOURNAL</span>
-              </div>
+              <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">RECIPE</div>
               <div className="text-xs font-bold text-[#f0eeeb] truncate group-hover:text-amber-300 transition-colors duration-500">
-                {t('history.title')}
+                {language === 'zh' ? '建立自訂食譜' : 'Create Recipe'}
               </div>
             </div>
           </div>
