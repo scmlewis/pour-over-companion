@@ -395,7 +395,7 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
             </div>
 
             {/* Beans Cards List */}
-            <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+            <div className="space-y-2.5 overflow-y-auto flex-1 pr-1">
               {filteredBeans.length === 0 ? (
                 <div className="text-center py-8 rounded-2xl bg-black/30 border border-white/[0.05] space-y-2">
                   <Coffee className="w-8 h-8 text-slate-600 mx-auto" />
@@ -518,7 +518,7 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
         {/* TAB 2: ADD / EDIT BEAN FORM */}
         {activeTab === 'edit' && (
           <div className="space-y-3">
-            <div className="p-4 rounded-3xl bg-[#12141a] border border-white/[0.08] space-y-3 shadow-xl max-h-[460px] overflow-y-auto pr-1">
+            <div className="p-4 rounded-3xl bg-[#12141a] border border-white/[0.08] space-y-3 shadow-xl overflow-y-auto flex-1">
               {/* Bean Name */}
               <div className="space-y-1">
                 <label className="text-[11px] font-bold text-amber-400 font-mono flex items-center justify-between">
