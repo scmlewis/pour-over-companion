@@ -254,7 +254,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
       <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pb-2 space-y-2">
 
         {/* Sticky Top Header */}
-        <motion.div variants={headerVariants} className="sticky top-0 z-30 bg-[#0a0a08]/95 backdrop-blur-xl py-2 mb-1 -mx-4 px-4 border-b border-white/[0.04] flex items-center justify-between">
+        <motion.div variants={headerVariants} className="sticky top-0 z-30 bg-[#0a0a08] py-2 mb-1 -mx-4 px-4 border-b border-white/[0.04] flex items-center justify-between sticky-header-ios">
           <button
             onClick={onCancelBrew}
             className="w-10 h-10 -ml-1.5 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"

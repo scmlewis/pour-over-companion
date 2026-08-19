@@ -374,3 +374,9 @@ body::after {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+/* iOS Safari sticky header fix - forces opaque background behind blur */
+.sticky-header-ios {
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
