@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, ChevronRight, ChevronLeft, Sparkles, Coffee, Flame, Play, Droplets, BookOpen, Globe, Plus, Edit2, Star, Zap, Sliders } from 'lucide-react';
+import { Camera, ChevronRight, ChevronLeft, Sparkles, Flame, Play, Droplets, BookOpen, Globe, Plus, Edit2, Star, Zap, Sliders } from 'lucide-react';
 import { motion, AnimatePresence, Variants } from 'motion/react';
 import { Recipe, BrewLogEntry, BeanInfo } from '../types';
 import sampleBeans from '../data/sampleBeans.json';
@@ -330,23 +330,23 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
       {/* 3. Primary Action Grid — 2x2 Asymmetric Bento */}
       <motion.div variants={sectionVariants} className="grid grid-cols-2 gap-3" whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} initial={{ opacity: 0, y: 20 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}>
-        {/* Bean Cellar */}
+        {/* Browse Recipes */}
         <motion.button
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.97 }}
-          onClick={onScan}
+          onClick={onBrowseMethods}
           className="bezel-card text-left group"
           style={{ transitionTimingFunction: 'var(--ease-spring)' }}
         >
           <div className="p-4 space-y-2">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform duration-500"
+            <div className="w-10 h-10 rounded-2xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform duration-500"
               style={{ transitionTimingFunction: 'var(--ease-spring)' }}>
-              <Coffee className="w-5 h-5 stroke-[1.8]" />
+              <Sliders className="w-5 h-5 stroke-[1.8]" />
             </div>
             <div>
-              <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">BEAN CELLAR</div>
+              <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">RECIPES</div>
               <div className="text-xs font-bold text-[#f0eeeb] truncate group-hover:text-amber-300 transition-colors duration-500">
-                {language === 'zh' ? '精品豆窖與豆單' : 'Bean Cellar'}
+                {t('home.chooseMethod')}
               </div>
             </div>
           </div>
