@@ -306,7 +306,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               <span className={`font-bold ${isRunning ? 'text-amber-400' : 'text-amber-300'}`}>{formatTime(elapsedTotalSec)}</span>
             </div>
           </div>
-          <div className="grid grid-cols-4 gap-1">
+          <div className="flex gap-1.5">
             {scaledSteps.map((step, idx) => {
               const isCompleted = idx < currentStepIndex;
               const isCurrent = idx === currentStepIndex;
@@ -315,19 +315,21 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                 : isCompleted ? 100 : 0;
               const sLabel = language === 'zh' ? step.label : (step.labelEn || step.label);
               return (
-                <div key={idx}>
+                <div key={idx} className="flex-1 min-w-0">
                   <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden">
                     <div
                       className={`h-full transition-all duration-300 ${
-                        isCompleted ? 'bg-amber-500'
-                          : isCurrent ? isRunning ? 'bg-gradient-to-r from-amber-500 to-amber-300 shadow-[0_0_6px_rgba(245,158,11,0.5)]' : 'bg-amber-400'
+                        isCompleted ? 'bg-emerald-500'
+                          : isCurrent ? isRunning
+                            ? (step.type === 'drawdown' ? 'bg-gradient-to-r from-sky-500 to-sky-300 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-gradient-to-r from-amber-500 to-amber-300 shadow-[0_0_6px_rgba(245,158,11,0.5)]')
+                            : (step.type === 'drawdown' ? 'bg-sky-400' : 'bg-amber-400')
                           : 'bg-transparent'
                       }`}
                       style={{ width: `${stepProgressPercent}%` }}
                     />
                   </div>
                   <div className="flex items-center justify-between text-[8px] font-mono px-0.5 mt-0.5">
-                    <span className={`truncate ${isCurrent ? 'text-amber-300 font-bold' : isCompleted ? 'text-[#f0eeeb]/30' : 'text-[#f0eeeb]/20'}`}>{sLabel}</span>
+                    <span className={`truncate ${isCurrent ? (step.type === 'drawdown' ? 'text-sky-300 font-bold' : 'text-amber-300 font-bold') : isCompleted ? 'text-[#f0eeeb]/30' : 'text-[#f0eeeb]/20'}`}>{sLabel}</span>
                     <span className={`${isCurrent ? 'text-amber-400' : 'text-[#f0eeeb]/20'}`}>{step.durationSec}s</span>
                   </div>
                 </div>
@@ -406,9 +408,9 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               ) : isPouring ? (
                 <span className="text-amber-400">● {language === 'zh' ? '注水' : 'POURING'} · {currentWaterToAdd}g → {currentTargetWeight}g</span>
               ) : isWaiting ? (
-                <span className="text-amber-400">● {language === 'zh' ? '滴濾中' : 'DRAWDOWN'}</span>
+                <span className="text-sky-400">● {language === 'zh' ? '滴濾中' : 'DRAWDOWN'}</span>
               ) : (
-                <span className="text-amber-400">✓ {language === 'zh' ? '本段完成' : 'STEP DONE'}</span>
+                <span className="text-emerald-400">✓ {language === 'zh' ? '本段完成' : 'STEP DONE'}</span>
               )}
             </span>
             <span className="text-[10px] font-mono text-[#f0eeeb]/30">
