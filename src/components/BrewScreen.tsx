@@ -171,40 +171,19 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Timer Tick Engine
+  // Timer Tick Engine — increments counters only (pure, no side effects)
   useEffect(() => {
     if (!isRunning) return;
 
     timerRef.current = window.setInterval(() => {
       setElapsedTotalSec(prev => prev + 1);
-      setStepElapsedSec(prev => {
-        const nextStepSec = prev + 1;
-
-        // Auto mode advance
-        if (advanceMode === 'auto' && nextStepSec >= stepTotalSec) {
-          if (currentStepIndex < scaledSteps.length - 1) {
-            goToNextStep();
-            return 0;
-          } else {
-            handleCompleteBrew();
-            return nextStepSec;
-          }
-        }
-
-        // Countdown Beep Audio Cues (last 3 seconds of pour)
-        if (pourTargetSec > 3 && nextStepSec >= pourTargetSec - 3 && nextStepSec < pourTargetSec) {
-          if (soundEnabled) playCountdownBeep();
-          triggerHaptic('light');
-        }
-
-        return nextStepSec;
-      });
+      setStepElapsedSec(prev => prev + 1);
     }, 1000);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isRunning, advanceMode, currentStepIndex, scaledSteps.length, stepTotalSec, pourTargetSec, soundEnabled]);
+  }, [isRunning]);
 
   const goToNextStep = () => {
     if (soundEnabled) playStepChime();
@@ -236,11 +215,31 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
     });
   };
 
-  // Current and Target Scale Weights
-  const currentTargetWeight = currentStep.targetWeight || totalWater;
+  // Step-boundary logic lives OUTSIDE the state updater on purpose:
+  // React StrictMode double-invokes state updaters in dev, which would
+  // otherwise call goToNextStep() / handleCompleteBrew() twice and jump
+  // the Finish screen twice. An effect keyed on stepElapsedSec fires once
+  // per committed state change, so the side effects run exactly once.
+  useEffect(() => {
+    if (!isRunning) return;
+    if (advanceMode === 'auto' && stepElapsedSec >= stepTotalSec) {
+      if (currentStepIndex < scaledSteps.length - 1) {
+        goToNextStep();
+      } else {
+        handleCompleteBrew();
+      }
+      return;
+    }
+    // Countdown Beep Audio Cues (last 3 seconds of pour)
+    if (pourTargetSec > 3 && stepElapsedSec >= pourTargetSec - 3 && stepElapsedSec < pourTargetSec) {
+      if (soundEnabled) playCountdownBeep();
+      triggerHaptic('light');
+    }
+  }, [stepElapsedSec, isRunning, advanceMode, stepTotalSec, pourTargetSec, soundEnabled, currentStepIndex, scaledSteps.length, goToNextStep, handleCompleteBrew]);
   const previousStepTargetWeight = currentStepIndex > 0
     ? (scaledSteps[currentStepIndex - 1]?.targetWeight || 0)
     : 0;
+  const currentTargetWeight = currentStep.targetWeight || totalWater;
   const currentWaterToAdd = Math.max(0, currentTargetWeight - previousStepTargetWeight);
 
   return (
@@ -261,7 +260,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
             style={{ transitionTimingFunction: 'var(--ease-spring)' }}
             title={t('brew.cancel')}
           >
-            <X className="w-5 h-5 stroke-[2]" />
+            <ChevronLeft className="w-6 h-6 stroke-[2]" />
           </button>
 
           <div className="text-center">

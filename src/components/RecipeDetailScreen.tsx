@@ -9,7 +9,7 @@ interface RecipeDetailScreenProps {
   beanInfo?: BeanInfo | null;
   onBack: () => void;
   onChooseOtherMethod: () => void;
-  onUseRecipe: () => void;
+  onUseRecipe: (overrides?: { dose: number; ratio: string; totalWater: number }) => void;
   onUpdateRatio?: (ratio: string, water: number) => void;
 }
 
@@ -268,7 +268,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
 
       {/* Primary CTA — Button-in-Button */}
       <div className="pt-2">
-        <button onClick={onUseRecipe} className="btn-primary">
+        <button onClick={() => onUseRecipe({ dose, ratio: selectedRatio, totalWater: calculatedWater })} className="btn-primary">
           <span>{t('recipe.useThis')}</span>
           <span className="btn-icon-nest">
             <Coffee className="w-4 h-4 stroke-[2.5]" />

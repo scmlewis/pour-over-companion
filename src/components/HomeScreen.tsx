@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, ChevronRight, ChevronLeft, Sparkles, Flame, Play, Droplets, BookOpen, Globe, Plus, Edit2, Star, Zap, Sliders } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Sparkles, Flame, Play, Droplets, BookOpen, Globe, Plus, Edit2, Star, Zap, Sliders } from 'lucide-react';
 import { motion, AnimatePresence, Variants } from 'motion/react';
 import { Recipe, BrewLogEntry, BeanInfo } from '../types';
 import sampleBeans from '../data/sampleBeans.json';

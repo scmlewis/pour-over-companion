@@ -102,7 +102,7 @@ export interface SuggestionRule {
 
 export interface AppliedAdjustment {
   recipeId?: string;
-  grind?: string;
+  grindOffset?: number;
   ratio?: string;
   doseOffset?: number;
   bloomSecOffset?: number;
@@ -114,7 +114,6 @@ export interface AppliedAdjustment {
 export type AppView = 
   | 'home'
   | 'beans'
-  | 'scan'
   | 'methods'
   | 'recipe-detail'
   | 'prep'

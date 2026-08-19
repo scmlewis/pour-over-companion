@@ -84,12 +84,23 @@ export default function App() {
     loadData();
   }, [loadData]);
 
-  const updateBrewConfigForRecipe = (recipe: Recipe) => {
+  const updateBrewConfigForRecipe = (recipe: Recipe, overrides?: Partial<{
+    dose: number;
+    ratio: string;
+    totalWater: number;
+    grind: string;
+    temp: number;
+  }>) => {
+    const dose = overrides?.dose ?? recipe.dose;
+    const ratio = overrides?.ratio ?? recipe.ratio;
+    const totalWater = overrides?.totalWater ?? recipe.water;
+    const grind = overrides?.grind ?? recipe.grind;
+    const temp = overrides?.temp ?? recipe.temp;
     setBrewConfig({
-      dose: recipe.dose,
-      ratio: recipe.ratio,
-      totalWater: recipe.water,
-      grind: recipe.grind,
+      dose,
+      ratio,
+      totalWater,
+      grind,
       scaledSteps: recipe.steps,
       advanceMode: 'manual',
     });
@@ -141,7 +152,10 @@ export default function App() {
     setCurrentView('prep');
   };
 
-  const handleUseRecipe = () => {
+  const handleUseRecipe = (overrides?: { dose: number; ratio: string; totalWater: number }) => {
+    if (overrides) {
+      updateBrewConfigForRecipe(selectedRecipe, overrides);
+    }
     setCurrentView('prep');
   };
 
@@ -173,10 +187,32 @@ export default function App() {
   const handleApplyAdjustment = (adjustment: AppliedAdjustment, recipeId: string) => {
     const targetRecipe = allRecipes.find(r => r.id === recipeId) || allRecipes[0];
     setSelectedRecipe(targetRecipe);
-    updateBrewConfigForRecipe(targetRecipe);
+    // Apply the dial-in suggestion to the next brew's parameters so the
+    // "Apply & Prep Next Brew" action actually changes what gets brewed.
+    const overrides: Parameters<typeof updateBrewConfigForRecipe>[1] = {};
+    if (adjustment.doseOffset != null) overrides.dose = Math.max(5, (targetRecipe.dose + adjustment.doseOffset));
+    if (adjustment.waterOffset != null) overrides.totalWater = Math.max(50, (targetRecipe.water + adjustment.waterOffset));
+    if (adjustment.tempOffset != null) overrides.temp = targetRecipe.temp + adjustment.tempOffset;
+    if (adjustment.ratio) overrides.ratio = adjustment.ratio;
+    if (adjustment.grindOffset != null) {
+      overrides.grind = translateGrindOffset(targetRecipe.grind, adjustment.grindOffset);
+    }
+    updateBrewConfigForRecipe(targetRecipe, overrides);
     setAppliedAdjustment(adjustment);
     setEditingLog(null);
     setCurrentView('recipe-detail');
+  };
+
+  // Map a relative grind-step offset (-1 finer, +1 coarser) onto the recipe's
+  // existing grind label using the canonical ladder order.
+  const GRIND_LADDER = [
+    '細研磨', '中幼研磨', '中研磨', '中粗研磨', '粗研磨',
+  ];
+  const translateGrindOffset = (grind: string, offset: number): string => {
+    const idx = GRIND_LADDER.indexOf(grind);
+    if (idx === -1) return grind; // unknown label — leave unchanged
+    const next = Math.min(GRIND_LADDER.length - 1, Math.max(0, idx + offset));
+    return GRIND_LADDER[next];
   };
 
   const handleDeleteLog = async (id: string) => {
@@ -188,7 +224,7 @@ export default function App() {
   };
 
   const showNav = !['brew', 'prep', 'finish'].includes(currentView);
-  const activeNav = currentView === 'scan' ? 'beans' : currentView;
+  const activeNav = currentView;
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'instant' });
 
@@ -242,7 +278,7 @@ export default function App() {
             </motion.div>
           )}
 
-          {(currentView === 'beans' || currentView === 'scan') && (
+          {(currentView === 'beans') && (
             <motion.div
               key="beans"
               initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
@@ -317,7 +353,7 @@ export default function App() {
               className="flex-1 flex flex-col"
             >
               <PrepChecklist
-                recipe={selectedRecipe}
+                recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
                 dose={brewConfig.dose}
                 ratio={brewConfig.ratio}
                 totalWater={brewConfig.totalWater}
@@ -340,7 +376,7 @@ export default function App() {
               className="flex-1 flex flex-col"
             >
               <BrewScreen
-                recipe={selectedRecipe}
+                recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
                 dose={brewConfig.dose}
                 ratio={brewConfig.ratio}
                 totalWater={brewConfig.totalWater}
@@ -364,7 +400,7 @@ export default function App() {
               className="flex-1 flex flex-col"
             >
               <FinishScreen
-                recipe={selectedRecipe}
+                recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
                 dose={brewConfig.dose}
                 ratio={brewConfig.ratio}
                 totalWater={brewConfig.totalWater}

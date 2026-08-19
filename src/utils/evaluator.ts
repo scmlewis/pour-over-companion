@@ -25,12 +25,12 @@ export interface EvaluationResult {
   text: string;
   rationale: string;
   adjust: {
-    grind?: string;
-    bloomSec?: string;
-    dose?: string;
-    water?: string;
+    grindOffset?: number;
+    bloomSecOffset?: number;
+    doseOffset?: number;
+    waterOffset?: number;
     ratio?: string;
-    temp?: string;
+    tempOffset?: number;
   };
 }
 
@@ -48,9 +48,9 @@ export function evaluateTaste(selectedDescriptors: string[], lang: Language = 'z
         ? '果酸過於突出通常代表萃取不足，提高水溫與調細研磨能加速萃取中後段的焦糖甜感物質。'
         : 'Sharp acidity typically indicates under-extraction. Higher water temp and finer grind accelerate extraction of sweet sugars.',
       adjust: {
-        grind: lang === 'zh' ? '調細 1 格 (Finer)' : '1 step Finer',
-        bloomSec: '+10s',
-        temp: '+2°C',
+        grindOffset: -1,
+        bloomSecOffset: 10,
+        tempOffset: 2,
       },
     };
   }
@@ -64,8 +64,8 @@ export function evaluateTaste(selectedDescriptors: string[], lang: Language = 'z
         ? '澀感與過多焦苦主要來自微粉過萃或水溫過高，調粗研磨或降溫能顯著提升乾淨度。'
         : 'Bitterness and drying mouthfeel come from over-extracting fines. Coarser grind and cooler water bring back cup clarity.',
       adjust: {
-        grind: lang === 'zh' ? '調粗 1 格 (Coarser)' : '1 step Coarser',
-        temp: '-2°C',
+        grindOffset: 1,
+        tempOffset: -2,
       },
     };
   }
@@ -80,7 +80,7 @@ export function evaluateTaste(selectedDescriptors: string[], lang: Language = 'z
         : 'Low TDS concentration can be improved by dosing more grounds or reducing total water volume.',
       adjust: {
         ratio: '1:15',
-        dose: '+1g',
+        doseOffset: 1,
       },
     };
   }

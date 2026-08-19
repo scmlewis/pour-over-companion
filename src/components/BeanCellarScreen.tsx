@@ -215,11 +215,11 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
     }
     if (process.includes('Anaerobic') || process.includes('厭氧')) {
       return {
-        id: 'osmotic-flow',
-        nameZh: '河野式 點滴滲透流手法',
-        nameEn: 'Osmotic Flow Method',
-        reasonZh: '特殊發酵豆中心點滴注水，極致放大酒香與發酵果甜層次。',
-        reasonEn: 'Center osmotic drip to extract maximum fermented fruit & wine aromatics.',
+        id: 'lance-121',
+        nameZh: 'Lance Hedrick 1-2-1 雙悶蒸法',
+        nameEn: 'Lance Hedrick 1-2-1 Double Bloom',
+        reasonZh: '雙段高浸潤悶蒸特別適合日曬與厭氧發酵豆，放大果甜與乾淨度。',
+        reasonEn: 'Double high-saturation bloom ideal for natural & anaerobic beans, boosting sweetness and clarity.',
       };
     }
     return {
