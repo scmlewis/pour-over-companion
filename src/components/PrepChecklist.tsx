@@ -191,6 +191,14 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
           </div>
         </div>
 
+        {!isAllChecked && (
+          <div className="text-center text-[11px] text-amber-400/60 font-mono pt-1">
+            {language === 'zh'
+              ? `請完成所有準備項目 (${checkedCount}/${checklistItems.length})`
+              : `Complete all items to proceed (${checkedCount}/${checklistItems.length})`}
+          </div>
+        )}
+
         {/* Equipment Tips */}
         <div className="p-3.5 rounded-2xl bg-black/30 border border-white/[0.03] text-[11px] text-[#f0eeeb]/40 space-y-1.5">
           <div className="font-bold text-[#f0eeeb]/60 flex items-center gap-1.5">
@@ -203,7 +211,12 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
 
       {/* CTA — Button-in-Button */}
       <div className="pt-2">
-        <button id="prep-start-brew-button" onClick={() => onStartBrew(advanceMode)} className="btn-primary">
+        <button
+          id="prep-start-brew-button"
+          onClick={() => onStartBrew(advanceMode)}
+          disabled={!isAllChecked}
+          className={`btn-primary ${!isAllChecked ? 'opacity-40 cursor-not-allowed' : ''}`}
+        >
           <span>{t('prep.startBrew')}</span>
           <span className="btn-icon-nest">
             <Coffee className="w-4 h-4 stroke-[2.5]" />
