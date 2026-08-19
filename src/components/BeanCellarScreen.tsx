@@ -415,7 +415,7 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
                   return (
                     <div
                       key={bean.id || idx}
-                      className={`p-3.5 rounded-[calc(1.25rem+3px)] border transition-all duration-500 space-y-2 ${
+                      className={`p-3.5 rounded-[calc(1.25rem+3px)] border transition-all duration-500 space-y-2.5 ${
                         isActive
                           ? 'bg-amber-500/8 border-amber-500/35'
                           : 'bg-[#0f0e0c] hover:bg-[#141311] border-white/[0.04] hover:border-amber-500/20'
@@ -425,27 +425,40 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
                         boxShadow: isActive ? '0 2px 12px rgba(245, 158, 11, 0.08)' : '0 1px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02)',
                       }}
                     >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="space-y-0.5 min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-xs font-black text-white truncate">{bean.name}</span>
-                            {isCustom && <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/15 text-amber-300 border border-amber-500/20 font-mono">自訂</span>}
-                            {isActive && <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/20 font-mono flex items-center gap-0.5"><Check className="w-2.5 h-2.5" /> 已選用</span>}
-                          </div>
-                          <div className="text-[11px] text-amber-400/80 font-mono truncate">{bean.origin} · {bean.process}</div>
-                        </div>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.04] text-[#f0eeeb]/50 font-mono shrink-0">{bean.roastLevel}</span>
+                      {/* Row 1: Badges */}
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400/80 font-mono font-bold border border-amber-500/15 uppercase">
+                          {bean.process?.split(' ')[0] || 'Washed'}
+                        </span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.04] text-[#f0eeeb]/50 font-mono font-bold border border-white/[0.04] uppercase">
+                          {bean.roastLevel?.split(' ')[0] || 'Light'}
+                        </span>
+                        {isCustom && <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/20 font-mono">Custom</span>}
+                        {isActive && <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/20 font-mono flex items-center gap-0.5"><Check className="w-2.5 h-2.5" /> Active</span>}
                       </div>
 
+                      {/* Row 2: Bean Name — allow wrap */}
+                      <div>
+                        <div className="text-sm font-black text-white leading-snug">{bean.name}</div>
+                        {bean.origin && (
+                          <div className="text-[11px] text-[#f0eeeb]/40 mt-0.5 line-clamp-1">{bean.origin}</div>
+                        )}
+                      </div>
+
+                      {/* Row 3: Flavor Notes */}
                       {bean.flavorNotes && bean.flavorNotes.length > 0 && (
                         <div className="flex flex-wrap gap-1">
-                          {bean.flavorNotes.map((note, nIdx) => (
+                          {bean.flavorNotes.slice(0, 3).map((note, nIdx) => (
                             <span key={nIdx} className="text-[9px] px-2 py-0.5 rounded-lg bg-black/30 border border-white/[0.03] text-[#f0eeeb]/50 font-medium">{note}</span>
                           ))}
+                          {bean.flavorNotes.length > 3 && (
+                            <span className="text-[9px] px-2 py-0.5 rounded-lg bg-white/[0.03] border border-white/[0.03] text-[#f0eeeb]/30 font-medium">+{bean.flavorNotes.length - 3}</span>
+                          )}
                         </div>
                       )}
 
-                      <div className="flex items-center justify-between pt-1.5 border-t border-white/[0.03]">
+                      {/* Row 4: Actions */}
+                      <div className="flex items-center justify-between pt-2 border-t border-white/[0.03]">
                         <div className="flex items-center gap-1">
                           {isCustom && (
                             <>
@@ -461,12 +474,12 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
                         <div className="flex items-center gap-1.5">
                           {!isActive && (
                             <button onClick={() => onSelectBean(bean)} className="px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-[#f0eeeb]/70 text-xs font-bold transition-all duration-300">
-                              {language === 'zh' ? '設為當前豆' : 'Select'}
+                              {language === 'zh' ? '選用' : 'Select'}
                             </button>
                           )}
                           <button onClick={() => onBrewWithBean(bean)} className="px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-[#0a0a08] text-xs font-black flex items-center gap-1 transition-all duration-500"
                             style={{ transitionTimingFunction: 'var(--ease-spring)' }}>
-                            <span>{language === 'zh' ? '沖煮此豆' : 'Brew'}</span>
+                            <span>{language === 'zh' ? '沖煮' : 'Brew'}</span>
                             <ArrowRight className="w-3 h-3 stroke-[2.5]" />
                           </button>
                         </div>

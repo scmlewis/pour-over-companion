@@ -37,6 +37,11 @@ export default function App() {
   const [scannedBean, setScannedBean] = useState<BeanInfo | null>(null);
   const [appliedAdjustment, setAppliedAdjustment] = useState<AppliedAdjustment | null>(null);
 
+  // Scroll to top on view change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [currentView]);
+
   const [brewConfig, setBrewConfig] = useState<{
     dose: number;
     ratio: string;

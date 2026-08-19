@@ -130,7 +130,8 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
   const [stepElapsedSec, setStepElapsedSec] = useState<number>(0);
   const [isRunning, setIsRunning] = useState<boolean>(true);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
-  const [showFlowChart, setShowFlowChart] = useState<boolean>(false);
+  const [showFlowChart, setShowFlowChart] = useState<boolean>(true);
+  const [showTechnique, setShowTechnique] = useState<boolean>(true);
 
   const timerRef = useRef<number | null>(null);
 
@@ -385,12 +386,12 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
             </div>
 
             {/* Right: Scale Target */}
-            <div className="text-right shrink-0">
-              <div className="text-[10px] text-[#f0eeeb]/40 font-medium">{t('brew.scaleTarget')}</div>
-              <div className="text-2xl font-black font-mono text-white leading-none">
-                {currentTargetWeight}<span className="text-xs font-normal text-[#f0eeeb]/40 ml-0.5">g</span>
+            <div className="text-right shrink-0 bg-amber-500/8 border border-amber-500/20 rounded-xl px-3 py-2">
+              <div className="text-[10px] text-amber-400/80 font-mono font-bold uppercase tracking-wider">{t('brew.scaleTarget')}</div>
+              <div className="text-3xl font-black font-mono text-amber-300 leading-none mt-1">
+                {currentTargetWeight}<span className="text-sm font-bold text-amber-400/60 ml-0.5">g</span>
               </div>
-              <div className="text-[10px] font-mono text-amber-400 font-semibold mt-0.5">
+              <div className="text-[11px] font-mono text-amber-400 font-bold mt-1">
                 +{currentWaterToAdd}g
               </div>
               <div className="text-[9px] text-[#f0eeeb]/30 font-mono mt-0.5">{recipe.targetTimeRange}</div>
@@ -416,7 +417,40 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           </div>
         </motion.div>
 
-        {/* Compact Flow Chart — Toggle */}
+        {/* Technique — Expandable Description */}
+        <motion.div variants={telemetryVariants}>
+          <button
+            onClick={() => setShowTechnique(s => !s)}
+            className="w-full py-2 px-3 rounded-xl bg-[#0f0e0c] hover:bg-[#141311] border border-white/[0.04] flex items-center justify-between text-[11px] text-[#f0eeeb]/40 font-medium active:scale-[0.98] transition-all duration-500 mb-1.5"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+          >
+            <div className="flex items-center gap-1.5 min-w-0">
+              <Activity className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span className="shrink-0">{t('brew.technique')}</span>
+              <span className="text-[#f0eeeb]/60 truncate">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
+            </div>
+            <ChevronRight className={`w-3.5 h-3.5 text-[#f0eeeb]/30 transition-transform duration-500 shrink-0 ${showTechnique ? 'rotate-90' : ''}`} />
+          </button>
+          <AnimatePresence>
+            {showTechnique && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <div className="p-3 rounded-xl bg-[#0f0e0c] border border-white/[0.04] mb-1.5">
+                  <p className="text-xs text-[#f0eeeb]/70 leading-relaxed">
+                    {language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水，確保粉床均勻萃取。') : (currentStep.pourStyleEn || 'Gentle concentric pour ensuring even extraction across the coffee bed.')}
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Flow Rate Telemetry — Toggle */}
         <motion.div variants={telemetryVariants}>
           <button
             onClick={() => setShowFlowChart(f => !f)}
@@ -425,23 +459,35 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           >
             <div className="flex items-center gap-1.5">
               <Activity className="w-3.5 h-3.5 text-amber-400" />
-              <span>{t('brew.technique')}</span>
-              <span className="text-[#f0eeeb]/60 truncate max-w-[180px]">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
+              <span>{language === 'zh' ? '流速遙測' : 'Flow Rate Telemetry'}</span>
+              <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 font-mono font-bold border border-amber-500/20">
+                {isRunning ? (isPouring ? (language === 'zh' ? '注水中' : 'Pouring') : (language === 'zh' ? '等待中' : 'Ready')) : (language === 'zh' ? '暫停' : 'Paused')}
+              </span>
             </div>
             <ChevronRight className={`w-3.5 h-3.5 text-[#f0eeeb]/30 transition-transform duration-500 ${showFlowChart ? 'rotate-90' : ''}`} />
           </button>
-          {showFlowChart && (
-            <BrewFlowChart
-              stepElapsedSec={stepElapsedSec}
-              stepTotalSec={stepTotalSec}
-              pourTargetSec={pourTargetSec}
-              waterToAdd={currentWaterToAdd}
-              isPouring={isPouring}
-              isWaiting={isWaiting}
-              isRunning={isRunning}
-              stepIndex={currentStepIndex}
-            />
-          )}
+          <AnimatePresence>
+            {showFlowChart && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <BrewFlowChart
+                  stepElapsedSec={stepElapsedSec}
+                  stepTotalSec={stepTotalSec}
+                  pourTargetSec={pourTargetSec}
+                  waterToAdd={currentWaterToAdd}
+                  isPouring={isPouring}
+                  isWaiting={isWaiting}
+                  isRunning={isRunning}
+                  stepIndex={currentStepIndex}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
       </div>
