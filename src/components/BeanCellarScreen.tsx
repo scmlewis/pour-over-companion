@@ -267,81 +267,89 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
   };
 
   return (
-    <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-4 font-sans text-slate-100">
+    <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-5 font-sans text-[#f0eeeb]">
       <div>
-        {/* Top Header */}
-        <div className="flex items-center justify-between py-1 mb-2">
+        {/* Header */}
+        <div className="flex items-center justify-between py-1 mb-3">
           <button
             onClick={onBack}
-            className="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 active:scale-95 transition-all"
+            className="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
           >
             <ChevronLeft className="w-6 h-6 stroke-[2]" />
           </button>
           <div className="text-center">
-            <h2 className="text-base font-bold text-slate-200 tracking-tight">
+            <div className="eyebrow mb-1">
+              <Layers className="w-3 h-3" />
+              <span>SPECIALTY BEAN CELLAR ({allBeans.length})</span>
+            </div>
+            <h2 className="text-base font-bold text-[#f0eeeb]/80 tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
               {language === 'zh' ? '精品豆窖與豆單' : 'Bean Cellar & Profiler'}
             </h2>
-            <p className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">
-              SPECIALTY BEAN CELLAR ({allBeans.length})
-            </p>
           </div>
           <button
             onClick={() => setShowFlavorWheelModal(true)}
             title={t('scan.flavorWheel')}
-            className="w-9 h-9 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-amber-400 hover:text-white active:scale-95 transition-all"
+            className="w-9 h-9 rounded-full bg-[#141311] border border-white/[0.06] flex items-center justify-center text-amber-400 hover:text-white active:scale-90 transition-all duration-500"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
           >
             <Compass className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Tab Switcher: Inventory vs Add/Edit */}
-        <div className="grid grid-cols-2 p-1 rounded-2xl bg-black/40 border border-white/[0.06] mb-3 text-xs font-bold font-mono">
-          <button
-            onClick={() => setActiveTab('inventory')}
-            className={`py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
-              activeTab === 'inventory'
-                ? 'bg-amber-500 text-slate-950 shadow-md font-black'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Layers className="w-3.5 h-3.5" />
-            <span>{language === 'zh' ? `豆窖清單 (${allBeans.length})` : `Cellar (${allBeans.length})`}</span>
-          </button>
-
-          <button
-            onClick={handleOpenAddBean}
-            className={`py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
-              activeTab === 'edit'
-                ? 'bg-amber-500 text-slate-950 shadow-md font-black'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>{editingBeanId ? (language === 'zh' ? '編輯豆種' : 'Edit Bean') : (language === 'zh' ? '新增豆單' : 'Add Bean')}</span>
-          </button>
+        {/* Tab Switcher — Double-Bezel */}
+        <div className="bezel-outer mb-4">
+          <div className="grid grid-cols-2 gap-1 p-1">
+            <button
+              onClick={() => setActiveTab('inventory')}
+              className={`py-2.5 rounded-xl transition-all duration-500 flex items-center justify-center gap-1.5 text-xs font-bold font-mono ${
+                activeTab === 'inventory'
+                  ? 'bg-amber-500 text-[#0a0a08]'
+                  : 'text-[#f0eeeb]/35 hover:text-[#f0eeeb]/60'
+              }`}
+              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>{language === 'zh' ? `豆窖 (${allBeans.length})` : `Cellar (${allBeans.length})`}</span>
+            </button>
+            <button
+              onClick={handleOpenAddBean}
+              className={`py-2.5 rounded-xl transition-all duration-500 flex items-center justify-center gap-1.5 text-xs font-bold font-mono ${
+                activeTab === 'edit'
+                  ? 'bg-amber-500 text-[#0a0a08]'
+                  : 'text-[#f0eeeb]/35 hover:text-[#f0eeeb]/60'
+              }`}
+              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>{editingBeanId ? (language === 'zh' ? '編輯' : 'Edit') : (language === 'zh' ? '新增' : 'Add')}</span>
+            </button>
+          </div>
         </div>
 
-        {/* TAB 1: INVENTORY & VAULT */}
+        {/* TAB 1: INVENTORY */}
         {activeTab === 'inventory' && (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {/* Active Bean Banner */}
             {activeBean && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/20 via-[#181512] to-amber-500/10 border border-amber-500/50 shadow-lg space-y-1.5">
+              <div className="p-4 rounded-[calc(1.5rem+4px)] bg-gradient-to-r from-amber-500/15 via-[#141311] to-amber-500/8 border border-amber-500/30 space-y-2"
+                style={{ boxShadow: '0 4px 24px rgba(245, 158, 11, 0.08)' }}>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-amber-400 uppercase">
+                  <div className="eyebrow">
                     <Sparkles className="w-3 h-3" />
                     <span>{language === 'zh' ? '當前選用沖煮豆' : 'Active Bean'}</span>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono font-bold border border-amber-500/30">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 font-mono font-bold border border-amber-500/20">
                     {activeBean.roastLevel}
                   </span>
                 </div>
                 <div className="text-sm font-black text-white">{activeBean.name}</div>
-                <div className="text-xs text-slate-300 flex items-center justify-between">
+                <div className="text-xs text-[#f0eeeb]/60 flex items-center justify-between">
                   <span>{activeBean.origin} · {activeBean.process}</span>
                   <button
                     onClick={() => onBrewWithBean(activeBean)}
-                    className="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-[11px] flex items-center gap-1 shadow-sm transition-all"
+                    className="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-[#0a0a08] font-black text-[11px] flex items-center gap-1 transition-all duration-500"
+                    style={{ transitionTimingFunction: 'var(--ease-spring)' }}
                   >
                     <span>{language === 'zh' ? '即刻沖煮' : 'Brew'}</span>
                     <ArrowRight className="w-3 h-3 stroke-[2.5]" />
@@ -350,43 +358,39 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
               </div>
             )}
 
-            {/* Search & Filter Bar */}
+            {/* Search & Filter */}
             <div className="space-y-2">
               <div className="relative">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-[#f0eeeb]/30 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   placeholder={language === 'zh' ? '搜尋豆名、產區或風味標籤...' : 'Search beans, origins, notes...'}
-                  className="w-full pl-9 pr-8 py-2 rounded-xl bg-black/40 border border-white/[0.08] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full pl-9 pr-8 py-2.5 rounded-xl bg-black/30 border border-white/[0.04] text-xs text-white placeholder-[#f0eeeb]/25 focus:outline-none focus:border-amber-500/40 transition-colors duration-300"
                 />
                 {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
-                  >
+                  <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#f0eeeb]/30 hover:text-white transition-colors duration-300">
                     <X className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>
-
-              {/* Roast Filters */}
-              <div className="flex gap-1.5 overflow-x-auto pb-1 text-[11px] font-mono">
+              <div className="flex gap-1.5 overflow-x-auto pb-1 text-[11px] font-mono scrollbar-none">
                 {[
                   { id: 'all', labelZh: '全部烘焙', labelEn: 'All' },
-                  { id: 'light', labelZh: '淺焙 / 極淺', labelEn: 'Light' },
-                  { id: 'medium', labelZh: '中焙 / 中淺', labelEn: 'Medium' },
-                  { id: 'dark', labelZh: '中深 / 深焙', labelEn: 'Dark' },
+                  { id: 'light', labelZh: '淺焙', labelEn: 'Light' },
+                  { id: 'medium', labelZh: '中焙', labelEn: 'Medium' },
+                  { id: 'dark', labelZh: '深焙', labelEn: 'Dark' },
                 ].map(rf => (
                   <button
                     key={rf.id}
                     onClick={() => setRoastFilter(rf.id)}
-                    className={`px-2.5 py-1 rounded-lg border transition-all whitespace-nowrap ${
+                    className={`px-2.5 py-1 rounded-lg border transition-all duration-500 whitespace-nowrap ${
                       roastFilter === rf.id
-                        ? 'bg-amber-500/20 border-amber-500/60 text-amber-300 font-bold'
-                        : 'bg-white/[0.03] border-white/[0.06] text-slate-400 hover:text-slate-200'
+                        ? 'bg-amber-500/15 border-amber-500/40 text-amber-300 font-bold'
+                        : 'bg-white/[0.02] border-white/[0.04] text-[#f0eeeb]/35 hover:text-[#f0eeeb]/60'
                     }`}
+                    style={{ transitionTimingFunction: 'var(--ease-spring)' }}
                   >
                     {language === 'zh' ? rf.labelZh : rf.labelEn}
                   </button>
@@ -394,18 +398,13 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
               </div>
             </div>
 
-            {/* Beans Cards List */}
-            <div className="space-y-2.5 overflow-y-auto flex-1 pr-1">
+            {/* Bean Cards */}
+            <div className="space-y-3 overflow-y-auto flex-1 pr-1">
               {filteredBeans.length === 0 ? (
-                <div className="text-center py-8 rounded-2xl bg-black/30 border border-white/[0.05] space-y-2">
-                  <Coffee className="w-8 h-8 text-slate-600 mx-auto" />
-                  <p className="text-xs text-slate-400">
-                    {language === 'zh' ? '找不到相符的咖啡豆' : 'No coffee beans match criteria'}
-                  </p>
-                  <button
-                    onClick={handleOpenAddBean}
-                    className="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 font-bold text-xs border border-amber-500/30"
-                  >
+                <div className="text-center py-8 rounded-2xl bg-black/20 border border-white/[0.03] space-y-2">
+                  <Coffee className="w-8 h-8 text-[#f0eeeb]/15 mx-auto" />
+                  <p className="text-xs text-[#f0eeeb]/40">{language === 'zh' ? '找不到相符的咖啡豆' : 'No beans match criteria'}</p>
+                  <button onClick={handleOpenAddBean} className="px-3 py-1.5 rounded-xl bg-amber-500/15 text-amber-300 font-bold text-xs border border-amber-500/25">
                     + {language === 'zh' ? '建立此豆單' : 'Add New Bean'}
                   </button>
                 </div>
@@ -413,95 +412,60 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
                 filteredBeans.map((bean, idx) => {
                   const isActive = activeBean?.name === bean.name;
                   const isCustom = Boolean(bean.isCustom);
-
                   return (
                     <div
                       key={bean.id || idx}
-                      className={`p-3.5 rounded-2xl border transition-all space-y-2 ${
+                      className={`p-3.5 rounded-[calc(1.25rem+3px)] border transition-all duration-500 space-y-2 ${
                         isActive
-                          ? 'bg-amber-500/10 border-amber-500/50 shadow-md'
-                          : 'bg-[#12141a] hover:bg-[#161920] border-white/[0.06]'
+                          ? 'bg-amber-500/8 border-amber-500/35'
+                          : 'bg-[#0f0e0c] hover:bg-[#141311] border-white/[0.04] hover:border-amber-500/20'
                       }`}
+                      style={{
+                        transitionTimingFunction: 'var(--ease-spring)',
+                        boxShadow: isActive ? '0 2px 12px rgba(245, 158, 11, 0.08)' : '0 1px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02)',
+                      }}
                     >
-                      {/* Top Row: Title + Tags */}
                       <div className="flex items-start justify-between gap-2">
                         <div className="space-y-0.5 min-w-0">
                           <div className="flex items-center gap-1.5">
                             <span className="text-xs font-black text-white truncate">{bean.name}</span>
-                            {isCustom && (
-                              <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">
-                                自訂
-                              </span>
-                            )}
-                            {isActive && (
-                              <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono flex items-center gap-0.5">
-                                <Check className="w-2.5 h-2.5" /> 已選用
-                              </span>
-                            )}
+                            {isCustom && <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/15 text-amber-300 border border-amber-500/20 font-mono">自訂</span>}
+                            {isActive && <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/20 font-mono flex items-center gap-0.5"><Check className="w-2.5 h-2.5" /> 已選用</span>}
                           </div>
-                          <div className="text-[11px] text-amber-400 font-mono truncate">
-                            {bean.origin} · {bean.process}
-                          </div>
+                          <div className="text-[11px] text-amber-400/80 font-mono truncate">{bean.origin} · {bean.process}</div>
                         </div>
-
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 font-mono shrink-0">
-                          {bean.roastLevel}
-                        </span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.04] text-[#f0eeeb]/50 font-mono shrink-0">{bean.roastLevel}</span>
                       </div>
 
-                      {/* Flavor Notes */}
                       {bean.flavorNotes && bean.flavorNotes.length > 0 && (
                         <div className="flex flex-wrap gap-1">
                           {bean.flavorNotes.map((note, nIdx) => (
-                            <span
-                              key={nIdx}
-                              className="text-[9px] px-2 py-0.5 rounded-md bg-black/40 border border-white/[0.05] text-slate-300 font-medium"
-                            >
-                              {note}
-                            </span>
+                            <span key={nIdx} className="text-[9px] px-2 py-0.5 rounded-lg bg-black/30 border border-white/[0.03] text-[#f0eeeb]/50 font-medium">{note}</span>
                           ))}
                         </div>
                       )}
 
-                      {/* Card Action Buttons */}
-                      <div className="flex items-center justify-between pt-1 border-t border-white/[0.05]">
+                      <div className="flex items-center justify-between pt-1.5 border-t border-white/[0.03]">
                         <div className="flex items-center gap-1">
                           {isCustom && (
                             <>
-                              <button
-                                onClick={() => handleOpenEditBean(bean)}
-                                className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white transition-all text-xs flex items-center gap-1"
-                                title="Edit Bean"
-                              >
-                                <Edit3 className="w-3.5 h-3.5" />
-                                <span className="text-[10px]">{language === 'zh' ? '編輯' : 'Edit'}</span>
+                              <button onClick={() => handleOpenEditBean(bean)} className="p-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] text-[#f0eeeb]/50 hover:text-white transition-all duration-300 text-xs flex items-center gap-1">
+                                <Edit3 className="w-3.5 h-3.5" /><span className="text-[10px]">{language === 'zh' ? '編輯' : 'Edit'}</span>
                               </button>
-
-                              <button
-                                onClick={() => bean.id && onDeleteBean(bean.id)}
-                                className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-all text-xs"
-                                title="Delete Bean"
-                              >
+                              <button onClick={() => bean.id && onDeleteBean(bean.id)} className="p-1.5 rounded-lg bg-white/[0.03] hover:bg-rose-500/15 text-[#f0eeeb]/30 hover:text-rose-400 transition-all duration-300 text-xs">
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
                             </>
                           )}
                         </div>
-
                         <div className="flex items-center gap-1.5">
                           {!isActive && (
-                            <button
-                              onClick={() => onSelectBean(bean)}
-                              className="px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-slate-200 text-xs font-bold transition-all"
-                            >
+                            <button onClick={() => onSelectBean(bean)} className="px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-[#f0eeeb]/70 text-xs font-bold transition-all duration-300">
                               {language === 'zh' ? '設為當前豆' : 'Select'}
                             </button>
                           )}
-
-                          <button
-                            onClick={() => onBrewWithBean(bean)}
-                            className="px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black flex items-center gap-1 transition-all shadow-sm"
-                          >
+                          <button onClick={() => onBrewWithBean(bean)} className="px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-[#0a0a08] text-xs font-black flex items-center gap-1 transition-all duration-500"
+                            style={{ transitionTimingFunction: 'var(--ease-spring)' }}>
                             <span>{language === 'zh' ? '沖煮此豆' : 'Brew'}</span>
                             <ArrowRight className="w-3 h-3 stroke-[2.5]" />
                           </button>
@@ -515,205 +479,137 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
           </div>
         )}
 
-        {/* TAB 2: ADD / EDIT BEAN FORM */}
+        {/* TAB 2: ADD / EDIT FORM */}
         {activeTab === 'edit' && (
           <div className="space-y-3">
-            <div className="p-4 rounded-3xl bg-[#12141a] border border-white/[0.08] space-y-3 shadow-xl overflow-y-auto flex-1">
-              {/* Bean Name */}
-              <div className="space-y-1">
-                <label className="text-[11px] font-bold text-amber-400 font-mono flex items-center justify-between">
-                  <span>{language === 'zh' ? '咖啡豆名稱 *' : 'Coffee Bean Name *'}</span>
-                  <span className="text-[10px] text-slate-500 font-normal">{language === 'zh' ? '必填' : 'Required'}</span>
-                </label>
-                <input
-                  type="text"
-                  value={beanName}
-                  onChange={e => setBeanName(e.target.value)}
-                  placeholder={language === 'zh' ? '例如：巴拿馬 翡翠莊園 藝妓 水洗' : 'e.g. Panama Geisha Washed'}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/[0.1] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-medium"
-                />
-              </div>
-
-              {/* Origin / Region */}
-              <div className="grid grid-cols-2 gap-2">
+            <div className="bezel-card">
+              <div className="p-4 space-y-3">
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-amber-400 font-mono">
-                    {language === 'zh' ? '產區 / 莊園' : 'Origin / Estate'}
+                  <label className="text-[11px] font-bold text-amber-400 font-mono flex items-center justify-between">
+                    <span>{language === 'zh' ? '咖啡豆名稱 *' : 'Coffee Bean Name *'}</span>
+                    <span className="text-[10px] text-[#f0eeeb]/30 font-normal">{language === 'zh' ? '必填' : 'Required'}</span>
                   </label>
-                  <input
-                    type="text"
-                    value={origin}
-                    onChange={e => setOrigin(e.target.value)}
-                    placeholder={language === 'zh' ? '例如：耶加雪菲 沃卡' : 'e.g. Yirgacheffe'}
-                    className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/[0.1] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-                  />
+                  <input type="text" value={beanName} onChange={e => setBeanName(e.target.value)}
+                    placeholder={language === 'zh' ? '例如：巴拿馬 翡翠莊園 藝妓 水洗' : 'e.g. Panama Geisha Washed'}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-black/30 border border-white/[0.05] text-xs text-white placeholder-[#f0eeeb]/25 focus:outline-none focus:border-amber-500/40 font-medium transition-colors duration-300" />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-amber-400 font-mono">
-                    {language === 'zh' ? '海拔 / 品種' : 'Elevation / Varietal'}
-                  </label>
-                  <input
-                    type="text"
-                    value={elevation}
-                    onChange={e => setElevation(e.target.value)}
-                    placeholder={language === 'zh' ? '例如：2000m Geisha' : 'e.g. 2000m Geisha'}
-                    className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/[0.1] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-              </div>
-
-              {/* Roast Level Selector */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-bold text-amber-400 font-mono">
-                  {language === 'zh' ? '烘焙度 (決定建議水溫與萃取手法)' : 'Roast Level'}
-                </label>
-                <div className="grid grid-cols-1 gap-1.5">
-                  {ROAST_LEVELS.map(rl => {
-                    const isSelected = roastLevel === rl.id;
-                    return (
-                      <div
-                        key={rl.id}
-                        onClick={() => setRoastLevel(rl.id)}
-                        className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between text-xs ${
-                          isSelected
-                            ? 'bg-amber-500/20 border-amber-500/60 text-white font-bold'
-                            : 'bg-black/30 hover:bg-black/50 border-white/[0.06] text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Flame className={`w-3.5 h-3.5 ${isSelected ? 'text-amber-400' : 'text-slate-500'}`} />
-                          <span>{language === 'zh' ? rl.labelZh : rl.labelEn}</span>
-                        </div>
-                        <span className="text-[10px] font-mono text-amber-400/90">{rl.tempHint}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Process Method Selector */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-bold text-amber-400 font-mono">
-                  {language === 'zh' ? '生豆處理法' : 'Processing Method'}
-                </label>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {PROCESS_METHODS.map(pm => {
-                    const isSelected = process === pm.id;
-                    return (
-                      <div
-                        key={pm.id}
-                        onClick={() => setProcess(pm.id)}
-                        className={`p-2 rounded-xl border text-center transition-all cursor-pointer text-xs font-medium ${
-                          isSelected
-                            ? 'bg-amber-500/20 border-amber-500/60 text-amber-300 font-bold'
-                            : 'bg-black/30 hover:bg-black/50 border-white/[0.06] text-slate-300'
-                        }`}
-                      >
-                        {language === 'zh' ? pm.labelZh.split(' ')[0] : pm.labelEn}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Flavor Notes Tags */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-bold text-amber-400 font-mono flex items-center justify-between">
-                  <span>{language === 'zh' ? '風味筆記 / 特徵' : 'Flavor Notes'}</span>
-                  <span className="text-[10px] text-slate-400 font-normal">{language === 'zh' ? '點擊標籤快速加入' : 'Tap to add'}</span>
-                </label>
-                <input
-                  type="text"
-                  value={flavorNotes}
-                  onChange={e => setFlavorNotes(e.target.value)}
-                  placeholder="花香, 柑橘, 蜂蜜, 伯爵茶..."
-                  className="w-full px-3.5 py-2 rounded-xl bg-black/50 border border-white/[0.1] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-medium mb-1.5"
-                />
-                <div className="flex flex-wrap gap-1">
-                  {POPULAR_FLAVOR_TAGS.map((tag, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => toggleFlavorTag(tag)}
-                      className="text-[10px] px-2 py-0.5 rounded-lg bg-white/[0.05] hover:bg-amber-500/20 hover:text-amber-300 border border-white/[0.06] text-slate-300 transition-colors"
-                    >
-                      + {tag}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Smart Extraction Preview Card */}
-              <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-1">
-                <div className="flex items-center justify-between text-[11px] font-bold text-amber-400">
-                  <div className="flex items-center gap-1">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>{language === 'zh' ? '智能配對沖煮食譜' : 'Smart Recipe Match'}</span>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-amber-400 font-mono">{language === 'zh' ? '產區 / 莊園' : 'Origin / Estate'}</label>
+                    <input type="text" value={origin} onChange={e => setOrigin(e.target.value)}
+                      placeholder={language === 'zh' ? '耶加雪菲' : 'Yirgacheffe'}
+                      className="w-full px-3 py-2 rounded-xl bg-black/30 border border-white/[0.05] text-xs text-white placeholder-[#f0eeeb]/25 focus:outline-none focus:border-amber-500/40 transition-colors duration-300" />
                   </div>
-                  <span className="text-[10px] font-mono">100% 離線運算</span>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-amber-400 font-mono">{language === 'zh' ? '海拔 / 品種' : 'Elevation / Varietal'}</label>
+                    <input type="text" value={elevation} onChange={e => setElevation(e.target.value)}
+                      placeholder={language === 'zh' ? '2000m Geisha' : '2000m Geisha'}
+                      className="w-full px-3 py-2 rounded-xl bg-black/30 border border-white/[0.05] text-xs text-white placeholder-[#f0eeeb]/25 focus:outline-none focus:border-amber-500/40 transition-colors duration-300" />
+                  </div>
                 </div>
-                <div className="text-xs font-black text-white">
-                  {language === 'zh' ? smartRecipe.nameZh : smartRecipe.nameEn}
+
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-amber-400 font-mono">{language === 'zh' ? '烘焙度' : 'Roast Level'}</label>
+                  <div className="grid grid-cols-1 gap-1.5">
+                    {ROAST_LEVELS.map(rl => {
+                      const isSelected = roastLevel === rl.id;
+                      return (
+                        <div key={rl.id} onClick={() => setRoastLevel(rl.id)}
+                          className={`p-2.5 rounded-xl border transition-all duration-500 cursor-pointer flex items-center justify-between text-xs ${
+                            isSelected ? 'bg-amber-500/15 border-amber-500/40 text-white font-bold' : 'bg-black/20 hover:bg-black/30 border-white/[0.04] text-[#f0eeeb]/60'
+                          }`} style={{ transitionTimingFunction: 'var(--ease-spring)' }}>
+                          <div className="flex items-center gap-2">
+                            <Flame className={`w-3.5 h-3.5 ${isSelected ? 'text-amber-400' : 'text-[#f0eeeb]/25'}`} />
+                            <span>{language === 'zh' ? rl.labelZh : rl.labelEn}</span>
+                          </div>
+                          <span className="text-[10px] font-mono text-amber-400/80">{rl.tempHint}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-                <p className="text-[11px] text-slate-300">
-                  {language === 'zh' ? smartRecipe.reasonZh : smartRecipe.reasonEn}
-                </p>
+
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-amber-400 font-mono">{language === 'zh' ? '生豆處理法' : 'Processing Method'}</label>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {PROCESS_METHODS.map(pm => {
+                      const isSelected = process === pm.id;
+                      return (
+                        <div key={pm.id} onClick={() => setProcess(pm.id)}
+                          className={`p-2 rounded-xl border text-center transition-all duration-500 cursor-pointer text-xs font-medium ${
+                            isSelected ? 'bg-amber-500/15 border-amber-500/40 text-amber-300 font-bold' : 'bg-black/20 hover:bg-black/30 border-white/[0.04] text-[#f0eeeb]/60'
+                          }`} style={{ transitionTimingFunction: 'var(--ease-spring)' }}>
+                          {language === 'zh' ? pm.labelZh.split(' ')[0] : pm.labelEn}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-amber-400 font-mono flex items-center justify-between">
+                    <span>{language === 'zh' ? '風味筆記' : 'Flavor Notes'}</span>
+                    <span className="text-[10px] text-[#f0eeeb]/30 font-normal">{language === 'zh' ? '點擊標籤快速加入' : 'Tap to add'}</span>
+                  </label>
+                  <input type="text" value={flavorNotes} onChange={e => setFlavorNotes(e.target.value)}
+                    placeholder="花香, 柑橘, 蜂蜜..."
+                    className="w-full px-3.5 py-2 rounded-xl bg-black/30 border border-white/[0.05] text-xs text-white placeholder-[#f0eeeb]/25 focus:outline-none focus:border-amber-500/40 font-medium mb-1.5 transition-colors duration-300" />
+                  <div className="flex flex-wrap gap-1">
+                    {POPULAR_FLAVOR_TAGS.map((tag, idx) => (
+                      <button key={idx} type="button" onClick={() => toggleFlavorTag(tag)}
+                        className="text-[10px] px-2 py-0.5 rounded-lg bg-white/[0.03] hover:bg-amber-500/15 hover:text-amber-300 border border-white/[0.04] text-[#f0eeeb]/50 transition-all duration-300">
+                        + {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-amber-500/8 border border-amber-500/20 space-y-1">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-amber-400">
+                    <div className="flex items-center gap-1"><Sparkles className="w-3.5 h-3.5" /><span>{language === 'zh' ? '智能配對沖煮食譜' : 'Smart Recipe Match'}</span></div>
+                    <span className="text-[10px] font-mono">100% 離線</span>
+                  </div>
+                  <div className="text-xs font-black text-white">{language === 'zh' ? smartRecipe.nameZh : smartRecipe.nameEn}</div>
+                  <p className="text-[11px] text-[#f0eeeb]/60">{language === 'zh' ? smartRecipe.reasonZh : smartRecipe.reasonEn}</p>
+                </div>
               </div>
             </div>
 
-            {/* Form Save Button */}
             <div className="flex items-center gap-2 pt-1">
-              <button
-                onClick={() => setActiveTab('inventory')}
-                className="w-1/3 py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.1] text-slate-300 font-bold text-xs transition-all"
-              >
+              <button onClick={() => setActiveTab('inventory')}
+                className="w-1/3 py-3.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-[#f0eeeb]/60 font-bold text-xs transition-all duration-500"
+                style={{ transitionTimingFunction: 'var(--ease-spring)' }}>
                 {language === 'zh' ? '取消' : 'Cancel'}
               </button>
-
-              <button
-                onClick={handleSaveForm}
-                disabled={saving || !beanName.trim()}
-                className="w-2/3 py-3.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 text-slate-950 font-black text-xs tracking-wide shadow-lg active:scale-[0.99] transition-all flex items-center justify-center gap-1.5"
-              >
-                <span>{saving ? (language === 'zh' ? '儲存中...' : 'Saving...') : (language === 'zh' ? '儲存至豆窖並選用' : 'Save to Cellar & Select')}</span>
-                <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
+              <button onClick={handleSaveForm} disabled={saving || !beanName.trim()}
+                className="w-2/3 btn-primary disabled:opacity-40" style={{ minHeight: '50px' }}>
+                <span>{saving ? '...' : (language === 'zh' ? '儲存至豆窖並選用' : 'Save & Select')}</span>
+                <span className="btn-icon-nest"><ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" /></span>
               </button>
             </div>
           </div>
         )}
       </div>
 
-      {/* SCA Flavor Wheel Modal */}
+      {/* Flavor Wheel Modal */}
       {showFlavorWheelModal && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 select-none">
-          <div className="bg-[#12141a] border border-white/[0.1] rounded-3xl max-w-sm w-full p-5 space-y-4 shadow-2xl animate-in fade-in duration-150">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 select-none">
+          <div className="bg-[#0f0e0c] border border-white/[0.06] rounded-[calc(1.5rem+4px)] max-w-sm w-full p-5 space-y-4 shadow-2xl animate-fade-slide-up">
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-[10px] font-mono font-bold text-amber-400 uppercase">SCA FLAVOR WHEEL</div>
-                <h3 className="text-lg font-black text-slate-100">{t('scan.flavorWheelTitle')}</h3>
+                <div className="eyebrow mb-1"><span>SCA FLAVOR WHEEL</span></div>
+                <h3 className="text-lg font-black text-white" style={{ fontFamily: 'var(--font-display)' }}>{t('scan.flavorWheelTitle')}</h3>
               </div>
-              <button
-                onClick={() => setShowFlavorWheelModal(false)}
-                className="p-1.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-slate-400 hover:text-slate-200"
-              >
+              <button onClick={() => setShowFlavorWheelModal(false)}
+                className="p-1.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-[#f0eeeb]/40 hover:text-white transition-all duration-300">
                 <X className="w-4 h-4" />
               </button>
             </div>
-
-            <div className="rounded-2xl overflow-hidden border border-white/[0.06] bg-slate-950 aspect-square">
-              <img
-                src={ASSETS.coffeeFlavor}
-                alt="SCA Coffee Flavor Wheel"
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                className="w-full h-full object-cover"
-              />
+            <div className="rounded-2xl overflow-hidden border border-white/[0.04] bg-black aspect-square">
+              <img src={ASSETS.coffeeFlavor} alt="SCA Coffee Flavor Wheel" referrerPolicy="no-referrer" loading="lazy" className="w-full h-full object-cover" />
             </div>
-
-            <p className="text-xs text-slate-300 leading-relaxed">
-              {t('scan.flavorWheelDesc')}
-            </p>
+            <p className="text-xs text-[#f0eeeb]/60 leading-relaxed">{t('scan.flavorWheelDesc')}</p>
           </div>
         </div>
       )}

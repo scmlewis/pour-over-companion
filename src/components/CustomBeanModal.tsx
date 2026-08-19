@@ -124,10 +124,10 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        className="w-full max-w-md bg-[#14110f] border border-white/[0.09] rounded-3xl p-5 shadow-2xl flex flex-col max-h-[90vh] text-slate-100 overflow-hidden"
+        className="w-full max-w-md bg-[#141311] border border-white/[0.06] rounded-3xl p-5 shadow-2xl flex flex-col max-h-[90vh] text-[#f0eeeb] overflow-hidden"
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-white/[0.07]">
+        <div className="flex items-center justify-between pb-3 border-b border-white/[0.04]">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
               <Coffee className="w-4 h-4" />
@@ -138,14 +138,14 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
                   ? (language === 'zh' ? '編輯自訂咖啡豆' : 'Edit Custom Bean')
                   : (language === 'zh' ? '新增私房咖啡豆' : 'Add Custom Bean')}
               </h3>
-              <span className="text-[10px] font-mono text-amber-400 uppercase tracking-widest font-bold">
+              <span className="eyebrow">
                 {language === 'zh' ? '精品豆窖管理' : 'BEAN CELLAR MANAGER'}
               </span>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white active:scale-95 transition-all"
+            className="w-8 h-8 rounded-full bg-[#0f0e0c] border border-white/[0.06] flex items-center justify-center text-[#f0eeeb]/40 hover:text-white active:scale-95 transition-all"
           >
             <X className="w-4 h-4" />
           </button>
@@ -155,7 +155,7 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
         <div className="flex-1 overflow-y-auto py-3 space-y-4 pr-1 scrollbar-thin scrollbar-thumb-white/10">
           {/* Bean Name */}
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
+            <label className="text-[11px] font-bold text-[#f0eeeb]/60 flex items-center gap-1.5">
               <span>{language === 'zh' ? '咖啡豆名稱 / 莊園' : 'Bean Name / Estate'}</span>
               <span className="text-amber-400 font-bold">*</span>
             </label>
@@ -164,13 +164,13 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={language === 'zh' ? '例如：衣索比亞 罕貝拉 花蝶' : 'e.g. Ethiopia Hambela Flora G1'}
-              className="w-full px-3.5 py-2.5 rounded-2xl bg-black/40 border border-white/[0.08] focus:border-amber-500 focus:outline-none text-xs text-white placeholder:text-slate-600 font-medium"
+              className="w-full px-3.5 py-2.5 rounded-2xl bg-[#0f0e0c] border border-white/[0.04] focus:border-amber-400 focus:outline-none text-xs text-white placeholder:text-[#f0eeeb]/30 font-medium"
             />
           </div>
 
           {/* English / Subtitle Name */}
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+            <label className="text-[11px] font-bold text-[#f0eeeb]/40 flex items-center gap-1.5">
               <span>{language === 'zh' ? '英文品名 (選填)' : 'English / Label Name (Optional)'}</span>
             </label>
             <input
@@ -178,14 +178,14 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
               value={nameEn}
               onChange={(e) => setNameEn(e.target.value)}
               placeholder="e.g. Hambela Wamena Washed"
-              className="w-full px-3.5 py-2.5 rounded-2xl bg-black/40 border border-white/[0.08] focus:border-amber-500 focus:outline-none text-xs text-white placeholder:text-slate-600 font-mono"
+              className="w-full px-3.5 py-2.5 rounded-2xl bg-[#0f0e0c] border border-white/[0.04] focus:border-amber-400 focus:outline-none text-xs text-white placeholder:text-[#f0eeeb]/30 font-mono"
             />
           </div>
 
           {/* Origin & Varietal Grid */}
           <div className="grid grid-cols-2 gap-2.5">
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-300 flex items-center gap-1">
+              <label className="text-[11px] font-bold text-[#f0eeeb]/60 flex items-center gap-1">
                 <Globe className="w-3 h-3 text-amber-400" />
                 <span>{language === 'zh' ? '產區 / 國家' : 'Origin / Region'}</span>
               </label>
@@ -194,11 +194,11 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
                 value={origin}
                 onChange={(e) => setOrigin(e.target.value)}
                 placeholder={language === 'zh' ? '衣索比亞 古吉' : 'Guji, Ethiopia'}
-                className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-500 focus:outline-none text-xs text-white placeholder:text-slate-600"
+                className="w-full px-3 py-2 rounded-xl bg-[#0f0e0c] border border-white/[0.04] focus:border-amber-400 focus:outline-none text-xs text-white placeholder:text-[#f0eeeb]/30"
               />
             </div>
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-300 flex items-center gap-1">
+              <label className="text-[11px] font-bold text-[#f0eeeb]/60 flex items-center gap-1">
                 <Mountain className="w-3 h-3 text-amber-400" />
                 <span>{language === 'zh' ? '品種 / 海拔' : 'Varietal / Alt.'}</span>
               </label>
@@ -207,7 +207,7 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
                 value={varietal}
                 onChange={(e) => setVarietal(e.target.value)}
                 placeholder={language === 'zh' ? '原生種 · 2100m' : 'Heirloom · 2,100m'}
-                className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-500 focus:outline-none text-xs text-white placeholder:text-slate-600"
+                className="w-full px-3 py-2 rounded-xl bg-[#0f0e0c] border border-white/[0.04] focus:border-amber-400 focus:outline-none text-xs text-white placeholder:text-[#f0eeeb]/30"
               />
             </div>
           </div>
@@ -215,14 +215,14 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
           {/* Roast Level & Process Selection */}
           <div className="grid grid-cols-2 gap-2.5">
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-300 flex items-center gap-1">
+              <label className="text-[11px] font-bold text-[#f0eeeb]/60 flex items-center gap-1">
                 <Flame className="w-3 h-3 text-amber-400" />
                 <span>{language === 'zh' ? '烘焙度' : 'Roast Level'}</span>
               </label>
               <select
                 value={roastLevel}
                 onChange={(e) => setRoastLevel(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl bg-[#1c1715] border border-white/[0.08] focus:border-amber-500 focus:outline-none text-xs text-amber-300 font-bold"
+                className="w-full px-3 py-2 rounded-xl bg-[#0f0e0c] border border-white/[0.04] focus:border-amber-400 focus:outline-none text-xs text-amber-300 font-bold"
               >
                 <option value="極淺焙 (Ultra-Light)">{language === 'zh' ? '極淺焙 (Ultra-Light)' : 'Ultra-Light Roast'}</option>
                 <option value="淺焙 (Light)">{language === 'zh' ? '淺焙 (Light)' : 'Light Roast'}</option>
@@ -234,14 +234,14 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
             </div>
 
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-300 flex items-center gap-1">
+              <label className="text-[11px] font-bold text-[#f0eeeb]/60 flex items-center gap-1">
                 <Sparkles className="w-3 h-3 text-amber-400" />
                 <span>{language === 'zh' ? '處理法' : 'Process'}</span>
               </label>
               <select
                 value={process}
                 onChange={(e) => setProcess(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl bg-[#1c1715] border border-white/[0.08] focus:border-amber-500 focus:outline-none text-xs text-amber-300 font-bold"
+                className="w-full px-3 py-2 rounded-xl bg-[#0f0e0c] border border-white/[0.04] focus:border-amber-400 focus:outline-none text-xs text-amber-300 font-bold"
               >
                 <option value="水洗 (Washed)">{language === 'zh' ? '水洗 (Washed)' : 'Washed Process'}</option>
                 <option value="日曬 (Natural)">{language === 'zh' ? '日曬 (Natural)' : 'Natural Process'}</option>
@@ -254,9 +254,9 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
           </div>
 
           {/* Roast Date & Resting Days Calculator */}
-          <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.06] space-y-2">
+          <div className="p-3 rounded-2xl bg-[#0f0e0c] border border-white/[0.04] space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
+              <label className="text-[11px] font-bold text-[#f0eeeb]/60 flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5 text-amber-400" />
                 <span>{language === 'zh' ? '烘焙日期' : 'Roast Date'}</span>
               </label>
@@ -270,26 +270,26 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
               type="date"
               value={roastDate}
               onChange={(e) => setRoastDate(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-[#1c1715] border border-white/[0.08] focus:border-amber-500 focus:outline-none text-xs text-white font-mono"
+              className="w-full px-3 py-2 rounded-xl bg-[#0f0e0c] border border-white/[0.04] focus:border-amber-400 focus:outline-none text-xs text-white font-mono"
             />
           </div>
 
           {/* Flavor Notes Picker & Custom Tags */}
           <div className="space-y-2">
-            <label className="text-[11px] font-bold text-slate-300 flex items-center justify-between">
+            <label className="text-[11px] font-bold text-[#f0eeeb]/60 flex items-center justify-between">
               <span className="flex items-center gap-1">
                 <Tag className="w-3.5 h-3.5 text-amber-400" />
                 <span>{language === 'zh' ? '風味筆記標籤' : 'Flavor Notes Tags'}</span>
               </span>
-              <span className="text-[10px] text-slate-500 font-mono">{flavorNotes.length}/8</span>
+              <span className="text-[10px] text-[#f0eeeb]/30 font-mono">{flavorNotes.length}/8</span>
             </label>
 
             {/* Selected Tags */}
-            <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 rounded-2xl bg-black/40 border border-white/[0.06]">
+            <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 rounded-2xl bg-[#0f0e0c] border border-white/[0.04]">
               {flavorNotes.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold"
+                  className="inline-flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-xl bg-amber-500/10 text-amber-300 border border-amber-500/20 font-bold"
                 >
                   <span>{tag}</span>
                   <button
@@ -302,7 +302,7 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
                 </span>
               ))}
               {flavorNotes.length === 0 && (
-                <span className="text-xs text-slate-500 italic p-1">
+                <span className="text-xs text-[#f0eeeb]/30 italic p-1">
                   {language === 'zh' ? '點擊下方熱門標籤或自行輸入' : 'Select tags below or type custom notes'}
                 </span>
               )}
@@ -319,8 +319,8 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
                     onClick={() => toggleFlavorTag(tag)}
                     className={`text-[10px] px-2 py-1 rounded-lg border transition-all ${
                       isSelected
-                        ? 'bg-amber-500 text-slate-950 border-amber-500 font-bold'
-                        : 'bg-white/[0.03] hover:bg-white/[0.07] text-slate-400 border-white/[0.06]'
+                        ? 'bg-amber-500 text-[#0a0a08] border-amber-500 font-bold'
+                        : 'bg-[#0f0e0c] hover:bg-[#141311] text-[#f0eeeb]/40 border-white/[0.04]'
                     }`}
                   >
                     {tag}
@@ -337,12 +337,12 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
                 onChange={(e) => setCustomTagInput(e.target.value)}
                 onKeyDown={handleAddCustomTag}
                 placeholder={language === 'zh' ? '自訂風味標籤 (例如：藍莓卡士達)...' : 'Add custom flavor note...'}
-                className="flex-1 px-3 py-1.5 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-500 focus:outline-none text-xs text-white placeholder:text-slate-600"
+                className="flex-1 px-3 py-1.5 rounded-xl bg-[#0f0e0c] border border-white/[0.04] focus:border-amber-400 focus:outline-none text-xs text-white placeholder:text-[#f0eeeb]/30"
               />
               <button
                 type="button"
                 onClick={handleAddCustomTag}
-                className="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-xs font-bold text-amber-300 border border-white/[0.08]"
+                className="px-3 py-1.5 rounded-xl bg-[#0f0e0c] hover:bg-[#141311] text-xs font-bold text-amber-300 border border-white/[0.04]"
               >
                 {language === 'zh' ? '新增' : 'Add'}
               </button>
@@ -351,13 +351,13 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
 
           {/* Recommended Brew Recipe */}
           <div className="space-y-1 pt-1">
-            <label className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
+            <label className="text-[11px] font-bold text-[#f0eeeb]/60 flex items-center gap-1.5">
               <span>{language === 'zh' ? '推薦搭配手沖食譜' : 'Recommended Brew Recipe'}</span>
             </label>
             <select
               value={recommendedRecipeId}
               onChange={(e) => setRecommendedRecipeId(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-xl bg-[#1c1715] border border-white/[0.08] focus:border-amber-500 focus:outline-none text-xs text-amber-300 font-bold"
+              className="w-full px-3 py-2.5 rounded-xl bg-[#0f0e0c] border border-white/[0.04] focus:border-amber-400 focus:outline-none text-xs text-amber-300 font-bold"
             >
               {recipes.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -369,7 +369,7 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
         </div>
 
         {/* Action Controls Footer */}
-        <div className="pt-3 border-t border-white/[0.07] flex items-center justify-between gap-2">
+        <div className="pt-3 border-t border-white/[0.04] flex items-center justify-between gap-2">
           {isEditing ? (
             <div className="flex items-center gap-2">
               {isDeleting ? (
@@ -377,14 +377,14 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
                   <button
                     type="button"
                     onClick={handleDelete}
-                    className="px-3 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold shadow-md active:scale-95"
+                    className="px-3 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold active:scale-95"
                   >
                     {language === 'zh' ? '確認刪除' : 'Confirm'}
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsDeleting(false)}
-                    className="px-2.5 py-2 rounded-xl bg-white/[0.08] text-slate-400 text-xs font-medium"
+                    className="px-2.5 py-2 rounded-xl bg-[#0f0e0c] text-[#f0eeeb]/40 text-xs font-medium"
                   >
                     {language === 'zh' ? '取消' : 'Cancel'}
                   </button>
@@ -404,7 +404,7 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.09] text-xs font-bold text-slate-300 transition-colors"
+              className="px-4 py-2.5 rounded-xl bg-[#0f0e0c] hover:bg-[#141311] text-xs font-bold text-[#f0eeeb]/60 transition-colors"
             >
               {language === 'zh' ? '取消' : 'Cancel'}
             </button>
@@ -414,7 +414,8 @@ export const CustomBeanModal: React.FC<CustomBeanModalProps> = ({
             type="button"
             onClick={handleSave}
             disabled={!name.trim()}
-            className="flex-1 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 text-slate-950 font-black text-xs tracking-wide shadow-xl active:scale-[0.99] transition-all flex items-center justify-center gap-1.5 min-h-[44px]"
+            className="flex-1 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 text-[#0a0a08] font-black text-xs tracking-wide active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-1.5 min-h-[44px]"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
           >
             <Check className="w-4 h-4 stroke-[3]" />
             <span>{isEditing ? (language === 'zh' ? '儲存變更' : 'Save Changes') : (language === 'zh' ? '儲存咖啡豆' : 'Save Bean')}</span>

@@ -110,33 +110,34 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto select-none">
-      <div className="bg-[#12141a] border border-white/[0.1] rounded-t-3xl sm:rounded-3xl max-w-md w-full p-5 space-y-4 max-h-[92vh] overflow-y-auto shadow-2xl animate-in fade-in duration-150 text-slate-100">
+      <div className="bg-[#141311] border border-white/[0.06] rounded-t-3xl sm:rounded-3xl max-w-md w-full p-5 space-y-4 max-h-[92vh] overflow-y-auto shadow-2xl animate-in fade-in duration-150 text-[#f0eeeb]">
         {/* Header Bar */}
         <div className="flex items-start justify-between">
           <div>
-            <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-amber-400 uppercase tracking-wider mb-0.5">
+            <div className="eyebrow mb-0.5">
               <Coffee className="w-3.5 h-3.5" />
               <span>{language === 'zh' ? '編輯沖煮紀錄' : 'EDIT BREW RECORD'}</span>
             </div>
             <h2 className="text-xl font-black text-white font-sans">
               {logEntry.recipeName}
             </h2>
-            <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+            <div className="text-[11px] text-[#f0eeeb]/40 font-mono mt-0.5">
               {formatDate(logEntry.timestamp)} · {logEntry.method}
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-slate-400 hover:text-slate-200 active:scale-95 transition-all"
+            className="p-2 rounded-xl bg-[#0f0e0c] border border-white/[0.06] text-[#f0eeeb]/40 hover:text-[#f0eeeb]/80 active:scale-95 transition-all duration-500"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* 1. Rating Selector */}
-        <div className="p-3.5 rounded-2xl bg-black/40 border border-white/[0.06] space-y-2">
+        <div className="p-3.5 rounded-2xl bg-[#0f0e0c] border border-white/[0.04] space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-300">
+            <span className="text-xs font-bold text-[#f0eeeb]/60">
               {language === 'zh' ? '杯測評分 (Rating)' : 'Cupping Rating'}
             </span>
             <span className="text-xs font-mono font-bold text-amber-400">{rating}.0 / 5.0</span>
@@ -148,13 +149,13 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
                 key={starVal}
                 type="button"
                 onClick={() => setRating(starVal)}
-                className="p-1.5 rounded-xl hover:bg-white/[0.06] active:scale-125 transition-all text-amber-400"
+                className="p-1.5 rounded-xl hover:bg-white/[0.04] active:scale-125 transition-all text-amber-400"
               >
                 <Star
                   className={`w-7 h-7 transition-colors ${
                     starVal <= rating
                       ? 'fill-amber-400 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]'
-                      : 'text-slate-600 fill-transparent'
+                      : 'text-[#f0eeeb]/30 fill-transparent'
                   }`}
                 />
               </button>
@@ -164,7 +165,7 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
 
         {/* 2. Bean Name & Origin */}
         <div className="space-y-1">
-          <label className="text-xs font-bold text-slate-300 block">
+          <label className="text-xs font-bold text-[#f0eeeb]/60 block">
             {language === 'zh' ? '咖啡豆名稱 / 產區 (Bean Origin)' : 'Coffee Bean / Origin'}
           </label>
           <input
@@ -172,7 +173,7 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
             value={beanName}
             onChange={(e) => setBeanName(e.target.value)}
             placeholder={language === 'zh' ? '例如：衣索比亞 耶加雪菲 水洗 G1' : 'e.g. Ethiopia Yirgacheffe Washed G1'}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-400 text-xs font-medium text-slate-100 placeholder-slate-600 outline-none transition-colors"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/[0.06] focus:border-amber-400 text-xs font-medium text-[#f0eeeb] placeholder:text-[#f0eeeb]/30 outline-none transition-colors"
           />
         </div>
 
@@ -180,36 +181,36 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
         <div className="grid grid-cols-3 gap-2 text-xs">
           {/* Dose */}
           <div className="space-y-1">
-            <label className="text-[11px] font-medium text-slate-400">
+            <label className="text-[11px] font-medium text-[#f0eeeb]/40">
               {language === 'zh' ? '粉量 (Dose)' : 'Dose (g)'}
             </label>
             <input
               type="number"
               value={dose}
               onChange={(e) => setDose(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-400 text-xs font-mono font-bold text-slate-100 outline-none"
+              className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.06] focus:border-amber-400 text-xs font-mono font-bold text-[#f0eeeb] outline-none"
             />
           </div>
 
           {/* Water */}
           <div className="space-y-1">
-            <label className="text-[11px] font-medium text-slate-400">
+            <label className="text-[11px] font-medium text-[#f0eeeb]/40">
               {language === 'zh' ? '總水量 (Water)' : 'Water (g)'}
             </label>
             <input
               type="number"
               value={water}
               onChange={(e) => setWater(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-400 text-xs font-mono font-bold text-amber-400 outline-none"
+              className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.06] focus:border-amber-400 text-xs font-mono font-bold text-amber-400 outline-none"
             />
           </div>
 
           {/* Duration Display */}
           <div className="space-y-1">
-            <label className="text-[11px] font-medium text-slate-400">
+            <label className="text-[11px] font-medium text-[#f0eeeb]/40">
               {language === 'zh' ? '萃取時長' : 'Duration'}
             </label>
-            <div className="px-3 py-2 rounded-xl bg-black/20 border border-white/[0.04] text-xs font-mono font-bold text-slate-300">
+            <div className="px-3 py-2 rounded-xl bg-black/20 border border-white/[0.04] text-xs font-mono font-bold text-[#f0eeeb]/60">
               {formatDuration(logEntry.durationSec)}
             </div>
           </div>
@@ -218,7 +219,7 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
         <div className="grid grid-cols-2 gap-2 text-xs">
           {/* Grind Size */}
           <div className="space-y-1">
-            <label className="text-[11px] font-medium text-slate-400">
+            <label className="text-[11px] font-medium text-[#f0eeeb]/40">
               {language === 'zh' ? '研磨刻度 (Grind)' : 'Grind Size'}
             </label>
             <input
@@ -226,13 +227,13 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
               value={grind}
               onChange={(e) => setGrind(e.target.value)}
               placeholder="中幼研磨"
-              className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-400 text-xs font-medium text-slate-100 outline-none"
+              className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.06] focus:border-amber-400 text-xs font-medium text-[#f0eeeb] outline-none"
             />
           </div>
 
           {/* Ratio */}
           <div className="space-y-1">
-            <label className="text-[11px] font-medium text-slate-400">
+            <label className="text-[11px] font-medium text-[#f0eeeb]/40">
               {language === 'zh' ? '粉水比 (Ratio)' : 'Ratio'}
             </label>
             <input
@@ -240,14 +241,14 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
               value={ratio}
               onChange={(e) => setRatio(e.target.value)}
               placeholder="1:15.5"
-              className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-400 text-xs font-mono font-bold text-slate-100 outline-none"
+              className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/[0.06] focus:border-amber-400 text-xs font-mono font-bold text-[#f0eeeb] outline-none"
             />
           </div>
         </div>
 
         {/* 4. Flavor Descriptors Tag Selector */}
         <div>
-          <label className="text-xs font-bold text-slate-300 block mb-2">
+          <label className="text-xs font-bold text-[#f0eeeb]/60 block mb-2">
             {language === 'zh' ? '風味與口感特徵 (Flavor Attributes)' : 'Flavor & Extraction Attributes'}
           </label>
           <div className="flex flex-wrap gap-1.5">
@@ -260,8 +261,8 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
                   onClick={() => toggleDescriptor(desc)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95 border ${
                     isSelected
-                      ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-md'
-                      : 'bg-white/[0.03] text-slate-300 border-white/[0.06] hover:border-white/[0.12]'
+                      ? 'bg-amber-500 text-[#0a0a08] border-amber-500 shadow-md'
+                      : 'bg-white/[0.03] text-[#f0eeeb]/60 border-white/[0.04] hover:border-white/[0.12]'
                   }`}
                 >
                   {desc}
@@ -286,7 +287,7 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
 
         {/* 6. Tasting Notes Textarea */}
         <div className="space-y-1">
-          <label className="text-xs font-bold text-slate-300 block">
+          <label className="text-xs font-bold text-[#f0eeeb]/60 block">
             {language === 'zh' ? '品飲筆記 (Tasting Memo)' : 'Tasting Memo & Cupping Notes'}
           </label>
           <textarea
@@ -294,7 +295,7 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
             onChange={(e) => setNotes(e.target.value)}
             rows={2}
             placeholder={language === 'zh' ? '記錄這壺咖啡的花果香氣、酸質細緻度或尾韻...' : 'Describe floral aromas, acidity brightness, body, or sweet finish...'}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-400 text-xs text-slate-100 placeholder-slate-600 outline-none resize-none"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/[0.06] focus:border-amber-400 text-xs text-[#f0eeeb] placeholder:text-[#f0eeeb]/30 outline-none resize-none"
           />
         </div>
 
@@ -308,7 +309,7 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 py-2 rounded-xl bg-white/[0.08] text-slate-300 text-xs font-bold hover:bg-white/[0.12] transition-colors"
+                className="flex-1 py-2 rounded-xl bg-white/[0.08] text-[#f0eeeb]/60 text-xs font-bold hover:bg-white/[0.12] transition-colors"
               >
                 {language === 'zh' ? '取消' : 'Cancel'}
               </button>
@@ -331,7 +332,8 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowDeleteConfirm(true)}
-                className="p-3.5 rounded-2xl bg-white/[0.04] hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 border border-white/[0.08] hover:border-rose-500/30 active:scale-95 transition-all flex items-center justify-center"
+                className="p-3.5 rounded-2xl bg-[#0f0e0c] hover:bg-rose-500/20 text-[#f0eeeb]/40 hover:text-rose-400 border border-white/[0.06] hover:border-rose-500/30 active:scale-95 transition-all duration-500 flex items-center justify-center"
+                style={{ transitionTimingFunction: 'var(--ease-spring)' }}
                 title={language === 'zh' ? '刪除此筆紀錄' : 'Delete Record'}
               >
                 <Trash2 className="w-5 h-5" />
@@ -343,7 +345,8 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
               type="button"
               onClick={handleSave}
               disabled={isSaving}
-              className="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-sm tracking-wide shadow-xl active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+              className="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#0a0a08] font-black text-sm tracking-wide active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2"
+              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
             >
               <Save className="w-4 h-4 stroke-[2.5]" />
               <span>{isSaving ? (language === 'zh' ? '正在儲存...' : 'Saving...') : (language === 'zh' ? '儲存修改' : 'Save Changes')}</span>
@@ -355,7 +358,8 @@ export const BrewLogDetailModal: React.FC<BrewLogDetailModalProps> = ({
             <button
               type="button"
               onClick={handleSaveAndApply}
-              className="w-full py-3 rounded-2xl bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-bold text-amber-300 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-2xl bg-[#0f0e0c] hover:bg-[#141311] border border-white/[0.06] text-xs font-bold text-amber-300 active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2"
+              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
             >
               <span>{t('eval.applyBtn')}</span>
               <ArrowRight className="w-3.5 h-3.5" />

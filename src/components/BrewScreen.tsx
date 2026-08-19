@@ -247,16 +247,17 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="w-full h-full flex flex-col pb-3 pt-0 select-none font-sans text-slate-100 relative overflow-hidden"
+      className="w-full h-full flex flex-col pb-3 pt-0 select-none font-sans text-[#f0eeeb] relative overflow-hidden"
     >
       {/* Scrollable content area */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pb-2 space-y-2">
 
         {/* Sticky Top Header */}
-        <motion.div variants={headerVariants} className="sticky top-0 z-30 bg-[#0d0b09]/95 backdrop-blur-md py-2 mb-1 -mx-4 px-4 border-b border-white/[0.06] flex items-center justify-between shadow-md">
+        <motion.div variants={headerVariants} className="sticky top-0 z-30 bg-[#0a0a08]/95 backdrop-blur-xl py-2 mb-1 -mx-4 px-4 border-b border-white/[0.04] flex items-center justify-between">
           <button
             onClick={onCancelBrew}
-            className="w-10 h-10 -ml-1.5 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 active:scale-95 transition-all"
+            className="w-10 h-10 -ml-1.5 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
             title={t('brew.cancel')}
           >
             <X className="w-5 h-5 stroke-[2]" />
@@ -283,7 +284,8 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
 
           <button
             onClick={() => setSoundEnabled(s => !s)}
-            className="w-9 h-9 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white active:scale-95 transition-all"
+            className="w-9 h-9 rounded-full bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-[#f0eeeb]/40 hover:text-white active:scale-90 transition-all duration-500"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
             title={soundEnabled ? t('brew.soundOn') : t('brew.soundMuted')}
           >
             {soundEnabled ? <Volume2 className="w-4 h-4 text-amber-400" /> : <VolumeX className="w-4 h-4 text-slate-600" />}
@@ -293,12 +295,12 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
         {/* Compact Step Bar + Segmented Progress */}
         <motion.div variants={stepIndicatorVariants}>
           <div className="flex items-center justify-between px-1 mb-1.5">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[11px] font-mono font-bold text-amber-300">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/8 border border-amber-500/15 text-[11px] font-mono font-bold text-amber-300">
               <span>{t('brew.step')} {(currentStepIndex + 1).toString().padStart(2, '0')} / {scaledSteps.length.toString().padStart(2, '0')}</span>
-              <span className="text-amber-500/60">·</span>
-              <span className="text-slate-200">{language === 'zh' ? currentStep.label : (currentStep.labelEn || currentStep.label)}</span>
+              <span className="text-amber-500/50">·</span>
+              <span className="text-[#f0eeeb]/80">{language === 'zh' ? currentStep.label : (currentStep.labelEn || currentStep.label)}</span>
             </div>
-            <div className="flex items-center gap-1 text-[11px] font-mono text-slate-400">
+            <div className="flex items-center gap-1 text-[11px] font-mono text-[#f0eeeb]/40">
               <span>{language === 'zh' ? '累計' : 'Total'}</span>
               <span className={`font-bold ${isRunning ? 'text-amber-400' : 'text-amber-300'}`}>{formatTime(elapsedTotalSec)}</span>
             </div>
@@ -313,7 +315,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               const sLabel = language === 'zh' ? step.label : (step.labelEn || step.label);
               return (
                 <div key={idx}>
-                  <div className="h-1 w-full rounded-full bg-white/[0.08] overflow-hidden">
+                  <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden">
                     <div
                       className={`h-full transition-all duration-300 ${
                         isCompleted ? 'bg-amber-500'
@@ -324,8 +326,8 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                     />
                   </div>
                   <div className="flex items-center justify-between text-[8px] font-mono px-0.5 mt-0.5">
-                    <span className={`truncate ${isCurrent ? 'text-amber-300 font-bold' : isCompleted ? 'text-slate-500' : 'text-slate-600'}`}>{sLabel}</span>
-                    <span className={`${isCurrent ? 'text-amber-400' : 'text-slate-600'}`}>{step.durationSec}s</span>
+                    <span className={`truncate ${isCurrent ? 'text-amber-300 font-bold' : isCompleted ? 'text-[#f0eeeb]/30' : 'text-[#f0eeeb]/20'}`}>{sLabel}</span>
+                    <span className={`${isCurrent ? 'text-amber-400' : 'text-[#f0eeeb]/20'}`}>{step.durationSec}s</span>
                   </div>
                 </div>
               );
@@ -337,16 +339,17 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
         <motion.div
           variants={timerCardVariants}
           onClick={() => !isRunning && setIsRunning(true)}
-          className={`p-3 rounded-2xl transition-all shadow-xl relative overflow-hidden ${
+          className={`p-3 rounded-2xl transition-all duration-500 relative overflow-hidden ${
             !isRunning
-              ? 'bg-gradient-to-b from-[#1c1814] to-[#12100d] border-2 border-amber-400/80 ring-4 ring-amber-500/20 cursor-pointer shadow-amber-950/40'
-              : 'bg-[#12141a] border border-white/[0.08]'
+              ? 'bg-gradient-to-b from-[#1c1814] to-[#12100d] border-2 border-amber-400/70 ring-4 ring-amber-500/15 cursor-pointer'
+              : 'bg-[#0f0e0c] border border-white/[0.05]'
           }`}
+          style={{ transitionTimingFunction: 'var(--ease-spring)', boxShadow: !isRunning ? '0 4px 24px rgba(245, 158, 11, 0.12)' : '0 2px 8px rgba(0,0,0,0.3)' }}
         >
           {/* Paused Badge */}
           {!isRunning && (
-            <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-mono text-[9px] font-black shadow-lg animate-pulse z-20">
-              <Pause className="w-2.5 h-2.5 fill-slate-950" />
+            <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-400 text-[#0a0a08] font-mono text-[9px] font-black z-20">
+              <Pause className="w-2.5 h-2.5 fill-[#0a0a08]" />
               <span>PAUSED · TAP TO RESUME</span>
             </div>
           )}
@@ -356,7 +359,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
             <div className="flex-1 min-w-0">
               <div className="text-[10px] font-mono font-medium flex items-center gap-1 mb-0.5">
                 <Clock className={`w-3 h-3 ${!isRunning ? 'text-amber-300' : 'text-amber-400'}`} />
-                <span className={!isRunning ? 'text-amber-300 font-bold' : 'text-slate-400'}>
+                <span className={!isRunning ? 'text-amber-300 font-bold' : 'text-[#f0eeeb]/40'}>
                   {!isRunning ? 'FROZEN' : isPouring ? 'POUR COUNTDOWN' : 'STEP TIMER'}
                 </span>
               </div>
@@ -376,21 +379,21 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                   </motion.div>
                 </AnimatePresence>
                 {!isRunning && (
-                  <span className="text-[9px] font-mono font-black px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 uppercase">PAUSE</span>
+                  <span className="text-[9px] font-mono font-black px-1.5 py-0.5 rounded bg-amber-400 text-[#0a0a08] uppercase">PAUSE</span>
                 )}
               </div>
             </div>
 
             {/* Right: Scale Target */}
             <div className="text-right shrink-0">
-              <div className="text-[10px] text-slate-400 font-medium">{t('brew.scaleTarget')}</div>
+              <div className="text-[10px] text-[#f0eeeb]/40 font-medium">{t('brew.scaleTarget')}</div>
               <div className="text-2xl font-black font-mono text-white leading-none">
-                {currentTargetWeight}<span className="text-xs font-normal text-slate-400 ml-0.5">g</span>
+                {currentTargetWeight}<span className="text-xs font-normal text-[#f0eeeb]/40 ml-0.5">g</span>
               </div>
               <div className="text-[10px] font-mono text-amber-400 font-semibold mt-0.5">
                 +{currentWaterToAdd}g
               </div>
-              <div className="text-[9px] text-slate-500 font-mono mt-0.5">{recipe.targetTimeRange}</div>
+              <div className="text-[9px] text-[#f0eeeb]/30 font-mono mt-0.5">{recipe.targetTimeRange}</div>
             </div>
           </div>
 
@@ -407,7 +410,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                 <span className="text-amber-400">✓ {language === 'zh' ? '本段完成' : 'STEP DONE'}</span>
               )}
             </span>
-            <span className="text-[10px] font-mono text-slate-500">
+            <span className="text-[10px] font-mono text-[#f0eeeb]/30">
               {advanceMode === 'auto' ? 'AUTO' : 'MANUAL'}
             </span>
           </div>
@@ -417,14 +420,15 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
         <motion.div variants={telemetryVariants}>
           <button
             onClick={() => setShowFlowChart(f => !f)}
-            className="w-full py-2 px-3 rounded-xl bg-[#12141a] hover:bg-[#181b22] border border-white/[0.06] flex items-center justify-between text-[11px] text-slate-400 font-medium active:scale-[0.99] transition-all mb-1.5"
+            className="w-full py-2 px-3 rounded-xl bg-[#0f0e0c] hover:bg-[#141311] border border-white/[0.04] flex items-center justify-between text-[11px] text-[#f0eeeb]/40 font-medium active:scale-[0.98] transition-all duration-500 mb-1.5"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
           >
             <div className="flex items-center gap-1.5">
               <Activity className="w-3.5 h-3.5 text-amber-400" />
               <span>{t('brew.technique')}</span>
-              <span className="text-slate-300 truncate max-w-[180px]">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
+              <span className="text-[#f0eeeb]/60 truncate max-w-[180px]">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
             </div>
-            <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showFlowChart ? 'rotate-90' : ''}`} />
+            <ChevronRight className={`w-3.5 h-3.5 text-[#f0eeeb]/30 transition-transform duration-500 ${showFlowChart ? 'rotate-90' : ''}`} />
           </button>
           {showFlowChart && (
             <BrewFlowChart
@@ -445,23 +449,24 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
       {/* Viewport Anchored Bottom Controls — Fixed at bottom, never scrolls */}
       <motion.div variants={bottomControlsVariants} className="space-y-2 pt-2 shrink-0">
         {/* Large Primary Action Button */}
-        <button
-          onClick={() => {
-            if (!isRunning) {
-              setIsRunning(true);
-            } else {
-              goToNextStep();
-            }
-          }}
-          className={`w-full py-3.5 rounded-full font-black text-base tracking-wide shadow-xl active:scale-[0.99] transition-all flex items-center justify-center gap-2 min-h-[50px] ${
-            !isRunning
-              ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 text-slate-950 ring-4 ring-amber-400/40 animate-pulse shadow-amber-950/60'
-              : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950'
-          }`}
-        >
+          <button
+            onClick={() => {
+              if (!isRunning) {
+                setIsRunning(true);
+              } else {
+                goToNextStep();
+              }
+            }}
+            className={`w-full py-3.5 rounded-full font-black text-base tracking-wide active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2 min-h-[50px] ${
+              !isRunning
+                ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 text-[#0a0a08] ring-4 ring-amber-400/30 animate-pulse'
+                : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#0a0a08]'
+            }`}
+            style={{ transitionTimingFunction: 'var(--ease-spring)', boxShadow: !isRunning ? '0 4px 24px rgba(245, 158, 11, 0.3)' : '0 4px 16px rgba(245, 158, 11, 0.25)' }}
+          >
           {!isRunning ? (
             <>
-              <Play className="w-5 h-5 fill-slate-950 stroke-none" />
+              <Play className="w-5 h-5 fill-[#0a0a08] stroke-none" />
               <span>{language === 'zh' ? `繼續 · ${formatTime(isPouring ? pourRemainingSec : waitRemainingSec)}` : `Resume · ${formatTime(isPouring ? pourRemainingSec : waitRemainingSec)}`}</span>
             </>
           ) : isPouring ? (
@@ -487,27 +492,29 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           <button
             onClick={goToPrevStep}
             disabled={currentStepIndex === 0}
-            className="py-2.5 px-2 rounded-xl bg-[#12141a] hover:bg-[#181b22] border border-white/[0.06] text-slate-300 disabled:opacity-30 text-xs font-bold tracking-wide active:scale-95 transition-all flex items-center justify-center"
+            className="py-2.5 px-2 rounded-xl bg-[#0f0e0c] hover:bg-[#141311] border border-white/[0.04] text-[#f0eeeb]/70 disabled:opacity-30 text-xs font-bold tracking-wide active:scale-95 transition-all duration-500 flex items-center justify-center"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
           >
             {t('brew.prevStep')}
           </button>
 
           <button
             onClick={() => setIsRunning(r => !r)}
-            className={`py-2.5 px-2 rounded-xl border text-xs font-bold tracking-wide active:scale-95 transition-all flex items-center justify-center gap-1.5 ${
+            className={`py-2.5 px-2 rounded-xl border text-xs font-bold tracking-wide active:scale-95 transition-all duration-500 flex items-center justify-center gap-1.5 ${
               !isRunning
-                ? 'bg-amber-400 text-slate-950 border-amber-300 ring-2 ring-amber-400/50 font-black shadow-lg shadow-amber-950/50'
-                : 'bg-[#12141a] hover:bg-[#181b22] border-white/[0.06] text-slate-200'
+                ? 'bg-amber-400 text-[#0a0a08] border-amber-300 ring-2 ring-amber-400/40 font-black'
+                : 'bg-[#0f0e0c] hover:bg-[#141311] border-white/[0.04] text-[#f0eeeb]/80'
             }`}
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
           >
             {isRunning ? (
               <>
-                <Pause className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                <Pause className="w-3.5 h-3.5 text-[#0a0a08] fill-[#0a0a08]" />
                 <span>{t('brew.pause')}</span>
               </>
             ) : (
               <>
-                <Play className="w-3.5 h-3.5 fill-slate-950 stroke-none" />
+                <Play className="w-3.5 h-3.5 fill-[#0a0a08] stroke-none" />
                 <span>{t('brew.resume')}</span>
               </>
             )}
@@ -518,9 +525,10 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               setStepElapsedSec(0);
               setIsRunning(true);
             }}
-            className="py-2.5 px-2 rounded-xl bg-[#12141a] hover:bg-[#181b22] border border-white/[0.06] text-slate-300 text-xs font-bold tracking-wide active:scale-95 transition-all flex items-center justify-center gap-1"
+            className="py-2.5 px-2 rounded-xl bg-[#0f0e0c] hover:bg-[#141311] border border-white/[0.04] text-[#f0eeeb]/70 text-xs font-bold tracking-wide active:scale-95 transition-all duration-500 flex items-center justify-center gap-1"
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
           >
-            <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+            <RotateCcw className="w-3.5 h-3.5 text-[#f0eeeb]/40" />
             <span>{t('brew.restartStep')}</span>
           </button>
         </div>
