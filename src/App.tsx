@@ -37,11 +37,6 @@ export default function App() {
   const [scannedBean, setScannedBean] = useState<BeanInfo | null>(null);
   const [appliedAdjustment, setAppliedAdjustment] = useState<AppliedAdjustment | null>(null);
 
-  // Scroll to top on view change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [currentView]);
-
   const [brewConfig, setBrewConfig] = useState<{
     dose: number;
     ratio: string;
@@ -195,6 +190,8 @@ export default function App() {
   const showNav = !['brew', 'prep', 'finish'].includes(currentView);
   const activeNav = currentView === 'scan' ? 'beans' : currentView;
 
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'instant' });
+
   return (
     <div className="min-h-[100dvh] bg-[#0a0a08] text-[#f0eeeb] flex flex-col items-center font-sans">
       <main className="w-full max-w-md mx-auto px-4 pt-4 pb-28 flex-1 flex flex-col">
@@ -206,6 +203,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
             >
               <HomeScreen
@@ -232,6 +230,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
             >
               <BaristaLabScreen
@@ -249,6 +248,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
             >
               <BeanCellarScreen
@@ -271,6 +271,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
             >
               <MethodSelector
@@ -291,6 +292,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
             >
               <RecipeDetailScreen
@@ -310,6 +312,7 @@ export default function App() {
               animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
               exit={{ opacity: 0, scale: 0.97, filter: 'blur(4px)' }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
             >
               <PrepChecklist
@@ -332,6 +335,7 @@ export default function App() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
             >
               <BrewScreen
@@ -355,6 +359,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
             >
               <FinishScreen
@@ -378,6 +383,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
             >
               <HistoryScreen
