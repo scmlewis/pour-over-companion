@@ -1,6 +1,6 @@
 {
-  "name": "Hand-Drip Coffee Timer & Log",
-  "short_name": "DripCoffee",
+  "name": "Pour-Over Companion",
+  "short_name": "Pour-Over",
   "description": "Guided pour-over coffee brew timer with live flow rate, theoretical scale comparison, and local brew log.",
   "start_url": "/",
   "display": "standalone",
