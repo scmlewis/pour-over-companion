@@ -3,6 +3,7 @@ import { ChevronLeft, Plus, Coffee } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Recipe } from '../types';
 import { useLanguage } from '../utils/i18n';
+import { ScreenHeader } from './ScreenHeader';
 
 interface MethodSelectorProps {
   recipes: Recipe[];
@@ -38,30 +39,20 @@ export const MethodSelector: React.FC<MethodSelectorProps> = ({
     <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-0 select-none space-y-5 font-sans text-[#f0eeeb]">
       <div>
         {/* Header */}
-        <div className="sticky top-0 z-30 bg-[#0a0a08] py-3 mb-3 -mx-4 px-4 border-b border-white/[0.04] flex items-center justify-between sticky-header-ios">
-          <button
-            onClick={onBack}
-            className="w-10 h-10 -ml-1.5 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <ChevronLeft className="w-6 h-6 stroke-[2]" />
-          </button>
-          <div className="text-center">
-            <div className="eyebrow mb-1">
-              <span>{t('methods.title')}</span>
-            </div>
-            <h2 className="text-base font-black text-[#f0eeeb]/80 tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-              {language === 'zh' ? '選擇沖煮食譜' : 'SELECT RECIPE'}
-            </h2>
-          </div>
-          <button
-            onClick={onCreateCustomRecipe}
-            className="w-9 h-9 rounded-full bg-[#141311] border border-white/[0.06] flex items-center justify-center text-amber-400 hover:text-white active:scale-90 transition-all duration-500"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <Plus className="w-4 h-4" />
-          </button>
-        </div>
+        <ScreenHeader
+          onBack={onBack}
+          title={language === 'zh' ? '選擇沖煮食譜' : 'SELECT RECIPE'}
+          subtitle={t('methods.title')}
+          rightAction={
+            <button
+              onClick={onCreateCustomRecipe}
+              className="w-9 h-9 rounded-full bg-[#141311] border border-white/[0.06] flex items-center justify-center text-amber-400 hover:text-white active:scale-90 transition-all duration-500"
+              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+          }
+        />
 
         {/* Recipe Cards — Double-Bezel */}
         <motion.div variants={listVariants} initial="hidden" animate="visible" className="space-y-3 mb-4">

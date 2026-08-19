@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  ChevronLeft,
   Coffee,
   Plus,
   Trash2,
@@ -22,6 +21,7 @@ import sampleBeans from '../data/sampleBeans.json';
 import { BeanInfo, Recipe } from '../types';
 import { ASSETS } from '../assets';
 import { useLanguage } from '../utils/i18n';
+import { ScreenHeader } from './ScreenHeader';
 
 interface BeanCellarScreenProps {
   activeBean: BeanInfo | null;
@@ -270,32 +270,22 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
     <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-5 font-sans text-[#f0eeeb]">
       <div>
         {/* Header */}
-        <div className="flex items-center justify-between py-1 mb-3">
-          <button
-            onClick={onBack}
-            className="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <ChevronLeft className="w-6 h-6 stroke-[2]" />
-          </button>
-          <div className="text-center">
-            <div className="eyebrow mb-1">
-              <Layers className="w-3 h-3" />
-              <span>SPECIALTY BEAN CELLAR ({allBeans.length})</span>
-            </div>
-            <h2 className="text-base font-bold text-[#f0eeeb]/80 tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-              {language === 'zh' ? '精品豆窖與豆單' : 'Bean Cellar & Profiler'}
-            </h2>
-          </div>
-          <button
-            onClick={() => setShowFlavorWheelModal(true)}
-            title={t('scan.flavorWheel')}
-            className="w-9 h-9 rounded-full bg-[#141311] border border-white/[0.06] flex items-center justify-center text-amber-400 hover:text-white active:scale-90 transition-all duration-500"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <Compass className="w-4 h-4" />
-          </button>
-        </div>
+        <ScreenHeader
+          onBack={onBack}
+          title={language === 'zh' ? '精品豆窖與豆單' : 'Bean Cellar & Profiler'}
+          subtitle={`SPECIALTY BEAN CELLAR (${allBeans.length})`}
+          eyebrowIcon={<Layers className="w-3 h-3" />}
+          rightAction={
+            <button
+              onClick={() => setShowFlavorWheelModal(true)}
+              title={t('scan.flavorWheel')}
+              className="w-9 h-9 rounded-full bg-[#141311] border border-white/[0.06] flex items-center justify-center text-amber-400 hover:text-white active:scale-90 transition-all duration-500"
+              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+            >
+              <Compass className="w-4 h-4" />
+            </button>
+          }
+        />
 
         {/* Tab Switcher — Double-Bezel */}
         <div className="bezel-outer mb-4">

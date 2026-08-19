@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ChevronLeft, MessageCircle, RefreshCw, Sparkles, Droplets, Coffee } from 'lucide-react';
+import { MessageCircle, RefreshCw, Sparkles, Droplets, Coffee } from 'lucide-react';
 import { Recipe, BeanInfo } from '../types';
 import { useLanguage } from '../utils/i18n';
+import { ScreenHeader } from './ScreenHeader';
 
 interface RecipeDetailScreenProps {
   recipe: Recipe;
@@ -54,21 +55,10 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
     <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-5 font-sans text-[#f0eeeb]">
       <div>
         {/* Top Header */}
-        <div className="flex items-center justify-between py-1 mb-3">
-          <button
-            onClick={onBack}
-            className="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <ChevronLeft className="w-6 h-6 stroke-[2]" />
-          </button>
-          <div className="text-center">
-            <h2 className="text-base font-bold text-[#f0eeeb]/80 tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-              {t('recipe.details')}
-            </h2>
-          </div>
-          <span className="w-8" />
-        </div>
+        <ScreenHeader
+          onBack={onBack}
+          title={t('recipe.details')}
+        />
 
         {/* Selected Method Label & Title */}
         <div className="mb-4 px-1">

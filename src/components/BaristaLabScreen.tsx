@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
-  ChevronLeft, Sparkles, Calculator, Droplets, Flame, Sliders, Compass, Zap,
+  Sparkles, Calculator, Droplets, Flame, Sliders, Compass, Zap,
   RotateCcw, CheckCircle2, AlertCircle, HelpCircle, Layers, Thermometer, Activity,
   ArrowRight, BookOpen,
 } from 'lucide-react';
 import { ArtOfPouringCard } from './ArtOfPouringCard';
 import { BrewingTipCard } from './BrewingTipCard';
+import { ScreenHeader } from './ScreenHeader';
 import { useLanguage } from '../utils/i18n';
 
 interface BaristaLabScreenProps {
@@ -83,27 +84,17 @@ export const BaristaLabScreen: React.FC<BaristaLabScreenProps> = ({
     <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-4 font-sans text-[#f0eeeb]">
       <div>
         {/* Header */}
-        <div className="flex items-center justify-between py-1 mb-3">
-          <button
-            onClick={onBack}
-            className="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <ChevronLeft className="w-6 h-6 stroke-[2]" />
-          </button>
-          <div className="text-center">
-            <div className="eyebrow mb-1">
-              <Zap className="w-3 h-3" />
-              <span>PRECISION EXTRACTION SUITE</span>
+        <ScreenHeader
+          onBack={onBack}
+          title={language === 'zh' ? '咖啡萃取實驗室' : 'Barista Lab'}
+          subtitle="PRECISION EXTRACTION SUITE"
+          eyebrowIcon={<Zap className="w-3 h-3" />}
+          rightAction={
+            <div className="w-9 h-9 rounded-full bg-amber-500/10 border border-amber-500/15 flex items-center justify-center text-amber-400">
+              <Zap className="w-4 h-4" />
             </div>
-            <h2 className="text-base font-bold text-[#f0eeeb]/80 tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-              {language === 'zh' ? '咖啡萃取實驗室' : 'Barista Lab'}
-            </h2>
-          </div>
-          <div className="w-9 h-9 rounded-full bg-amber-500/10 border border-amber-500/15 flex items-center justify-center text-amber-400">
-            <Zap className="w-4 h-4" />
-          </div>
-        </div>
+          }
+        />
 
         {/* Tab Bar — Double-Bezel */}
         <div className="bezel-outer mb-4">

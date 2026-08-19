@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { BrewLogEntry } from '../types';
-import { ChevronLeft, Download, Trash2, Star, Coffee, Compass, Edit3, X, Check } from 'lucide-react';
+import { Download, Trash2, Star, Coffee, Edit3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { deleteBrewLog, exportLogsAsCSV } from '../utils/db';
 import { useLanguage } from '../utils/i18n';
+import { ScreenHeader } from './ScreenHeader';
 
 interface HistoryScreenProps {
   logs: BrewLogEntry[];
@@ -75,31 +76,21 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
     <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-0 select-none space-y-5 font-sans text-[#f0eeeb]">
       <div>
         {/* Header */}
-        <div className="sticky top-0 z-30 bg-[#0a0a08] py-3 mb-3 -mx-4 px-4 border-b border-white/[0.04] flex items-center justify-between sticky-header-ios">
-          <button
-            onClick={onBack}
-            className="w-10 h-10 -ml-1.5 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <ChevronLeft className="w-6 h-6 stroke-[2]" />
-          </button>
-          <div className="text-center">
-            <div className="eyebrow mb-1">
-              <span>{t('history.title')}</span>
-            </div>
-            <h2 className="text-base font-black text-[#f0eeeb]/80 tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-              {language === 'zh' ? '沖煮日誌' : 'BREW JOURNAL'}
-            </h2>
-          </div>
-          <button
-            onClick={() => exportLogsAsCSV(logs)}
-            title="CSV"
-            className="p-2 rounded-full bg-[#141311] border border-white/[0.06] text-[#f0eeeb]/40 hover:text-amber-400 active:scale-90 transition-all duration-500"
-            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-          >
-            <Download className="w-4 h-4" />
-          </button>
-        </div>
+        <ScreenHeader
+          onBack={onBack}
+          title={language === 'zh' ? '沖煮日誌' : 'BREW JOURNAL'}
+          subtitle={t('history.title')}
+          rightAction={
+            <button
+              onClick={() => exportLogsAsCSV(logs)}
+              title="CSV"
+              className="p-2 rounded-full bg-[#141311] border border-white/[0.06] text-[#f0eeeb]/40 hover:text-amber-400 active:scale-90 transition-all duration-500"
+              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+            >
+              <Download className="w-4 h-4" />
+            </button>
+          }
+        />
 
         {/* Stats — Double-Bezel */}
         <motion.div className="bezel-card mb-4" whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-20px' }} initial={{ opacity: 0, y: 16 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}>
