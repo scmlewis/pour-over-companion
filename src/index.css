@@ -1,9 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  --sat: 0px;
-  --sab: 0px;
-
   --font-sans: 'Plus Jakarta Sans', 'Space Grotesk', system-ui, sans-serif;
   --font-display: 'Space Grotesk', 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
