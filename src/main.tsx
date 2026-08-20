@@ -8,21 +8,28 @@ function applySafeAreaInsets() {
   const isIOS = /iPad|iPhone|iPod/.test(ua) ||
     navigator.platform === 'iPhone' ||
     (navigator.platform === 'MacIntel' && (navigator as any).maxTouchPoints > 1);
-  const isStandalone = window.navigator.standalone === true ||
-    window.matchMedia('(display-mode: standalone)').matches;
 
   if (!isIOS) return;
 
-  // In Safari BROWSER mode, env(safe-area-inset-*) returns the correct device
-  // value (e.g. ~54px on a Dynamic Island iPhone), so we leave --sat unset and
-  // let the CSS fall back to env().
-  // In PWA STANDALONE mode, env() returns 0, so we must set explicit values.
-  if (isStandalone) {
-    const isNotched = window.screen.height >= 812;
-    const sat = isNotched ? 54 : 20; // Dynamic Island ~54px; older devices ~20px
-    document.documentElement.style.setProperty('--sat', sat + 'px');
-    document.documentElement.style.setProperty('--sab', '34px');
-  }
+  // Probe env() by measuring a fixed element's actual position.
+  const probe = document.createElement('div');
+  probe.style.cssText =
+    'position:fixed;top:env(safe-area-inset-top);left:0;right:0;height:1px;opacity:0;pointer-events:none;';
+  document.body.appendChild(probe);
+  const sat = Math.round(probe.getBoundingClientRect().top);
+  document.body.removeChild(probe);
+
+  // env() works in Safari browser but returns 0 in PWA standalone mode.
+  const isStandalone = window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches;
+  const isNotched = window.screen.height >= 812;
+  const finalSat = sat > 0 ? sat : (isNotched ? 54 : 20);
+
+  // 1. Set on :root for all CSS var(--sat) consumers (ScreenHeader, cover bar, etc.)
+  document.documentElement.style.setProperty('--sat', finalSat + 'px');
+  document.documentElement.style.setProperty('--sab', '34px');
+  // 2. Set body padding directly via inline style (guaranteed — overrides CSS)
+  document.body.style.paddingTop = finalSat + 'px';
 }
 
 if (document.readyState === 'loading') {
