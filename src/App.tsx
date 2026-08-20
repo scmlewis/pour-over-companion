@@ -235,9 +235,9 @@ export default function App() {
           {currentView === 'home' && (
             <motion.div
               key="home"
-              initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
@@ -263,9 +263,9 @@ export default function App() {
           {currentView === 'lab' && (
             <motion.div
               key="lab"
-              initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
@@ -281,9 +281,9 @@ export default function App() {
           {(currentView === 'beans') && (
             <motion.div
               key="beans"
-              initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
@@ -304,9 +304,9 @@ export default function App() {
           {currentView === 'methods' && (
             <motion.div
               key="methods"
-              initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
@@ -325,9 +325,9 @@ export default function App() {
           {currentView === 'recipe-detail' && (
             <motion.div
               key="recipe-detail"
-              initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
@@ -345,9 +345,9 @@ export default function App() {
           {currentView === 'prep' && (
             <motion.div
               key="prep"
-              initial={{ opacity: 0, scale: 0.97, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, scale: 0.97, filter: 'blur(4px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
@@ -368,9 +368,9 @@ export default function App() {
           {currentView === 'brew' && (
             <motion.div
               key="brew"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
@@ -392,9 +392,9 @@ export default function App() {
           {currentView === 'finish' && (
             <motion.div
               key="finish"
-              initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
@@ -416,9 +416,9 @@ export default function App() {
           {currentView === 'history' && (
             <motion.div
               key="history"
-              initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
