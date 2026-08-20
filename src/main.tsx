@@ -11,27 +11,17 @@ function applySafeAreaInsets() {
 
   if (!isIOS) return;
 
-  // Probe whether env(safe-area-inset-*) actually returns a value in this context.
-  const probe = document.createElement('div');
-  probe.style.cssText =
-    'position:fixed;top:env(safe-area-inset-top);bottom:env(safe-area-inset-bottom);left:0;right:0;height:1px;opacity:0;pointer-events:none;';
-  document.body.appendChild(probe);
-  const rect = probe.getBoundingClientRect();
-  document.body.removeChild(probe);
+  // Hardcode known iOS safe-area heights. env() is unreliable in Safari browser
+  // mode (returns 0), so we set explicit values and apply body padding directly
+  // via inline style (which always wins over the CSS var fallback).
+  const isNotched = window.screen.height >= 812; // iPhone X and later
+  const sat = isNotched ? 44 : 20; // status bar height
+  const sab = 34; // home indicator
 
-  const top = Math.round(rect.top);
-  const bottom = Math.round(window.innerHeight - rect.bottom);
-
-  if (top > 0 || bottom > 0) {
-    // env() works — use the real values
-    document.documentElement.style.setProperty('--sat', top + 'px');
-    document.documentElement.style.setProperty('--sab', bottom + 'px');
-  } else {
-    // env() unsupported / returns 0 — fall back to device heuristic
-    const isNotched = window.screen.height >= 812; // iPhone X and later
-    document.documentElement.style.setProperty('--sat', (isNotched ? 59 : 20) + 'px');
-    document.documentElement.style.setProperty('--sab', '34px');
-  }
+  document.documentElement.style.setProperty('--sat', sat + 'px');
+  document.documentElement.style.setProperty('--sab', sab + 'px');
+  document.body.style.paddingTop = sat + 'px';
+  document.body.style.paddingBottom = '0px';
 }
 
 if (document.readyState === 'loading') {
