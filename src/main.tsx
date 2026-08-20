@@ -8,20 +8,21 @@ function applySafeAreaInsets() {
   const isIOS = /iPad|iPhone|iPod/.test(ua) ||
     navigator.platform === 'iPhone' ||
     (navigator.platform === 'MacIntel' && (navigator as any).maxTouchPoints > 1);
+  const isStandalone = window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches;
 
   if (!isIOS) return;
 
-  // Hardcode known iOS safe-area heights. env() is unreliable in Safari browser
-  // mode (returns 0), so we set explicit values and apply body padding directly
-  // via inline style (which always wins over the CSS var fallback).
-  const isNotched = window.screen.height >= 812; // iPhone X and later
-  const sat = isNotched ? 44 : 20; // status bar height
-  const sab = 34; // home indicator
-
-  document.documentElement.style.setProperty('--sat', sat + 'px');
-  document.documentElement.style.setProperty('--sab', sab + 'px');
-  document.body.style.paddingTop = sat + 'px';
-  document.body.style.paddingBottom = '0px';
+  // In Safari BROWSER mode, env(safe-area-inset-*) returns the correct device
+  // value (e.g. ~54px on a Dynamic Island iPhone), so we leave --sat unset and
+  // let the CSS fall back to env().
+  // In PWA STANDALONE mode, env() returns 0, so we must set explicit values.
+  if (isStandalone) {
+    const isNotched = window.screen.height >= 812;
+    const sat = isNotched ? 54 : 20; // Dynamic Island ~54px; older devices ~20px
+    document.documentElement.style.setProperty('--sat', sat + 'px');
+    document.documentElement.style.setProperty('--sab', '34px');
+  }
 }
 
 if (document.readyState === 'loading') {
