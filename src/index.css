@@ -43,6 +43,12 @@
     padding-bottom: var(--sab, env(safe-area-inset-bottom));
   }
 
+  /* iOS PWA/Safari fallback when env(safe-area-inset-*) reports 0 */
+  .pwa-standalone {
+    --sat: 59px;
+    --sab: 34px;
+  }
+
   /* Selection color */
   ::selection {
     background-color: rgba(245, 158, 11, 0.35);

@@ -6,19 +6,18 @@ import './index.css';
 function applySafeAreaInsets() {
   const root = document.documentElement;
 
-  const test = document.createElement('div');
-  test.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:1px;padding-top:env(safe-area-inset-top);pointer-events:none;opacity:0;overflow:hidden';
-  document.body.appendChild(test);
-  const topValue = getComputedStyle(test).paddingTop;
-  document.body.removeChild(test);
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua) ||
+    (navigator.platform === 'MacIntel' && (navigator as any).maxTouchPoints > 1);
+  const isStandalone = window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches;
 
-  if (topValue === '0px' || topValue === '0') {
-    const isStandalone = window.navigator.standalone === true ||
-                         window.matchMedia('(display-mode: standalone)').matches;
-    if (isStandalone) {
-      root.style.setProperty('--sat', '59px');
-      root.style.setProperty('--sab', '34px');
-    }
+  // iOS PWA / Safari frequently reports env(safe-area-inset-*) as 0, so we
+  // apply explicit insets via a class. 59px top / 34px bottom covers modern
+  // iPhones (Dynamic Island + home indicator); slightly generous on notched
+  // devices but always clears the system chrome.
+  if (isIOS || isStandalone) {
+    root.classList.add('pwa-standalone');
   }
 }
 

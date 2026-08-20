@@ -1,5 +1,5 @@
-const CACHE_NAME = 'hand-drip-v2';
-const IMAGE_CACHE_NAME = 'hand-drip-images-v2';
+const CACHE_NAME = 'hand-drip-v3';
+const IMAGE_CACHE_NAME = 'hand-drip-images-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -10,44 +10,59 @@ const ASSETS_TO_CACHE = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(ASSETS_TO_CACHE))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
+    caches.keys()
+      .then((keys) => Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME && key !== IMAGE_CACHE_NAME) {
             return caches.delete(key);
           }
         })
-      );
-    })
+      ))
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  
+
   const url = new URL(event.request.url);
   const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url.pathname);
-  
+  const isNavigation = event.request.mode === 'navigate';
+
+  // Network-first for navigation requests so new deploys are picked up
+  // immediately instead of serving a stale cached HTML shell.
+  if (isNavigation) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, networkResponse.clone());
+          });
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request).then((r) => r || caches.match('/index.html')))
+    );
+    return;
+  }
+
+  // Cache-first for static assets (JS/CSS/images) with background refresh.
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Fetch background update
         fetch(event.request)
           .then((networkResponse) => {
             if (networkResponse && networkResponse.status === 200) {
               const cacheName = isImage ? IMAGE_CACHE_NAME : CACHE_NAME;
               caches.open(cacheName).then((cache) => {
-                cache.put(event.request, networkResponse);
+                cache.put(event.request, networkResponse.clone());
               });
             }
           })
@@ -66,7 +81,7 @@ self.addEventListener('fetch', (event) => {
         return networkResponse;
       });
     }).catch(() => {
-      // Offline fallback
+      if (isImage) return undefined;
       return caches.match('/index.html');
     })
   );
