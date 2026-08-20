@@ -219,11 +219,6 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] bg-[#0a0a08] text-[#f0eeeb] flex flex-col items-center font-sans">
-      {/* Cover for translucent iOS status bar */}
-      <div
-        className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
-        style={{ height: 'var(--sat, env(safe-area-inset-top, 0px))', background: '#0a0a08' }}
-      />
       <main className="w-full max-w-md mx-auto px-4 flex-1 flex flex-col">
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
@@ -235,7 +230,6 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))' }}
             >
               <HomeScreen
                 logs={logs}
@@ -264,7 +258,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
+              style={{ paddingTop: '3.5rem' }}
             >
               <BaristaLabScreen
                 onBack={() => setCurrentView('home')}
@@ -283,7 +277,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
+              style={{ paddingTop: '3.5rem' }}
             >
               <BeanCellarScreen
                 activeBean={scannedBean}
@@ -307,7 +301,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
+              style={{ paddingTop: '3.5rem' }}
             >
               <MethodSelector
                 recipes={allRecipes}
@@ -329,7 +323,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
+              style={{ paddingTop: '3.5rem' }}
             >
               <RecipeDetailScreen
                 recipe={selectedRecipe}
@@ -397,7 +391,6 @@ export default function App() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))' }}
             >
               <FinishScreen
                 recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
@@ -422,7 +415,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
+              style={{ paddingTop: '3.5rem' }}
             >
               <HistoryScreen
                 logs={logs}

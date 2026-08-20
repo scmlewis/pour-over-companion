@@ -250,7 +250,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
       className="w-full h-full flex flex-col pb-3 pt-0 select-none font-sans text-[#f0eeeb] relative overflow-hidden"
     >
       {/* Scrollable content area */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pb-2 space-y-2" style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 2.5rem)', paddingBottom: 'var(--sab, env(safe-area-inset-bottom))' }}>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pb-2 space-y-2" style={{ paddingTop: '2.5rem', paddingBottom: 'var(--sab, env(safe-area-inset-bottom))' }}>
 
         {/* Fixed Top Header */}
         <motion.div variants={headerVariants} className="fixed top-0 left-0 right-0 z-30 bg-[#0a0a08] py-2 px-4 border-b border-white/[0.04] flex items-center justify-between" style={{ top: 'var(--sat, env(safe-area-inset-top))' }}>

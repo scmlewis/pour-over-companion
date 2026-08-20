@@ -55,7 +55,7 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
 
   return (
     <div className="w-full flex-1 flex flex-col justify-between pb-6 select-none space-y-5 font-sans text-[#f0eeeb]" style={{ paddingBottom: 'calc(var(--sab, env(safe-area-inset-bottom)) + 1.5rem)' }}>
-      <div style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3rem)' }}>
+      <div style={{ paddingTop: '3rem' }}>
         {/* Fixed Header */}
         <div className="fixed top-0 left-0 right-0 z-30 bg-[#0a0a08] py-3 px-4 border-b border-white/[0.04] flex items-center justify-between" style={{ top: 'var(--sat, env(safe-area-inset-top))' }}>
           <button
