@@ -37,10 +37,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    padding-top: var(--sat, env(safe-area-inset-top));
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    padding-bottom: var(--sab, env(safe-area-inset-bottom));
   }
 
   /* Selection color */
@@ -379,12 +375,8 @@ body::after {
   display: none;
 }
 
-/* iOS Safari sticky header fix.
-   clip-path forces the element into its own compositing layer and clips any
-   content bleeding through from behind — works even when a parent has a
-   transform (Framer Motion translateY). */
+/* Sticky header — opaque background, no compositing hacks needed now that
+   Framer Motion parent transforms are removed. */
 .sticky-header-ios {
   background-color: #0a0a08;
-  clip-path: inset(0 0 0 0);
-  will-change: transform;
 }

@@ -230,7 +230,7 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] bg-[#0a0a08] text-[#f0eeeb] flex flex-col items-center font-sans">
-      <main className="w-full max-w-md mx-auto px-4 pb-28 flex-1 flex flex-col" style={{ paddingTop: '1rem' }}>
+      <main className="w-full max-w-md mx-auto px-4 flex-1 flex flex-col">
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
             <motion.div
@@ -240,7 +240,8 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col overflow-y-auto"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))', paddingBottom: '7rem' }}
             >
               <HomeScreen
                 logs={logs}
@@ -268,7 +269,8 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col overflow-y-auto"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))', paddingBottom: '7rem' }}
             >
               <BaristaLabScreen
                 onBack={() => setCurrentView('home')}
@@ -286,7 +288,8 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col overflow-y-auto"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))', paddingBottom: '7rem' }}
             >
               <BeanCellarScreen
                 activeBean={scannedBean}
@@ -309,7 +312,8 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col overflow-y-auto"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))', paddingBottom: '7rem' }}
             >
               <MethodSelector
                 recipes={allRecipes}
@@ -330,7 +334,8 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col overflow-y-auto"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))', paddingBottom: '7rem' }}
             >
               <RecipeDetailScreen
                 recipe={selectedRecipe}
@@ -350,7 +355,8 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col overflow-y-auto"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))', paddingBottom: '7rem' }}
             >
               <PrepChecklist
                 recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
@@ -397,7 +403,8 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col overflow-y-auto"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))', paddingBottom: '7rem' }}
             >
               <FinishScreen
                 recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
@@ -421,7 +428,8 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col overflow-y-auto"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))', paddingBottom: '7rem' }}
             >
               <HistoryScreen
                 logs={logs}
