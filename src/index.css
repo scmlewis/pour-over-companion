@@ -379,14 +379,12 @@ body::after {
   display: none;
 }
 
-/* iOS Safari sticky header fix - forces opaque background behind blur.
-   opacity:0.999 forces iOS Safari to composite this element independently of
-   any parent transform (Framer Motion translateY), preventing scroll-bleed. */
+/* iOS Safari sticky header fix.
+   clip-path forces the element into its own compositing layer and clips any
+   content bleeding through from behind — works even when a parent has a
+   transform (Framer Motion translateY). */
 .sticky-header-ios {
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  will-change: transform;
   background-color: #0a0a08;
-  opacity: 0.999;
+  clip-path: inset(0 0 0 0);
+  will-change: transform;
 }

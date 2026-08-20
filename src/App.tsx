@@ -230,7 +230,7 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] bg-[#0a0a08] text-[#f0eeeb] flex flex-col items-center font-sans">
-      <main className="w-full max-w-md mx-auto px-4 pb-28 flex-1 flex flex-col" style={{ paddingTop: 'max(1rem, var(--sat, env(safe-area-inset-top)))' }}>
+      <main className="w-full max-w-md mx-auto px-4 pb-28 flex-1 flex flex-col" style={{ paddingTop: '1rem' }}>
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
             <motion.div
