@@ -43,12 +43,6 @@
     padding-bottom: var(--sab, env(safe-area-inset-bottom));
   }
 
-  /* iOS PWA/Safari fallback when env(safe-area-inset-*) reports 0 */
-  .pwa-standalone {
-    --sat: 59px;
-    --sab: 34px;
-  }
-
   /* Selection color */
   ::selection {
     background-color: rgba(245, 158, 11, 0.35);
@@ -385,11 +379,14 @@ body::after {
   display: none;
 }
 
-/* iOS Safari sticky header fix - forces opaque background behind blur */
+/* iOS Safari sticky header fix - forces opaque background behind blur.
+   opacity:0.999 forces iOS Safari to composite this element independently of
+   any parent transform (Framer Motion translateY), preventing scroll-bleed. */
 .sticky-header-ios {
   -webkit-transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: transform;
   background-color: #0a0a08;
+  opacity: 0.999;
 }
