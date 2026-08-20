@@ -273,8 +273,7 @@ export const BeanCellarScreen: React.FC<BeanCellarScreenProps> = ({
         <ScreenHeader
           onBack={onBack}
           title={language === 'zh' ? '精品豆窖與豆單' : 'Bean Cellar & Profiler'}
-          subtitle={`SPECIALTY BEAN CELLAR (${allBeans.length})`}
-          eyebrowIcon={<Layers className="w-3 h-3" />}
+
           rightAction={
             <button
               onClick={() => setShowFlavorWheelModal(true)}

@@ -66,9 +66,6 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
             <ChevronLeft className="w-6 h-6 stroke-[2]" />
           </button>
           <div className="text-center">
-            <div className="eyebrow mb-1">
-              <span>{t('prep.title')}</span>
-            </div>
             <h2 className="text-base font-bold text-[#f0eeeb]/80 tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
               {language === 'zh' ? '沖煮前準備' : 'PRE-BREW SETUP'}
             </h2>

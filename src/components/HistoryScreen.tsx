@@ -79,7 +79,7 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
         <ScreenHeader
           onBack={onBack}
           title={language === 'zh' ? '沖煮日誌' : 'BREW JOURNAL'}
-          subtitle={t('history.title')}
+
           rightAction={
             <button
               onClick={() => exportLogsAsCSV(logs)}

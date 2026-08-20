@@ -42,7 +42,7 @@ export const MethodSelector: React.FC<MethodSelectorProps> = ({
         <ScreenHeader
           onBack={onBack}
           title={language === 'zh' ? '選擇沖煮食譜' : 'SELECT RECIPE'}
-          subtitle={t('methods.title')}
+
           rightAction={
             <button
               onClick={onCreateCustomRecipe}

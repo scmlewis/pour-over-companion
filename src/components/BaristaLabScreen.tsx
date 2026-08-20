@@ -87,8 +87,7 @@ export const BaristaLabScreen: React.FC<BaristaLabScreenProps> = ({
         <ScreenHeader
           onBack={onBack}
           title={language === 'zh' ? '咖啡萃取實驗室' : 'Barista Lab'}
-          subtitle="PRECISION EXTRACTION SUITE"
-          eyebrowIcon={<Zap className="w-3 h-3" />}
+
           rightAction={
             <div className="w-9 h-9 rounded-full bg-amber-500/10 border border-amber-500/15 flex items-center justify-center text-amber-400">
               <Zap className="w-4 h-4" />

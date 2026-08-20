@@ -37,9 +37,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    padding-top: env(safe-area-inset-top);
+    padding-top: var(--sat, env(safe-area-inset-top));
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
+    padding-bottom: var(--sab, env(safe-area-inset-bottom));
   }
 
   /* Selection color */
@@ -381,5 +382,8 @@ body::after {
 /* iOS Safari sticky header fix - forces opaque background behind blur */
 .sticky-header-ios {
   -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   will-change: transform;
+  background-color: #0a0a08;
 }

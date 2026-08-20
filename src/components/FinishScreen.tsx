@@ -64,9 +64,6 @@ export const FinishScreen: React.FC<FinishScreenProps> = ({
             style={{ boxShadow: '0 0 0 4px rgba(16, 185, 129, 0.08), 0 4px 24px rgba(16, 185, 129, 0.15)' }}>
             <Check className="w-8 h-8 stroke-[3]" />
           </div>
-          <div className="eyebrow mb-2 mx-auto w-fit">
-            <span>EXTRACTION COMPLETE</span>
-          </div>
           <h1 className="text-2xl sm:text-3xl font-black text-white" style={{ fontFamily: 'var(--font-display)' }}>
             {t('finish.completeTitle')}
           </h1>

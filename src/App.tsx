@@ -230,7 +230,7 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] bg-[#0a0a08] text-[#f0eeeb] flex flex-col items-center font-sans">
-      <main className="w-full max-w-md mx-auto px-4 pb-28 flex-1 flex flex-col" style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}>
+      <main className="w-full max-w-md mx-auto px-4 pb-28 flex-1 flex flex-col" style={{ paddingTop: 'max(1rem, var(--sat, env(safe-area-inset-top)))' }}>
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
             <motion.div
@@ -437,12 +437,12 @@ export default function App() {
 
       {/* Floating Pill Navigation */}
       {showNav && (
-        <nav className="fixed left-1/2 -translate-x-1/2 z-40" style={{ bottom: 'max(1.5rem, calc(env(safe-area-inset-bottom) + 1.5rem))' }}>
+        <nav className="fixed left-1/2 -translate-x-1/2 z-40" style={{ bottom: 'max(1.5rem, calc(var(--sab, env(safe-area-inset-bottom)) + 1.5rem))' }}>
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="flex items-center gap-1 p-1.5 rounded-full bg-[#0f0e0c]/90 backdrop-blur-xl border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.6),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]"
+            className="flex items-center gap-1 p-1.5 rounded-full bg-[#0f0e0c] border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.6),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]"
           >
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
