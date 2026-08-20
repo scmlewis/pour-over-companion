@@ -1,5 +1,5 @@
-const CACHE_NAME = 'hand-drip-v3';
-const IMAGE_CACHE_NAME = 'hand-drip-images-v3';
+const CACHE_NAME = 'hand-drip-v4';
+const IMAGE_CACHE_NAME = 'hand-drip-images-v4';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -36,10 +36,10 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url.pathname);
   const isNavigation = event.request.mode === 'navigate';
+  const isCode = /\.(js|css)$/i.test(url.pathname) || url.pathname.startsWith('/assets/');
 
-  // Network-first for navigation requests so new deploys are picked up
-  // immediately instead of serving a stale cached HTML shell.
-  if (isNavigation) {
+  // Network-first for HTML and hashed JS/CSS so deploys are not stuck on stale bundles.
+  if (isNavigation || isCode) {
     event.respondWith(
       fetch(event.request)
         .then((networkResponse) => {

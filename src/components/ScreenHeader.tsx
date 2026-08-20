@@ -11,10 +11,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   onBack, title, rightAction,
 }) => {
   return (
-    <div 
-      className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a08] py-3 px-4 border-b border-white/[0.04] flex items-center justify-between"
-      style={{ top: 'var(--sat, env(safe-area-inset-top))' }}
-    >
+    <div className="sticky top-0 z-20 -mx-4 px-4 bg-[#0a0a08] py-3 border-b border-white/[0.04] flex items-center justify-between">
       {onBack ? (
         <button
           onClick={onBack}

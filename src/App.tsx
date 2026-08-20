@@ -219,11 +219,6 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] bg-[#0a0a08] text-[#f0eeeb] flex flex-col items-center font-sans">
-      {/* Solid layer painted behind the translucent iOS status bar */}
-      <div
-        className="fixed top-0 left-0 right-0 z-40 pointer-events-none"
-        style={{ height: 'var(--sat, env(safe-area-inset-top))', background: '#0a0a08' }}
-      />
       <main className="w-full max-w-md mx-auto px-4 flex-1 flex flex-col">
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
@@ -263,7 +258,6 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: '3.5rem' }}
             >
               <BaristaLabScreen
                 onBack={() => setCurrentView('home')}
@@ -282,7 +276,6 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: '3.5rem' }}
             >
               <BeanCellarScreen
                 activeBean={scannedBean}
@@ -306,7 +299,6 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: '3.5rem' }}
             >
               <MethodSelector
                 recipes={allRecipes}
@@ -328,7 +320,6 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: '3.5rem' }}
             >
               <RecipeDetailScreen
                 recipe={selectedRecipe}
@@ -420,7 +411,6 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: '3.5rem' }}
             >
               <HistoryScreen
                 logs={logs}
