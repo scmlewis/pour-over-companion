@@ -11,7 +11,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   onBack, title, rightAction,
 }) => {
   return (
-    <div className="sticky top-0 z-20 -mx-4 px-4 bg-[#0a0a08] py-3 border-b border-white/[0.04] flex items-center justify-between">
+    <div className="sticky top-0 z-20 -mx-4 px-4 bg-[#0a0a08] border-b border-white/[0.04] flex items-center justify-between" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 0.75rem)', paddingBottom: '0.75rem' }}>
       {onBack ? (
         <button
           onClick={onBack}

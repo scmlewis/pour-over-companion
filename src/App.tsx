@@ -230,6 +230,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'env(safe-area-inset-top)' }}
             >
               <HomeScreen
                 logs={logs}
@@ -387,6 +388,7 @@ export default function App() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'env(safe-area-inset-top)' }}
             >
               <FinishScreen
                 recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
