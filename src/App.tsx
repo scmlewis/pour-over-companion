@@ -222,7 +222,7 @@ export default function App() {
       {/* Cover for translucent iOS status bar */}
       <div
         className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
-        style={{ height: 'env(safe-area-inset-top, 0px)', background: '#0a0a08' }}
+        style={{ height: 'var(--sat, env(safe-area-inset-top, 0px))', background: '#0a0a08' }}
       />
       <main className="w-full max-w-md mx-auto px-4 flex-1 flex flex-col">
         <AnimatePresence mode="wait">

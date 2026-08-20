@@ -8,11 +8,28 @@ function applySafeAreaInsets() {
   const isIOS = /iPad|iPhone|iPod/.test(ua) ||
     navigator.platform === 'iPhone' ||
     (navigator.platform === 'MacIntel' && (navigator as any).maxTouchPoints > 1);
-  const isStandalone = window.navigator.standalone === true ||
-    window.matchMedia('(display-mode: standalone)').matches;
 
-  if (isIOS && isStandalone) {
-    document.documentElement.style.setProperty('--sat', '59px');
+  if (!isIOS) return;
+
+  // Probe whether env(safe-area-inset-*) actually returns a value in this context.
+  const probe = document.createElement('div');
+  probe.style.cssText =
+    'position:fixed;top:env(safe-area-inset-top);bottom:env(safe-area-inset-bottom);left:0;right:0;height:1px;opacity:0;pointer-events:none;';
+  document.body.appendChild(probe);
+  const rect = probe.getBoundingClientRect();
+  document.body.removeChild(probe);
+
+  const top = Math.round(rect.top);
+  const bottom = Math.round(window.innerHeight - rect.bottom);
+
+  if (top > 0 || bottom > 0) {
+    // env() works — use the real values
+    document.documentElement.style.setProperty('--sat', top + 'px');
+    document.documentElement.style.setProperty('--sab', bottom + 'px');
+  } else {
+    // env() unsupported / returns 0 — fall back to device heuristic
+    const isNotched = window.screen.height >= 812; // iPhone X and later
+    document.documentElement.style.setProperty('--sat', (isNotched ? 59 : 20) + 'px');
     document.documentElement.style.setProperty('--sab', '34px');
   }
 }
