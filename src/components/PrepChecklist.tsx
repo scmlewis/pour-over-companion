@@ -54,13 +54,13 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
   const isAllChecked = checkedCount === checklistItems.length;
 
   return (
-    <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-5 font-sans text-[#f0eeeb]" style={{ paddingBottom: 'calc(var(--sab, env(safe-area-inset-bottom)) + 1.5rem)' }}>
-      <div>
-        {/* Header */}
-        <div className="flex items-center justify-between py-1 mb-4">
+    <div className="w-full flex-1 flex flex-col justify-between pb-6 select-none space-y-5 font-sans text-[#f0eeeb]" style={{ paddingBottom: 'calc(var(--sab, env(safe-area-inset-bottom)) + 1.5rem)' }}>
+      <div style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3rem)' }}>
+        {/* Fixed Header */}
+        <div className="fixed top-0 left-0 right-0 z-30 bg-[#0a0a08] py-3 px-4 border-b border-white/[0.04] flex items-center justify-between" style={{ top: 'var(--sat, env(safe-area-inset-top))' }}>
           <button
             onClick={onBack}
-            className="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
+            className="w-10 h-10 -ml-1.5 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
             style={{ transitionTimingFunction: 'var(--ease-spring)' }}
           >
             <ChevronLeft className="w-6 h-6 stroke-[2]" />
@@ -70,7 +70,7 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
               {language === 'zh' ? '沖煮前準備' : 'PRE-BREW SETUP'}
             </h2>
           </div>
-          <span className="w-8" />
+          <span className="w-10" />
         </div>
 
         {/* Parameters Grid — Double-Bezel */}

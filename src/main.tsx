@@ -8,8 +8,10 @@ function applySafeAreaInsets() {
   const isIOS = /iPad|iPhone|iPod/.test(ua) ||
     navigator.platform === 'iPhone' ||
     (navigator.platform === 'MacIntel' && (navigator as any).maxTouchPoints > 1);
+  const isStandalone = window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches;
 
-  if (isIOS) {
+  if (isIOS && isStandalone) {
     document.documentElement.style.setProperty('--sat', '59px');
     document.documentElement.style.setProperty('--sab', '34px');
   }

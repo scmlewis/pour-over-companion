@@ -345,7 +345,6 @@ export default function App() {
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))' }}
             >
               <PrepChecklist
                 recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
@@ -369,7 +368,6 @@ export default function App() {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
-              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))' }}
             >
               <BrewScreen
                 recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
