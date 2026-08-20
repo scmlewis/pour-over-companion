@@ -21,14 +21,6 @@ import { HistoryScreen } from './components/HistoryScreen';
 import { BrewLogDetailModal } from './components/BrewLogDetailModal';
 import { CustomRecipeModal } from './components/CustomRecipeModal';
 import { motion, AnimatePresence } from 'motion/react';
-import { Coffee, BookOpen, Beaker, Home } from 'lucide-react';
-
-const NAV_ITEMS: { view: AppView; icon: typeof Home; label: string }[] = [
-  { view: 'home', icon: Home, label: 'Home' },
-  { view: 'beans', icon: Coffee, label: 'Cellar' },
-  { view: 'lab', icon: Beaker, label: 'Lab' },
-  { view: 'history', icon: BookOpen, label: 'Journal' },
-];
 
 export default function App() {
   const [currentView, setCurrentView] = useState<AppView>('home');
@@ -223,14 +215,11 @@ export default function App() {
     }
   };
 
-  const showNav = !['brew', 'prep', 'finish'].includes(currentView);
-  const activeNav = currentView;
-
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'instant' });
 
   return (
     <div className="min-h-[100dvh] bg-[#0a0a08] text-[#f0eeeb] flex flex-col items-center font-sans">
-      <main className="w-full max-w-md mx-auto px-4 pb-28 flex-1 flex flex-col">
+      <main className="w-full max-w-md mx-auto px-4 flex-1 flex flex-col">
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
             <motion.div
@@ -241,6 +230,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))' }}
             >
               <HomeScreen
                 logs={logs}
@@ -269,6 +259,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
             >
               <BaristaLabScreen
                 onBack={() => setCurrentView('home')}
@@ -287,6 +278,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
             >
               <BeanCellarScreen
                 activeBean={scannedBean}
@@ -310,6 +302,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
             >
               <MethodSelector
                 recipes={allRecipes}
@@ -331,6 +324,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
             >
               <RecipeDetailScreen
                 recipe={selectedRecipe}
@@ -351,6 +345,7 @@ export default function App() {
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))' }}
             >
               <PrepChecklist
                 recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
@@ -374,6 +369,7 @@ export default function App() {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))' }}
             >
               <BrewScreen
                 recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
@@ -398,6 +394,7 @@ export default function App() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'var(--sat, env(safe-area-inset-top))' }}
             >
               <FinishScreen
                 recipe={{ ...selectedRecipe, temp: brewConfig.temp }}
@@ -422,6 +419,7 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onAnimationComplete={scrollToTop}
               className="flex-1 flex flex-col"
+              style={{ paddingTop: 'calc(var(--sat, env(safe-area-inset-top)) + 3.5rem)' }}
             >
               <HistoryScreen
                 logs={logs}
@@ -434,45 +432,6 @@ export default function App() {
           )}
         </AnimatePresence>
       </main>
-
-      {/* Floating Pill Navigation */}
-      {showNav && (
-        <nav className="fixed left-1/2 -translate-x-1/2 z-40" style={{ bottom: 'max(1.5rem, calc(var(--sab, env(safe-area-inset-bottom)) + 1.5rem))' }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="flex items-center gap-1 p-1.5 rounded-full bg-[#0f0e0c] border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.6),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]"
-          >
-            {NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeNav === item.view;
-              return (
-                <button
-                  key={item.view}
-                  onClick={() => setCurrentView(item.view)}
-                  className={`relative flex items-center justify-center rounded-full transition-all duration-500 ${
-                    isActive
-                      ? 'w-10 h-10 bg-amber-500 text-[#0a0a08]'
-                      : 'w-10 h-10 text-[#f0eeeb]/40 hover:text-[#f0eeeb]/70 hover:bg-white/[0.04]'
-                  }`}
-                  style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-                  title={item.label}
-                >
-                  <Icon className="w-4.5 h-4.5" strokeWidth={isActive ? 2.5 : 2} />
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-active"
-                      className="absolute inset-0 rounded-full bg-amber-500 -z-10"
-                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </motion.div>
-        </nav>
-      )}
 
       {/* Modals */}
       {editingLog && (

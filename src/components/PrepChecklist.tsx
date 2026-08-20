@@ -54,7 +54,7 @@ export const PrepChecklist: React.FC<PrepChecklistProps> = ({
   const isAllChecked = checkedCount === checklistItems.length;
 
   return (
-    <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-5 font-sans text-[#f0eeeb]">
+    <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-5 font-sans text-[#f0eeeb]" style={{ paddingBottom: 'calc(var(--sab, env(safe-area-inset-bottom)) + 1.5rem)' }}>
       <div>
         {/* Header */}
         <div className="flex items-center justify-between py-1 mb-4">

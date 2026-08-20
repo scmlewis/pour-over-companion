@@ -12,7 +12,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
 }) => {
   return (
     <div 
-      className="sticky top-0 z-30 bg-[#0a0a08] py-3 mb-3 -mx-4 px-4 border-b border-white/[0.04] flex items-center justify-between sticky-header-ios"
+      className="fixed top-0 left-0 right-0 z-30 bg-[#0a0a08] py-3 px-4 border-b border-white/[0.04] flex items-center justify-between"
       style={{ top: 'var(--sat, env(safe-area-inset-top))' }}
     >
       {onBack ? (

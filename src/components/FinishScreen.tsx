@@ -56,7 +56,7 @@ export const FinishScreen: React.FC<FinishScreenProps> = ({
   };
 
   return (
-    <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-5 font-sans text-[#f0eeeb]">
+    <div className="w-full flex-1 flex flex-col justify-between pb-6 pt-1 select-none space-y-5 font-sans text-[#f0eeeb]" style={{ paddingBottom: 'calc(var(--sab, env(safe-area-inset-bottom)) + 1.5rem)' }}>
       <div>
         {/* Header */}
         <div className="text-center py-4">
