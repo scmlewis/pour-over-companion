@@ -42,6 +42,18 @@
     overflow-x: hidden;
   }
 
+  /* Fills the iOS status bar area so content doesn't bleed through the translucent bar */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--sat, env(safe-area-inset-top));
+    background: var(--color-surface-0);
+    z-index: 50;
+  }
+
   /* Selection color */
   ::selection {
     background-color: rgba(245, 158, 11, 0.35);
