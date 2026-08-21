@@ -29,23 +29,22 @@ const measure = async (simulate59) => {
         if (p) { hdr = p; break; }
       }
     }
-    // brew root = ancestor of header with overflow-hidden
-    let root = hdr;
-    while (root && !(root.className && typeof root.className === 'string' && root.className.includes('overflow-hidden'))) root = root.parentElement;
-    if (sim) root.style.paddingTop = '59px';
-    const R = (el) => { const r = el.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), height: Math.round(r.height) }; };
-    const out = { viewportH: window.innerHeight, rootPad: root ? getComputedStyle(root).paddingTop : null, header: hdr ? R(hdr) : null, headerStyle: hdr ? hdr.getAttribute('style') : null };
+    // scroll container = next sibling of header with overflow-y auto/scroll
+    let scroll = null;
     if (hdr) {
-      let sib = hdr.nextElementSibling, scroll = null;
+      let sib = hdr.nextElementSibling;
       while (sib) { const oy = getComputedStyle(sib).overflowY; if (oy === 'auto' || oy === 'scroll') { scroll = sib; break; } sib = sib.nextElementSibling; }
-      if (scroll) {
-        const kids = [...scroll.children];
-        out.scrollKids = kids.length;
-        if (kids[0]) out.first = { ...R(kids[0]), text: (kids[0].innerText||'').slice(0,24).replace(/\n/g,' ') };
-        if (kids[1]) out.second = R(kids[1]);
-        let b = scroll.nextElementSibling;
-        while (b) { if (b.className && typeof b.className === 'string' && b.className.includes('shrink-0')) { out.bottomControls = R(b); break; } b = b.nextElementSibling; }
-      }
+    }
+    if (sim && scroll) scroll.style.paddingTop = 'calc(59px + 2.5rem)';
+    const R = (el) => { const r = el.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), height: Math.round(r.height) }; };
+    const out = { viewportH: window.innerHeight, scrollPad: scroll ? getComputedStyle(scroll).paddingTop : null, header: hdr ? R(hdr) : null };
+    if (scroll) {
+      const kids = [...scroll.children];
+      out.scrollKids = kids.length;
+      if (kids[0]) out.first = { ...R(kids[0]), text: (kids[0].innerText||'').slice(0,24).replace(/\n/g,' ') };
+      if (kids[1]) out.second = R(kids[1]);
+      let b = scroll.nextElementSibling;
+      while (b) { if (b.className && typeof b.className === 'string' && b.className.includes('shrink-0')) { out.bottomControls = R(b); break; } b = b.nextElementSibling; }
     }
     return out;
   }, simulate59);
