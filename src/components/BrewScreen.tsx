@@ -289,53 +289,52 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           </button>
         </motion.div>
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pt-[calc(env(safe-area-inset-top)+2.5rem)] pb-2 space-y-3">
-        {/* Compact Step Bar + Segmented Progress */}
-        <motion.div variants={stepIndicatorVariants}>
-          <div className="flex items-center justify-between px-1 mb-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-mono font-bold text-amber-300">
-              <span>{t('brew.step')} {(currentStepIndex + 1).toString().padStart(2, '0')} / {scaledSteps.length.toString().padStart(2, '0')}</span>
-              <span className="text-amber-500/40">·</span>
-              <span className="text-[#f0eeeb]/90">{language === 'zh' ? currentStep.label : (currentStep.labelEn || currentStep.label)}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs font-mono text-[#f0eeeb]/50">
-              <span>{language === 'zh' ? '累計' : 'Total'}</span>
-              <span className={`font-bold tabular-nums ${isRunning ? 'text-amber-400' : 'text-amber-300'}`}>{formatTime(elapsedTotalSec)}</span>
-            </div>
+      {/* Step indicator — sits between header and scroll, never covered */}
+      <motion.div variants={stepIndicatorVariants} className="shrink-0 -mx-4 px-4 pt-3 pb-1">
+        <div className="flex items-center justify-between px-1 mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-mono font-bold text-amber-300">
+            <span>{t('brew.step')} {(currentStepIndex + 1).toString().padStart(2, '0')} / {scaledSteps.length.toString().padStart(2, '0')}</span>
+            <span className="text-amber-500/40">·</span>
+            <span className="text-[#f0eeeb]/90">{language === 'zh' ? currentStep.label : (currentStep.labelEn || currentStep.label)}</span>
           </div>
-          <div className="flex gap-2">
-            {scaledSteps.map((step, idx) => {
-              const isCompleted = idx < currentStepIndex;
-              const isCurrent = idx === currentStepIndex;
-              const stepProgressPercent = isCurrent
-                ? Math.min(100, Math.round((stepElapsedSec / (step.durationSec || 30)) * 100))
-                : isCompleted ? 100 : 0;
-              const sLabel = language === 'zh' ? step.label : (step.labelEn || step.label);
-              return (
-                <div key={idx} className="flex-1 min-w-0">
-                  <div className="h-1.5 w-full rounded-full bg-white/[0.06] overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-300 ${
-                        isCompleted ? 'bg-emerald-500'
-                          : isCurrent ? isRunning
-                            ? (step.type === 'drawdown' ? 'bg-gradient-to-r from-sky-500 to-sky-300 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-gradient-to-r from-amber-500 to-amber-300 shadow-[0_0_6px_rgba(245,158,11,0.5)]')
-                            : (step.type === 'drawdown' ? 'bg-sky-400' : 'bg-amber-400')
-                          : 'bg-transparent'
-                      }`}
-                      style={{ width: `${stepProgressPercent}%` }}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between text-[10px] font-mono px-0.5 mt-1">
-                    <span className={`truncate ${isCurrent ? (step.type === 'drawdown' ? 'text-sky-300 font-bold' : 'text-amber-300 font-bold') : isCompleted ? 'text-[#f0eeeb]/40' : 'text-[#f0eeeb]/25'}`}>{sLabel}</span>
-                    <span className={`${isCurrent ? 'text-amber-400 font-bold' : 'text-[#f0eeeb]/25'}`}>{step.durationSec}s</span>
-                  </div>
+          <div className="flex items-center gap-1.5 text-xs font-mono text-[#f0eeeb]/50">
+            <span>{language === 'zh' ? '累計' : 'Total'}</span>
+            <span className={`font-bold tabular-nums ${isRunning ? 'text-amber-400' : 'text-amber-300'}`}>{formatTime(elapsedTotalSec)}</span>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          {scaledSteps.map((step, idx) => {
+            const isCompleted = idx < currentStepIndex;
+            const isCurrent = idx === currentStepIndex;
+            const stepProgressPercent = isCurrent
+              ? Math.min(100, Math.round((stepElapsedSec / (step.durationSec || 30)) * 100))
+              : isCompleted ? 100 : 0;
+            const sLabel = language === 'zh' ? step.label : (step.labelEn || step.label);
+            return (
+              <div key={idx} className="flex-1 min-w-0">
+                <div className="h-1.5 w-full rounded-full bg-white/[0.06] overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all duration-300 ${
+                      isCompleted ? 'bg-emerald-500'
+                        : isCurrent ? isRunning
+                          ? (step.type === 'drawdown' ? 'bg-gradient-to-r from-sky-500 to-sky-300 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-gradient-to-r from-amber-500 to-amber-300 shadow-[0_0_6px_rgba(245,158,11,0.5)]')
+                          : (step.type === 'drawdown' ? 'bg-sky-400' : 'bg-amber-400')
+                        : 'bg-transparent'
+                    }`}
+                    style={{ width: `${stepProgressPercent}%` }}
+                  />
                 </div>
-              );
-            })}
-          </div>
-        </motion.div>
+                <div className="flex items-center justify-between text-[10px] font-mono px-0.5 mt-1">
+                  <span className={`truncate ${isCurrent ? (step.type === 'drawdown' ? 'text-sky-300 font-bold' : 'text-amber-300 font-bold') : isCompleted ? 'text-[#f0eeeb]/40' : 'text-[#f0eeeb]/25'}`}>{sLabel}</span>
+                  <span className={`${isCurrent ? 'text-amber-400 font-bold' : 'text-[#f0eeeb]/25'}`}>{step.durationSec}s</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
 
-        {/* Hero Timer + Scale Target — Merged Single Card */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pt-3 pb-2 space-y-3">
         <motion.div
           variants={timerCardVariants}
           onClick={() => !isRunning && setIsRunning(true)}
