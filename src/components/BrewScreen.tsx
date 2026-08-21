@@ -247,10 +247,10 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="w-full h-full flex flex-col pb-3 pt-0 select-none font-sans text-[#f0eeeb] relative overflow-hidden"
+      className="w-full h-full flex flex-col pb-3 pt-[env(safe-area-inset-top)] select-none font-sans text-[#f0eeeb] relative overflow-hidden"
     >
       {/* In-flow header — never paints under Safari chrome */}
-      <motion.div variants={headerVariants} className="shrink-0 -mx-4 px-4 bg-[#0a0a08] border-b border-white/[0.04] flex items-center justify-between" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 0.5rem)', paddingBottom: '0.5rem' }}>
+      <motion.div variants={headerVariants} className="shrink-0 -mx-4 px-4 bg-[#0a0a08] border-b border-white/[0.04] flex items-center justify-between py-2">
           <button
             onClick={onCancelBrew}
             className="w-10 h-10 -ml-1.5 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
@@ -289,7 +289,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           </button>
         </motion.div>
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pb-2 space-y-2">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pt-3 pb-2 space-y-2">
         {/* Compact Step Bar + Segmented Progress */}
         <motion.div variants={stepIndicatorVariants}>
           <div className="flex items-center justify-between px-1 mb-1.5">
