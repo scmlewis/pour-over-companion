@@ -250,7 +250,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
       className="w-full h-full flex flex-col pb-3 pt-[env(safe-area-inset-top)] select-none font-sans text-[#f0eeeb] relative overflow-hidden"
     >
       {/* In-flow header — never paints under Safari chrome */}
-      <motion.div variants={headerVariants} className="shrink-0 -mx-4 px-4 bg-[#0a0a08] border-b border-white/[0.04] flex items-center justify-between py-1.5">
+      <motion.div variants={headerVariants} className="shrink-0 -mx-4 px-4 bg-[#0a0a08] border-b border-white/[0.04] flex items-center justify-between py-2 z-10">
           <button
             onClick={onCancelBrew}
             className="w-10 h-10 -ml-1.5 rounded-full flex items-center justify-center text-[#f0eeeb]/40 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-500"
@@ -289,21 +289,21 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           </button>
         </motion.div>
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pt-6 pb-2 space-y-2">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pt-8 pb-2 space-y-3">
         {/* Compact Step Bar + Segmented Progress */}
-        <motion.div variants={stepIndicatorVariants} className="mt-1.5">
-          <div className="flex items-center justify-between px-1 mb-1.5">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/8 border border-amber-500/15 text-[11px] font-mono font-bold text-amber-300">
+        <motion.div variants={stepIndicatorVariants} className="mt-2">
+          <div className="flex items-center justify-between px-1 mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-mono font-bold text-amber-300">
               <span>{t('brew.step')} {(currentStepIndex + 1).toString().padStart(2, '0')} / {scaledSteps.length.toString().padStart(2, '0')}</span>
-              <span className="text-amber-500/50">·</span>
-              <span className="text-[#f0eeeb]/80">{language === 'zh' ? currentStep.label : (currentStep.labelEn || currentStep.label)}</span>
+              <span className="text-amber-500/40">·</span>
+              <span className="text-[#f0eeeb]/90">{language === 'zh' ? currentStep.label : (currentStep.labelEn || currentStep.label)}</span>
             </div>
-            <div className="flex items-center gap-1 text-[11px] font-mono text-[#f0eeeb]/40">
+            <div className="flex items-center gap-1.5 text-xs font-mono text-[#f0eeeb]/50">
               <span>{language === 'zh' ? '累計' : 'Total'}</span>
-              <span className={`font-bold ${isRunning ? 'text-amber-400' : 'text-amber-300'}`}>{formatTime(elapsedTotalSec)}</span>
+              <span className={`font-bold tabular-nums ${isRunning ? 'text-amber-400' : 'text-amber-300'}`}>{formatTime(elapsedTotalSec)}</span>
             </div>
           </div>
-          <div className="flex gap-1.5">
+          <div className="flex gap-2">
             {scaledSteps.map((step, idx) => {
               const isCompleted = idx < currentStepIndex;
               const isCurrent = idx === currentStepIndex;
@@ -313,9 +313,9 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               const sLabel = language === 'zh' ? step.label : (step.labelEn || step.label);
               return (
                 <div key={idx} className="flex-1 min-w-0">
-                  <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden">
+                  <div className="h-1.5 w-full rounded-full bg-white/[0.06] overflow-hidden">
                     <div
-                      className={`h-full transition-all duration-300 ${
+                      className={`h-full rounded-full transition-all duration-300 ${
                         isCompleted ? 'bg-emerald-500'
                           : isCurrent ? isRunning
                             ? (step.type === 'drawdown' ? 'bg-gradient-to-r from-sky-500 to-sky-300 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-gradient-to-r from-amber-500 to-amber-300 shadow-[0_0_6px_rgba(245,158,11,0.5)]')
@@ -325,9 +325,9 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                       style={{ width: `${stepProgressPercent}%` }}
                     />
                   </div>
-                  <div className="flex items-center justify-between text-[8px] font-mono px-0.5 mt-0.5">
-                    <span className={`truncate ${isCurrent ? (step.type === 'drawdown' ? 'text-sky-300 font-bold' : 'text-amber-300 font-bold') : isCompleted ? 'text-[#f0eeeb]/30' : 'text-[#f0eeeb]/20'}`}>{sLabel}</span>
-                    <span className={`${isCurrent ? 'text-amber-400' : 'text-[#f0eeeb]/20'}`}>{step.durationSec}s</span>
+                  <div className="flex items-center justify-between text-[10px] font-mono px-0.5 mt-1">
+                    <span className={`truncate ${isCurrent ? (step.type === 'drawdown' ? 'text-sky-300 font-bold' : 'text-amber-300 font-bold') : isCompleted ? 'text-[#f0eeeb]/40' : 'text-[#f0eeeb]/25'}`}>{sLabel}</span>
+                    <span className={`${isCurrent ? 'text-amber-400 font-bold' : 'text-[#f0eeeb]/25'}`}>{step.durationSec}s</span>
                   </div>
                 </div>
               );
@@ -348,7 +348,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
         >
           {/* Paused Badge */}
           {!isRunning && (
-            <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-400 text-[#0a0a08] font-mono text-[9px] font-black z-20">
+            <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-400 text-[#0a0a08] font-mono text-[10px] font-black z-20">
               <Pause className="w-2.5 h-2.5 fill-[#0a0a08]" />
               <span>PAUSED · TAP TO RESUME</span>
             </div>
@@ -379,7 +379,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                   </motion.div>
                 </AnimatePresence>
                 {!isRunning && (
-                  <span className="text-[9px] font-mono font-black px-1.5 py-0.5 rounded bg-amber-400 text-[#0a0a08] uppercase">PAUSE</span>
+                  <span className="text-[10px] font-mono font-black px-2 py-0.5 rounded bg-amber-400 text-[#0a0a08] uppercase">PAUSE</span>
                 )}
               </div>
             </div>
@@ -410,7 +410,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                 <span className="text-emerald-400">✓ {language === 'zh' ? '本段完成' : 'STEP DONE'}</span>
               )}
             </span>
-            <span className="text-[10px] font-mono text-[#f0eeeb]/30">
+            <span className="text-[11px] font-mono text-[#f0eeeb]/40">
               {advanceMode === 'auto' ? 'AUTO' : 'MANUAL'}
             </span>
           </div>
@@ -458,10 +458,12 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
 
         {/* Technique — Static Display */}
         <motion.div variants={telemetryVariants}>
-          <div className="py-2 px-3 rounded-xl bg-[#0f0e0c] border border-white/[0.04] flex items-center gap-1.5 text-[11px] text-[#f0eeeb]/40 font-medium mb-1.5">
-            <Activity className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-            <span className="shrink-0">{t('brew.technique')}</span>
-            <span className="text-[#f0eeeb]/60 truncate">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
+          <div className="py-2.5 px-3 rounded-xl bg-[#0f0e0c] border border-white/[0.04] flex items-start gap-2 text-xs text-[#f0eeeb]/50 font-medium">
+            <Activity className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <span className="shrink-0 text-[#f0eeeb]/70 font-semibold">{t('brew.technique')}</span>
+              <span className="text-[#f0eeeb]/60 ml-1.5">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
+            </div>
           </div>
         </motion.div>
 
