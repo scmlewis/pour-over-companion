@@ -131,7 +131,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
   const [stepElapsedSec, setStepElapsedSec] = useState<number>(0);
   const [isRunning, setIsRunning] = useState<boolean>(true);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
-  const [showFlowChart, setShowFlowChart] = useState<boolean>(true);
+  const [showFlowChart, setShowFlowChart] = useState<boolean>(false);
 
 
   const timerRef = useRef<number | null>(null);
@@ -344,9 +344,9 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                       style={{ width: `${stepProgressPercent}%` }}
                     />
                   </div>
-                  <div className="flex items-center justify-between text-[10px] font-mono px-0.5 mt-1">
-                    <span className={`truncate ${isCurrent ? (step.type === 'drawdown' ? 'text-sky-300 font-bold' : 'text-amber-300 font-bold') : isCompleted ? 'text-[#f0eeeb]/40' : 'text-[#f0eeeb]/25'}`}>{sLabel}</span>
-                    <span className={`${isCurrent ? 'text-amber-400 font-bold' : 'text-[#f0eeeb]/25'}`}>{step.durationSec}s</span>
+                  <div className="flex items-center justify-between text-[11px] font-mono px-0.5 mt-1">
+                    <span className={`truncate ${isCurrent ? (step.type === 'drawdown' ? 'text-sky-300 font-bold' : 'text-amber-300 font-bold') : isCompleted ? 'text-[#f0eeeb]/50' : 'text-[#f0eeeb]/30'}`}>{sLabel}</span>
+                    <span className={`${isCurrent ? 'text-amber-400 font-bold' : 'text-[#f0eeeb]/30'}`}>{step.durationSec}s</span>
                   </div>
                 </div>
               );
@@ -363,7 +363,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
             <span className="text-amber-500/40">·</span>
             <span className="text-[#f0eeeb]/90">{language === 'zh' ? currentStep.label : (currentStep.labelEn || currentStep.label)}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-xs font-mono text-[#f0eeeb]/50">
+          <div className="flex items-center gap-1.5 text-xs font-mono text-[#f0eeeb]/70">
             <span>{language === 'zh' ? '累計' : 'Total'}</span>
             <span className={`font-bold tabular-nums ${isRunning ? 'text-amber-400' : 'text-amber-300'}`}>{formatTime(elapsedTotalSec)}</span>
           </div>
@@ -448,7 +448,18 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           </div>
         </motion.div>
 
-        {/* Flow Rate Telemetry — Toggle */}
+        {/* Technique — Active guidance, shown above telemetry */}
+        <motion.div variants={telemetryVariants}>
+          <div className="py-2.5 px-3 rounded-xl bg-[#0f0e0c] border border-white/[0.04] flex items-start gap-2 text-xs text-[#f0eeeb]/50 font-medium">
+            <Activity className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <span className="shrink-0 text-[#f0eeeb]/70 font-semibold">{t('brew.technique')}</span>
+              <span className="text-[#f0eeeb]/60 ml-1.5">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Flow Rate Telemetry — Collapsed by default, reference data */}
         <motion.div variants={telemetryVariants}>
           <button
             onClick={() => setShowFlowChart(f => !f)}
@@ -486,17 +497,6 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
-
-        {/* Technique — Static Display */}
-        <motion.div variants={telemetryVariants}>
-          <div className="py-2.5 px-3 rounded-xl bg-[#0f0e0c] border border-white/[0.04] flex items-start gap-2 text-xs text-[#f0eeeb]/50 font-medium">
-            <Activity className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-            <div className="min-w-0">
-              <span className="shrink-0 text-[#f0eeeb]/70 font-semibold">{t('brew.technique')}</span>
-              <span className="text-[#f0eeeb]/60 ml-1.5">{language === 'zh' ? (currentStep.pourStyle || '輕柔同心圓注水') : (currentStep.pourStyleEn || 'Gentle concentric pour')}</span>
-            </div>
-          </div>
         </motion.div>
 
       </div>
