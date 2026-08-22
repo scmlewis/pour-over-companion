@@ -131,7 +131,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
   const [stepElapsedSec, setStepElapsedSec] = useState<number>(0);
   const [isRunning, setIsRunning] = useState<boolean>(true);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
-  const [showFlowChart, setShowFlowChart] = useState<boolean>(false);
+  const [showFlowChart, setShowFlowChart] = useState<boolean>(true);
 
 
   const timerRef = useRef<number | null>(null);
@@ -392,7 +392,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               <div className="text-[10px] font-mono font-medium flex items-center gap-1 mb-0.5">
                 <Clock className={`w-3 h-3 ${!isRunning ? 'text-amber-300' : 'text-amber-400'}`} />
                 <span className={!isRunning ? 'text-amber-300 font-bold' : 'text-[#f0eeeb]/40'}>
-                  {!isRunning ? 'FROZEN' : isPouring ? 'POUR COUNTDOWN' : 'STEP TIMER'}
+                  {!isRunning ? (language === 'zh' ? '已凍結' : 'FROZEN') : isPouring ? (language === 'zh' ? '注水倒計時' : 'POUR COUNTDOWN') : (language === 'zh' ? '步驟計時' : 'STEP TIMER')}
                 </span>
               </div>
               <div className="flex items-baseline gap-1.5">
@@ -407,7 +407,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
                       !isRunning ? 'text-amber-300' : 'text-white'
                     }`}
                   >
-                    {isPouring ? formatTime(pourRemainingSec) : formatTime(stepElapsedSec)}
+                    {formatTime(stepElapsedSec)}
                   </motion.div>
                 </AnimatePresence>
                 {!isRunning && (
@@ -435,7 +435,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               {!isRunning ? (
                 <span className="text-amber-300">⏸ {language === 'zh' ? '暫停中' : 'PAUSED'}</span>
               ) : isPouring ? (
-                <span className="text-amber-400">● {language === 'zh' ? '注水' : 'POURING'} · {currentWaterToAdd}g → {currentTargetWeight}g</span>
+                <span className="text-amber-400">● {language === 'zh' ? '注水' : 'POURING'} · {currentWaterToAdd}g → {currentTargetWeight}g · {formatTime(pourRemainingSec)}</span>
               ) : isWaiting ? (
                 <span className="text-sky-400">● {language === 'zh' ? '滴濾中' : 'DRAWDOWN'}</span>
               ) : (
