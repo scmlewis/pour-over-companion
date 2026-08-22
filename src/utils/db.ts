@@ -5,6 +5,7 @@ const DB_VERSION = 2;
 const STORE_LOGS = 'brew_logs';
 const STORE_RECIPES = 'custom_recipes';
 const STORE_BEANS = 'custom_beans';
+const STORE_FAVORITES = 'favorite_recipes';
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -29,6 +30,9 @@ function openDB(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains(STORE_BEANS)) {
         db.createObjectStore(STORE_BEANS, { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains(STORE_FAVORITES)) {
+        db.createObjectStore(STORE_FAVORITES, { keyPath: 'recipeId' });
       }
     };
 
@@ -351,3 +355,86 @@ export function exportToCSV(logs: BrewLogEntry[]) {
 }
 
 export const exportLogsAsCSV = exportToCSV;
+
+// === Favorites Storage ===
+const LOCAL_STORAGE_KEY_FAVORITES = 'hand_drip_favorites_backup';
+
+function getLocalStorageFavorites(): string[] {
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY_FAVORITES);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalStorageFavorites(favorites: string[]) {
+  try {
+    localStorage.setItem(LOCAL_STORAGE_KEY_FAVORITES, JSON.stringify(favorites));
+  } catch {
+    // ignore
+  }
+}
+
+export async function toggleFavorite(recipeId: string): Promise<boolean> {
+  const isFav = await isFavorite(recipeId);
+
+  try {
+    const db = await openDB();
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(STORE_FAVORITES, 'readwrite');
+      const store = tx.objectStore(STORE_FAVORITES);
+      if (isFav) {
+        store.delete(recipeId);
+      } else {
+        store.put({ recipeId, timestamp: new Date().toISOString() });
+      }
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch {
+    // fallback
+  }
+
+  const localFavs = getLocalStorageFavorites();
+  if (isFav) {
+    saveLocalStorageFavorites(localFavs.filter(id => id !== recipeId));
+  } else {
+    saveLocalStorageFavorites([...localFavs, recipeId]);
+  }
+
+  return !isFav;
+}
+
+export async function isFavorite(recipeId: string): Promise<boolean> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(STORE_FAVORITES, 'readonly');
+      const store = tx.objectStore(STORE_FAVORITES);
+      const request = store.get(recipeId);
+      request.onsuccess = () => resolve(!!request.result);
+      request.onerror = () => resolve(getLocalStorageFavorites().includes(recipeId));
+    });
+  } catch {
+    return getLocalStorageFavorites().includes(recipeId);
+  }
+}
+
+export async function getFavoriteIds(): Promise<string[]> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(STORE_FAVORITES, 'readonly');
+      const store = tx.objectStore(STORE_FAVORITES);
+      const request = store.getAll();
+      request.onsuccess = () => {
+        const favs = request.result || [];
+        resolve(favs.map((f: { recipeId: string }) => f.recipeId));
+      };
+      request.onerror = () => resolve(getLocalStorageFavorites());
+    });
+  } catch {
+    return getLocalStorageFavorites();
+  }
+}
