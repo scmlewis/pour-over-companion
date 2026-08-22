@@ -290,18 +290,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
           </button>
         </div>
 
-        <motion.div variants={stepIndicatorVariants} className="border-t border-white/[0.04] pt-2 pb-2">
-          <div className="flex items-center justify-between px-1 mb-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-mono font-bold text-amber-300">
-              <span>{t('brew.step')} {(currentStepIndex + 1).toString().padStart(2, '0')} / {scaledSteps.length.toString().padStart(2, '0')}</span>
-              <span className="text-amber-500/40">·</span>
-              <span className="text-[#f0eeeb]/90">{language === 'zh' ? currentStep.label : (currentStep.labelEn || currentStep.label)}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs font-mono text-[#f0eeeb]/50">
-              <span>{language === 'zh' ? '累計' : 'Total'}</span>
-              <span className={`font-bold tabular-nums ${isRunning ? 'text-amber-400' : 'text-amber-300'}`}>{formatTime(elapsedTotalSec)}</span>
-            </div>
-          </div>
+        <div className="border-t border-white/[0.04] pt-2 pb-2">
           <div className="flex gap-2">
             {scaledSteps.map((step, idx) => {
               const isCompleted = idx < currentStepIndex;
@@ -332,10 +321,22 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               );
             })}
           </div>
-        </motion.div>
+        </div>
       </motion.div>
 
       <div className="flex-1 overflow-y-auto overflow-x-hidden -mx-4 px-4 pt-3 pb-2 space-y-3">
+        {/* Step pill — inside scroll so it can never be covered by header */}
+        <motion.div variants={stepIndicatorVariants} className="flex items-center justify-between px-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-mono font-bold text-amber-300">
+            <span>{t('brew.step')} {(currentStepIndex + 1).toString().padStart(2, '0')} / {scaledSteps.length.toString().padStart(2, '0')}</span>
+            <span className="text-amber-500/40">·</span>
+            <span className="text-[#f0eeeb]/90">{language === 'zh' ? currentStep.label : (currentStep.labelEn || currentStep.label)}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs font-mono text-[#f0eeeb]/50">
+            <span>{language === 'zh' ? '累計' : 'Total'}</span>
+            <span className={`font-bold tabular-nums ${isRunning ? 'text-amber-400' : 'text-amber-300'}`}>{formatTime(elapsedTotalSec)}</span>
+          </div>
+        </motion.div>
         <motion.div
           variants={timerCardVariants}
           onClick={() => !isRunning && setIsRunning(true)}
