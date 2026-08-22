@@ -20,6 +20,7 @@ import { FinishScreen } from './components/FinishScreen';
 import { HistoryScreen } from './components/HistoryScreen';
 import { BrewLogDetailModal } from './components/BrewLogDetailModal';
 import { CustomRecipeModal } from './components/CustomRecipeModal';
+import { OnboardingScreen } from './components/OnboardingScreen';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
@@ -50,6 +51,19 @@ export default function App() {
   const [customBeans, setCustomBeans] = useState<BeanInfo[]>([]);
   const [editingLog, setEditingLog] = useState<BrewLogEntry | null>(null);
   const [showCustomModal, setShowCustomModal] = useState<boolean>(false);
+
+  const ONBOARDING_KEY = 'hand_drip_onboarding_complete';
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return !localStorage.getItem(ONBOARDING_KEY);
+    }
+    return false;
+  });
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem(ONBOARDING_KEY, 'true');
+    setShowOnboarding(false);
+  };
 
   const loadData = useCallback(async () => {
     const [storedLogs, customRecipes, storedBeans] = await Promise.all([
@@ -219,6 +233,9 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] bg-[#0a0a08] text-[#f0eeeb] flex flex-col items-center font-sans">
+      {showOnboarding && (
+        <OnboardingScreen onComplete={handleOnboardingComplete} />
+      )}
       <main className="w-full max-w-md mx-auto px-4 flex-1 flex flex-col">
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
