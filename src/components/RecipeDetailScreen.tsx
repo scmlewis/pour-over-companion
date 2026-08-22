@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { MessageCircle, RefreshCw, Sparkles, Droplets, Coffee } from 'lucide-react';
+import { MessageCircle, RefreshCw, Sparkles, Droplets, Coffee, Info } from 'lucide-react';
 import { Recipe, BeanInfo } from '../types';
 import { useLanguage } from '../utils/i18n';
+import { grindSizes } from '../data/grindSizes';
 import { ScreenHeader } from './ScreenHeader';
 
 interface RecipeDetailScreenProps {
@@ -175,10 +176,24 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
                   </svg>
                 </div>
               </div>
-            </div>
           </div>
+        </div>
 
-          {/* Pour Stages */}
+        {grindSizes[recipe.grind] && (
+          <div className="mt-2 p-3 rounded-2xl bg-amber-500/5 border border-amber-500/10">
+            <div className="flex items-center gap-2 mb-1">
+              <Info className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider">
+                {language === 'zh' ? '研磨度參考' : 'Grind Reference'}
+              </span>
+            </div>
+            <p className="text-xs text-[#f0eeeb]/60">
+              {language === 'zh' ? grindSizes[recipe.grind].description : grindSizes[recipe.grind].descriptionEn}
+            </p>
+          </div>
+        )}
+
+        {/* Pour Stages */}
           <div className="bezel-card group">
             <div className="p-4 space-y-2">
               <div className="flex items-center justify-between text-xs text-[#f0eeeb]/40">
