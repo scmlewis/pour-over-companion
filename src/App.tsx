@@ -229,6 +229,18 @@ export default function App() {
     }
   };
 
+  const handleReBrew = (log: BrewLogEntry) => {
+    const targetRecipe = allRecipes.find(r => r.id === log.recipeId) || allRecipes[0];
+    setSelectedRecipe(targetRecipe);
+    updateBrewConfigForRecipe(targetRecipe, {
+      dose: log.dose,
+      ratio: log.ratio,
+      totalWater: log.water,
+      grind: log.grind,
+    });
+    setCurrentView('prep');
+  };
+
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'instant' });
 
   return (
@@ -437,6 +449,7 @@ export default function App() {
                 onSelectLogForEval={(log) => setEditingLog(log)}
                 onRefreshLogs={loadData}
                 onDeleteLog={handleDeleteLog}
+                onReBrew={handleReBrew}
               />
             </motion.div>
           )}

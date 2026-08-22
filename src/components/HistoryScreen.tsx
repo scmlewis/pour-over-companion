@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrewLogEntry } from '../types';
-import { Download, Trash2, Star, Coffee, Edit3 } from 'lucide-react';
+import { Download, Trash2, Star, Coffee, Edit3, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { deleteBrewLog, exportLogsAsCSV } from '../utils/db';
 import { useLanguage } from '../utils/i18n';
@@ -12,6 +12,7 @@ interface HistoryScreenProps {
   onSelectLogForEval: (log: BrewLogEntry) => void;
   onRefreshLogs: () => void;
   onDeleteLog?: (id: string) => void;
+  onReBrew?: (log: BrewLogEntry) => void;
 }
 
 const listContainerVariants = {
@@ -25,7 +26,7 @@ const listItemVariants = {
 };
 
 export const HistoryScreen: React.FC<HistoryScreenProps> = ({
-  logs, onBack, onSelectLogForEval, onRefreshLogs, onDeleteLog,
+  logs, onBack, onSelectLogForEval, onRefreshLogs, onDeleteLog, onReBrew,
 }) => {
   const { t, language } = useLanguage();
   const [filterRating, setFilterRating] = useState<number | null>(null);
@@ -223,6 +224,19 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
+                      {onReBrew && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onReBrew(log);
+                          }}
+                          className="p-1.5 rounded-lg text-[#f0eeeb]/25 hover:text-amber-400 hover:bg-amber-500/10 active:scale-90 transition-all duration-500"
+                          title={language === 'zh' ? '再次沖煮' : 'Brew Again'}
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" />
+                        </button>
+                      )}
                     </div>
                   </div>
 
