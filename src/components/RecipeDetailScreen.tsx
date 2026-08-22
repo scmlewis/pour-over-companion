@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { MessageCircle, RefreshCw, Sparkles, Droplets, Coffee, Info } from 'lucide-react';
+import { MessageCircle, RefreshCw, Sparkles, Droplets, Coffee, Info, Lightbulb, ChevronDown, CheckCircle2, AlertCircle } from 'lucide-react';
+import { recipeInsights, defaultInsight } from '../data/recipeInsights';
 import { Recipe, BeanInfo } from '../types';
 import { useLanguage } from '../utils/i18n';
 import { grindSizes } from '../data/grindSizes';
@@ -33,6 +34,9 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
 
   const [selectedRatio, setSelectedRatio] = useState<string>(recipe.ratio);
   const [dose, setDose] = useState<number>(recipe.dose);
+  const [showInsights, setShowInsights] = useState(false);
+
+  const insight = recipeInsights[recipe.id] || defaultInsight;
 
   const activeRatioConfig = ratioPresets.find(p => p.ratio === selectedRatio) || {
     ratio: recipe.ratio,
@@ -257,6 +261,61 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
               <span>{language === 'zh' ? '建議注水流速：4–5 g/秒 垂直柔和水柱 · 離粉面約 8–10 cm' : 'Recommended flow: 4–5 g/s gentle stream ~8–10cm above bed'}</span>
             </div>
           </div>
+        </div>
+
+        {/* Why This Recipe — Expandable */}
+        <div className="bezel-card mb-4">
+          <button
+            onClick={() => setShowInsights(!showInsights)}
+            className="w-full p-4 flex items-center justify-between text-left"
+          >
+            <div className="flex items-center gap-2">
+              <Lightbulb className="w-4 h-4 text-amber-400" />
+              <span className="text-xs font-bold text-amber-400">{language === 'zh' ? '為什麼選這道食譜' : 'Why This Recipe'}</span>
+            </div>
+            <ChevronDown className={`w-4 h-4 text-[#f0eeeb]/40 transition-transform duration-300 ${showInsights ? 'rotate-180' : ''}`} />
+          </button>
+          {showInsights && (
+            <div className="px-4 pb-4 space-y-3 border-t border-white/[0.04]">
+              <p className="text-xs text-[#f0eeeb]/60 leading-relaxed pt-3">
+                {language === 'zh' ? insight.whyThisRecipe : insight.whyThisRecipeEn}
+              </p>
+
+              <div>
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                  <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider">
+                    {language === 'zh' ? '關鍵技巧' : 'Key Techniques'}
+                  </span>
+                </div>
+                <ul className="space-y-1">
+                  {(language === 'zh' ? insight.keyTechniques : insight.keyTechniquesEn).map((item, i) => (
+                    <li key={i} className="text-xs text-[#f0eeeb]/50 flex items-start gap-2">
+                      <span className="text-emerald-400 mt-0.5 shrink-0">•</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <AlertCircle className="w-3 h-3 text-rose-400" />
+                  <span className="text-[10px] font-mono font-bold text-rose-400 uppercase tracking-wider">
+                    {language === 'zh' ? '常見失誤' : 'Common Mistakes'}
+                  </span>
+                </div>
+                <ul className="space-y-1">
+                  {(language === 'zh' ? insight.commonMistakes : insight.commonMistakesEn).map((item, i) => (
+                    <li key={i} className="text-xs text-[#f0eeeb]/50 flex items-start gap-2">
+                      <span className="text-rose-400 mt-0.5 shrink-0">•</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Action Buttons */}
