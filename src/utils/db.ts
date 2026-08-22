@@ -6,6 +6,8 @@ const STORE_LOGS = 'brew_logs';
 const STORE_RECIPES = 'custom_recipes';
 const STORE_BEANS = 'custom_beans';
 const STORE_FAVORITES = 'favorite_recipes';
+const STORE_BREW_PROGRESS = 'brew_progress';
+const LOCAL_STORAGE_KEY_PROGRESS = 'hand_drip_brew_progress';
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -33,6 +35,9 @@ function openDB(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains(STORE_FAVORITES)) {
         db.createObjectStore(STORE_FAVORITES, { keyPath: 'recipeId' });
+      }
+      if (!db.objectStoreNames.contains(STORE_BREW_PROGRESS)) {
+        db.createObjectStore(STORE_BREW_PROGRESS, { keyPath: 'id' });
       }
     };
 
@@ -418,6 +423,85 @@ export async function isFavorite(recipeId: string): Promise<boolean> {
     });
   } catch {
     return getLocalStorageFavorites().includes(recipeId);
+  }
+}
+
+export interface BrewProgress {
+  recipeId: string;
+  currentStepIndex: number;
+  elapsedTotalSec: number;
+  stepElapsedSec: number;
+  dose: number;
+  ratio: string;
+  totalWater: number;
+  grind: string;
+  timestamp: string;
+}
+
+export async function saveBrewProgress(progress: BrewProgress): Promise<void> {
+  try {
+    const db = await openDB();
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(STORE_BREW_PROGRESS, 'readwrite');
+      const store = tx.objectStore(STORE_BREW_PROGRESS);
+      store.put({ id: 'current', ...progress });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch {
+    // fallback
+  }
+  try {
+    localStorage.setItem(LOCAL_STORAGE_KEY_PROGRESS, JSON.stringify(progress));
+  } catch {
+    // ignore
+  }
+}
+
+export async function getBrewProgress(): Promise<BrewProgress | null> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(STORE_BREW_PROGRESS, 'readonly');
+      const store = tx.objectStore(STORE_BREW_PROGRESS);
+      const request = store.get('current');
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => {
+        try {
+          const raw = localStorage.getItem(LOCAL_STORAGE_KEY_PROGRESS);
+          resolve(raw ? JSON.parse(raw) : null);
+        } catch {
+          resolve(null);
+        }
+      };
+    });
+  } catch {
+    try {
+      const raw = localStorage.getItem(LOCAL_STORAGE_KEY_PROGRESS);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+}
+
+export async function clearBrewProgress(): Promise<void> {
+  try {
+    const db = await openDB();
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(STORE_BREW_PROGRESS, 'readwrite');
+      const store = tx.objectStore(STORE_BREW_PROGRESS);
+      store.delete('current');
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch {
+    // fallback
+  }
+  try {
+    localStorage.removeItem(LOCAL_STORAGE_KEY_PROGRESS);
+  } catch {
+    // ignore
   }
 }
 

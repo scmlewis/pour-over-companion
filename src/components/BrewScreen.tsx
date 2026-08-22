@@ -5,6 +5,7 @@ import { Recipe, RecipeStep } from '../types';
 import { playStepChime, playFinishChime, playCountdownBeep } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { requestWakeLock, releaseWakeLock } from '../utils/wakeLock';
+import { saveBrewProgress, getBrewProgress, clearBrewProgress, BrewProgress } from '../utils/db';
 import { BrewFlowChart } from './BrewFlowChart';
 import { useLanguage } from '../utils/i18n';
 
@@ -185,6 +186,35 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
     };
   }, [isRunning]);
 
+  // Persist brew progress so user can resume if they close the app mid-brew
+  useEffect(() => {
+    if (isRunning) {
+      const progress: BrewProgress = {
+        recipeId: recipe.id,
+        currentStepIndex,
+        elapsedTotalSec,
+        stepElapsedSec,
+        dose,
+        ratio,
+        totalWater,
+        grind,
+        timestamp: new Date().toISOString(),
+      };
+      saveBrewProgress(progress);
+    }
+  }, [currentStepIndex, elapsedTotalSec, stepElapsedSec, isRunning]);
+
+  // Restore saved progress on mount if the same recipe
+  useEffect(() => {
+    getBrewProgress().then((saved) => {
+      if (saved && saved.recipeId === recipe.id) {
+        setCurrentStepIndex(saved.currentStepIndex);
+        setElapsedTotalSec(saved.elapsedTotalSec);
+        setStepElapsedSec(saved.stepElapsedSec);
+      }
+    });
+  }, [recipe.id]);
+
   const goToNextStep = () => {
     if (soundEnabled) playStepChime();
     triggerHaptic('medium');
@@ -209,6 +239,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
     if (soundEnabled) playFinishChime();
     triggerHaptic('heavy');
     if (timerRef.current) clearInterval(timerRef.current);
+    clearBrewProgress();
     onFinishBrew({
       durationSec: elapsedTotalSec,
       theoreticalWater: totalWater,
