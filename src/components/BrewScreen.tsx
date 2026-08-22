@@ -247,7 +247,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="w-full h-full flex flex-col pb-3 pt-0 select-none font-sans text-[#f0eeeb] relative"
+      className="w-full min-h-dvh h-full flex flex-col pb-3 pt-0 select-none font-sans text-[#f0eeeb] relative"
     >
       {/* Unified header + step indicator — single opaque block */}
       <motion.div variants={headerVariants} className="shrink-0 -mx-4 px-4 bg-[#0a0a08]">
