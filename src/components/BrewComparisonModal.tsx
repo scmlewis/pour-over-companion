@@ -89,8 +89,8 @@ export const BrewComparisonModal: React.FC<BrewComparisonModalProps> = ({
         {/* Brew Headers */}
         <div className="grid grid-cols-3 gap-2 text-center">
           <div></div>
-          <div className="text-[10px] font-mono text-amber-400 font-bold">BREW A</div>
-          <div className="text-[10px] font-mono text-amber-400 font-bold">BREW B</div>
+          <div className="text-[10px] font-mono text-amber-400 font-bold">{language === 'zh' ? '沖煮 A' : 'BREW A'}</div>
+          <div className="text-[10px] font-mono text-amber-400 font-bold">{language === 'zh' ? '沖煮 B' : 'BREW B'}</div>
         </div>
 
         {/* Comparison Rows */}
@@ -161,13 +161,13 @@ export const BrewComparisonModal: React.FC<BrewComparisonModalProps> = ({
             </h4>
             {brewA.notes && (
               <div className="p-3 rounded-2xl bg-[#141311] border border-white/[0.04]">
-                <div className="text-[9px] text-amber-400 font-mono mb-1">BREW A</div>
+                <div className="text-[9px] text-amber-400 font-mono mb-1">{language === 'zh' ? '沖煮 A' : 'BREW A'}</div>
                 <p className="text-xs text-[#f0eeeb]/60 italic">"{brewA.notes}"</p>
               </div>
             )}
             {brewB.notes && (
               <div className="p-3 rounded-2xl bg-[#141311] border border-white/[0.04]">
-                <div className="text-[9px] text-amber-400 font-mono mb-1">BREW B</div>
+                <div className="text-[9px] text-amber-400 font-mono mb-1">{language === 'zh' ? '沖煮 B' : 'BREW B'}</div>
                 <p className="text-xs text-[#f0eeeb]/60 italic">"{brewB.notes}"</p>
               </div>
             )}

@@ -443,17 +443,22 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
       )}
 
       {/* Brew Comparison Modal */}
-      {showComparison && selectedForCompare.length === 2 && (
-        <BrewComparisonModal
-          brewA={logs.find(l => l.id === selectedForCompare[0])!}
-          brewB={logs.find(l => l.id === selectedForCompare[1])!}
-          onClose={() => {
-            setShowComparison(false);
-            setSelectedForCompare([]);
-            setCompareMode(false);
-          }}
-        />
-      )}
+      {showComparison && selectedForCompare.length === 2 && (() => {
+        const brewA = logs.find(l => l.id === selectedForCompare[0]);
+        const brewB = logs.find(l => l.id === selectedForCompare[1]);
+        if (!brewA || !brewB) return null;
+        return (
+          <BrewComparisonModal
+            brewA={brewA}
+            brewB={brewB}
+            onClose={() => {
+              setShowComparison(false);
+              setSelectedForCompare([]);
+              setCompareMode(false);
+            }}
+          />
+        );
+      })()}
     </div>
   );
 };

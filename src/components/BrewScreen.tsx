@@ -392,7 +392,7 @@ export const BrewScreen: React.FC<BrewScreenProps> = ({
               <div className="text-[10px] font-mono font-medium flex items-center gap-1 mb-0.5">
                 <Clock className={`w-3 h-3 ${!isRunning ? 'text-amber-300' : 'text-amber-400'}`} />
                 <span className={!isRunning ? 'text-amber-300 font-bold' : 'text-[#f0eeeb]/40'}>
-                  {!isRunning ? (language === 'zh' ? '已凍結' : 'FROZEN') : isPouring ? (language === 'zh' ? '注水倒計時' : 'POUR COUNTDOWN') : (language === 'zh' ? '步驟計時' : 'STEP TIMER')}
+                  {!isRunning ? (language === 'zh' ? '已凍結' : 'FROZEN') : isPouring ? (language === 'zh' ? '注水計時' : 'POUR TIMER') : (language === 'zh' ? '步驟計時' : 'STEP TIMER')}
                 </span>
               </div>
               <div className="flex items-baseline gap-1.5">
