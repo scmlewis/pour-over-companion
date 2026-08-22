@@ -7,6 +7,7 @@ import defaultRecipesData from '../data/recipes.json';
 import { ASSETS } from '../assets';
 import { CustomBeanModal } from './CustomBeanModal';
 import { useLanguage } from '../utils/i18n';
+import { toggleFavorite, getFavoriteIds } from '../utils/db';
 
 interface HomeScreenProps {
   logs: BrewLogEntry[];
@@ -80,6 +81,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
   const [showBeanModal, setShowBeanModal] = useState<boolean>(false);
   const [editingBean, setEditingBean] = useState<BeanInfo | null>(null);
+  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
 
   const [recipeIndex, setRecipeIndex] = useState<number>(() => {
     const idx = allRecipes.findIndex(r => r.id === selectedRecipe.id);
@@ -125,6 +127,24 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     const idx = allRecipes.findIndex(r => r.id === selectedRecipe.id);
     if (idx >= 0 && idx !== recipeIndex) scrollToRecipe(idx);
   }, [selectedRecipe.id]);
+
+  useEffect(() => {
+    getFavoriteIds().then(ids => setFavoriteIds(new Set(ids)));
+  }, []);
+
+  const handleToggleFavorite = async (recipeId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const isNowFav = await toggleFavorite(recipeId);
+    setFavoriteIds(prev => {
+      const next = new Set(prev);
+      if (isNowFav) {
+        next.add(recipeId);
+      } else {
+        next.delete(recipeId);
+      }
+      return next;
+    });
+  };
 
   const handleBeanScroll = (direction: 'left' | 'right') => {
     if (beanScrollRef.current) {
@@ -252,6 +272,19 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                       </button>
                     </div>
                   </div>
+
+                  <button
+                    onClick={(e) => handleToggleFavorite(recipe.id, e)}
+                    className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-xl border border-white/[0.08] flex items-center justify-center active:scale-90 transition-all duration-300 pointer-events-auto"
+                  >
+                    <Star
+                      className={`w-4 h-4 ${
+                        favoriteIds.has(recipe.id)
+                          ? 'fill-amber-400 text-amber-400'
+                          : 'text-white/40 hover:text-white/60'
+                      }`}
+                    />
+                  </button>
                 </div>
 
                 {/* Hero Card Body — nested in double-bezel outer */}
