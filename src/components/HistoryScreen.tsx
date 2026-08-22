@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrewLogEntry } from '../types';
-import { Download, Trash2, Star, Coffee, Edit3, RotateCcw } from 'lucide-react';
+import { Download, Trash2, Star, Coffee, Edit3, RotateCcw, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { deleteBrewLog, exportLogsAsCSV } from '../utils/db';
 import { useLanguage } from '../utils/i18n';
@@ -30,6 +30,9 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
 }) => {
   const { t, language } = useLanguage();
   const [filterRating, setFilterRating] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterMethod, setFilterMethod] = useState<string | null>(null);
+  const [filterDateRange, setFilterDateRange] = useState<'all' | '7d' | '30d' | '90d'>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const confirmDelete = async (id: string, e: React.MouseEvent) => {
@@ -50,7 +53,30 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
     setDeletingId(null);
   };
 
-  const filteredLogs = filterRating ? logs.filter(l => l.rating === filterRating) : logs;
+  const filteredLogs = logs.filter(log => {
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesName = log.recipeName.toLowerCase().includes(query);
+      const matchesBean = log.beanName?.toLowerCase().includes(query) ?? false;
+      const matchesNotes = log.notes?.toLowerCase().includes(query) ?? false;
+      if (!matchesName && !matchesBean && !matchesNotes) return false;
+    }
+
+    if (filterMethod && log.method !== filterMethod) return false;
+
+    if (filterDateRange !== 'all') {
+      const logDate = new Date(log.timestamp);
+      const now = new Date();
+      const daysDiff = Math.floor((now.getTime() - logDate.getTime()) / (1000 * 60 * 60 * 24));
+      if (filterDateRange === '7d' && daysDiff > 7) return false;
+      if (filterDateRange === '30d' && daysDiff > 30) return false;
+      if (filterDateRange === '90d' && daysDiff > 90) return false;
+    }
+
+    if (filterRating && log.rating !== filterRating) return false;
+
+    return true;
+  });
 
   const formatDate = (isoStr: string) => {
     try {
@@ -139,6 +165,70 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
             >
               <span>{st}</span>
               <Star className="w-3 h-3 fill-current" />
+            </button>
+          ))}
+        </div>
+
+        {/* Search Input */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#f0eeeb]/30" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={language === 'zh' ? '搜尋食譜、豆種、筆記...' : 'Search recipes, beans, notes...'}
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#141311] border border-white/[0.04] text-xs text-[#f0eeeb] focus:outline-none focus:border-amber-500/50 font-medium placeholder-[#f0eeeb]/20 transition-colors duration-500"
+          />
+        </div>
+
+        {/* Method Filter */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mb-4 scrollbar-none">
+          <button
+            onClick={() => setFilterMethod(null)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono transition-all duration-500 ${
+              filterMethod === null
+                ? 'bg-amber-500 text-[#0a0a08]'
+                : 'bg-[#141311] text-[#f0eeeb]/40 border border-white/[0.04]'
+            }`}
+            style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+          >
+            {t('history.all')}
+          </button>
+          {['V60', 'Chemex', 'AeroPress', 'Kalita Wave', 'Origami'].map((method) => (
+            <button
+              key={method}
+              onClick={() => setFilterMethod(method)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono transition-all duration-500 whitespace-nowrap ${
+                filterMethod === method
+                  ? 'bg-amber-500 text-[#0a0a08]'
+                  : 'bg-[#141311] text-[#f0eeeb]/40 border border-white/[0.04]'
+              }`}
+              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+            >
+              {method}
+            </button>
+          ))}
+        </div>
+
+        {/* Date Range Filter */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mb-4 scrollbar-none">
+          {[
+            { value: 'all', label: language === 'zh' ? '全部' : 'All Time' },
+            { value: '7d', label: language === 'zh' ? '7天' : '7 Days' },
+            { value: '30d', label: language === 'zh' ? '30天' : '30 Days' },
+            { value: '90d', label: language === 'zh' ? '90天' : '90 Days' },
+          ].map((range) => (
+            <button
+              key={range.value}
+              onClick={() => setFilterDateRange(range.value as typeof filterDateRange)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono transition-all duration-500 ${
+                filterDateRange === range.value
+                  ? 'bg-amber-500 text-[#0a0a08]'
+                  : 'bg-[#141311] text-[#f0eeeb]/40 border border-white/[0.04]'
+              }`}
+              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+            >
+              {range.label}
             </button>
           ))}
         </div>
