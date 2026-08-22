@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { BrewLogEntry } from '../types';
-import { Download, Trash2, Star, Coffee, Edit3, RotateCcw, Search } from 'lucide-react';
+import { Download, Trash2, Star, Coffee, Edit3, RotateCcw, Search, GitCompareArrows } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { deleteBrewLog, exportLogsAsCSV } from '../utils/db';
 import { useLanguage } from '../utils/i18n';
 import { ScreenHeader } from './ScreenHeader';
+import { BrewComparisonModal } from './BrewComparisonModal';
 
 interface HistoryScreenProps {
   logs: BrewLogEntry[];
@@ -34,6 +35,9 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
   const [filterMethod, setFilterMethod] = useState<string | null>(null);
   const [filterDateRange, setFilterDateRange] = useState<'all' | '7d' | '30d' | '90d'>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [compareMode, setCompareMode] = useState(false);
+  const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
+  const [showComparison, setShowComparison] = useState(false);
 
   const confirmDelete = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -51,6 +55,17 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
   const handleCancelDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setDeletingId(null);
+  };
+
+  const handleToggleCompare = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedForCompare(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(i => i !== id);
+      }
+      if (prev.length >= 2) return prev;
+      return [...prev, id];
+    });
   };
 
   const filteredLogs = logs.filter(log => {
@@ -108,14 +123,29 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
           title={language === 'zh' ? '沖煮日誌' : 'BREW JOURNAL'}
 
           rightAction={
-            <button
-              onClick={() => exportLogsAsCSV(logs)}
-              title="CSV"
-              className="p-2 rounded-full bg-[#141311] border border-white/[0.06] text-[#f0eeeb]/40 hover:text-amber-400 active:scale-90 transition-all duration-500"
-              style={{ transitionTimingFunction: 'var(--ease-spring)' }}
-            >
-              <Download className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => exportLogsAsCSV(logs)}
+                title="CSV"
+                className="p-2 rounded-full bg-[#141311] border border-white/[0.06] text-[#f0eeeb]/40 hover:text-amber-400 active:scale-90 transition-all duration-500"
+                style={{ transitionTimingFunction: 'var(--ease-spring)' }}
+              >
+                <Download className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => {
+                  setCompareMode(!compareMode);
+                  setSelectedForCompare([]);
+                }}
+                className={`p-2 rounded-full border transition-all duration-300 ${
+                  compareMode
+                    ? 'bg-amber-500 text-[#0a0a08] border-amber-400'
+                    : 'bg-[#141311] border-white/[0.06] text-[#f0eeeb]/40 hover:text-amber-400'
+                }`}
+              >
+                <GitCompareArrows className="w-4 h-4" />
+              </button>
+            </div>
           }
         />
 
@@ -288,6 +318,20 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-2">
+                        {compareMode && (
+                          <button
+                            onClick={(e) => handleToggleCompare(log.id, e)}
+                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0 ${
+                              selectedForCompare.includes(log.id)
+                                ? 'bg-amber-500 border-amber-400'
+                                : 'border-white/20'
+                            }`}
+                          >
+                            {selectedForCompare.includes(log.id) && (
+                              <div className="w-2 h-2 rounded-full bg-[#0a0a08]" />
+                            )}
+                          </button>
+                        )}
                         <span className="text-sm font-black text-[#f0eeeb] font-sans group-hover:text-amber-300 transition-colors duration-500">
                           {log.recipeName}
                         </span>
@@ -385,6 +429,31 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
           <span>{t('history.backHome')}</span>
         </button>
       </div>
+
+      {/* Compare Action Button */}
+      {compareMode && selectedForCompare.length === 2 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+          <button
+            onClick={() => setShowComparison(true)}
+            className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-[#0a0a08] font-black text-sm shadow-lg active:scale-95 transition-all"
+          >
+            {language === 'zh' ? '比較這兩杯' : 'Compare These Brews'}
+          </button>
+        </div>
+      )}
+
+      {/* Brew Comparison Modal */}
+      {showComparison && selectedForCompare.length === 2 && (
+        <BrewComparisonModal
+          brewA={logs.find(l => l.id === selectedForCompare[0])!}
+          brewB={logs.find(l => l.id === selectedForCompare[1])!}
+          onClose={() => {
+            setShowComparison(false);
+            setSelectedForCompare([]);
+            setCompareMode(false);
+          }}
+        />
+      )}
     </div>
   );
 };
